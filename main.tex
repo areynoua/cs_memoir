@@ -1,0 +1,238 @@
+\documentclass[11pt,a4paper,oneside]{book}
+% default
+\usepackage[hmargin={1.25in,1.25in},vmargin={1.25in,1.25in}]{geometry}
+% draft
+%\usepackage[hmargin={1in,1in},vmargin={1in,1in}]{geometry}
+
+\usepackage[OT1]{fontenc}
+\usepackage{fontspec}
+\usepackage[Greek]{ucharclasses}
+
+\newfontfamily{\greekfont}[Scale=MatchLowercase]{cmunrm.otf}
+%\setTransitionsForGreek{\begingroup\greekfont}{\endgroup}
+
+\makeindex
+\usepackage{textcomp}
+\usepackage{fancyhdr}
+\usepackage{makeidx}
+\pagestyle{myheadings}
+\fancyhf{}
+\rhead[\leftmark]{thepage}
+
+\usepackage{url}
+
+\parindent0em
+\parskip1.5ex
+
+%%
+
+%%%% Packages
+\usepackage{acronym}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+
+%%%% PGF/TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows,decorations,backgrounds,positioning,fit,petri}
+\tikzset{
+	x=0.16\linewidth,
+	y=0.16\linewidth,
+	>=stealth',
+	bend angle=30,
+	every place/.style={
+		draw=black,
+		minimum size=0.055\linewidth
+	},
+	every transition/.style={
+		fill=black,
+		minimum height=0.055\linewidth,
+		inner xsep=0pt,
+		minimum width=3pt
+	}
+}
+
+%%%% Theorems
+\theoremstyle{plain}
+%\newtheorem{lemme}{Lemme}
+%\newtheorem{prop}{Proposition}
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}
+%\theoremstyle{remark}
+%\newtheorem{conv}{Convention}
+
+%%%% Matrices
+\input{res/bordermatrix.tex}
+
+%%%% Document specific
+\newcommand{\tupleN}{\ensuremath{\mathcal{N}}\xspace}
+\newcommand{\tupleS}{\ensuremath{\mathcal{S}}\xspace}
+\newcommand{\marq}{\ensuremath{\mathbf{m}}\xspace}
+\newcommand{\marqi}{\ensuremath{\mathbf{m}_0}\xspace}
+\newcommand{\marqp}{\ensuremath{\mathbf{m'}}\xspace}
+\newcommand{\marqpi}{\ensuremath{\mathbf{m'}_0}\xspace}
+\newcommand{\PT}{\ensuremath{\langle P,T\rangle}\xspace}
+\newcommand{\PTm}{\ensuremath{\langle P,T, \marqi\rangle}\xspace}
+\newcommand{\PTP}{\ensuremath{\langle P,T,\mathbb{P}\rangle}\xspace}
+\newcommand{\PTPm}{\ensuremath{\langle P,T,\mathbb{P}, \marqi\rangle}\xspace}
+\newcommand{\NPT}{\ensuremath{\tupleN = \PT}\xspace}
+\newcommand{\NPTm}{\ensuremath{\tupleN = \PTm}\xspace}
+\newcommand{\SPTP}{\ensuremath{\tupleS = \PTP}\xspace}
+\newcommand{\SPTPm}{\ensuremath{\tupleS = \PTPm}\xspace}
+\newcommand{\fire}[1]{\stackrel{#1}{\to}}
+\newcommand{\firev}[1]{\stackrel{#1}{\to}_v}
+\newcommand{\matI}{\mathbf{I}}
+\newcommand{\matO}{\mathbf{O}}
+\newcommand{\matIN}{\matI_\tupleN}
+\newcommand{\matON}{\matO_\tupleN}
+\newcommand{\matIS}{\matI_\tupleS}
+\newcommand{\matOS}{\matO_\tupleS}
+\newcommand{\Ecov}{\ensuremath{\mathscr{E}\text{-cov}}\xspace}
+\newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
+% prec pleq npleq
+\newcommand{\pleq}{\preccurlyeq}
+\newcommand{\npleq}{\npreccurlyeq}
+
+%%%% Layout
+\setlist[itemize]{noitemsep,nolistsep}
+%\makeatletter
+%\parindent 10pt
+%\topsep 4pt plus 1pt minus 2pt
+%\partopsep 1pt plus 0.5pt minus 0.5pt
+%\itemsep 2pt plus 1pt minus 0.5pt
+%\parsep 2pt plus 1pt minus 0.5pt
+%
+%\leftmargin 10pt \leftmargini\leftmargin \leftmarginii 10pt
+%\leftmarginiii 5pt \leftmarginiv 5pt \leftmarginv 5pt \leftmarginvi 5pt
+%\labelwidth\leftmargini\advance\labelwidth-\labelsep \labelsep 5pt
+%
+%\def\@listi{\leftmargin\leftmargini}
+%\def\@listii{\leftmargin\leftmarginii
+%   \labelwidth\leftmarginii\advance\labelwidth-\labelsep
+%   \topsep 2pt plus 1pt minus 0.5pt
+%   \parsep 1pt plus 0.5pt minus 0.5pt
+%   \itemsep \parsep}
+%\def\@listiii{\leftmargin\leftmarginiii
+%    \labelwidth\leftmarginiii\advance\labelwidth-\labelsep
+%    \topsep 1pt plus 0.5pt minus 0.5pt
+%    \parsep \z@ \partopsep 0.5pt plus 0pt minus 0.5pt
+%    \itemsep \topsep}
+%\def\@listiv{\leftmargin\leftmarginiv
+%     \labelwidth\leftmarginiv\advance\labelwidth-\labelsep}
+%\def\@listv{\leftmargin\leftmarginv
+%     \labelwidth\leftmarginv\advance\labelwidth-\labelsep}
+%\def\@listvi{\leftmargin\leftmarginvi
+%     \labelwidth\leftmarginvi\advance\labelwidth-\labelsep}
+%
+%\abovedisplayskip 7pt plus2pt minus5pt%
+%\belowdisplayskip \abovedisplayskip
+%\abovedisplayshortskip  0pt plus3pt%
+%\belowdisplayshortskip  4pt plus3pt minus3pt%
+%\makeatother
+
+
+%%%% TMP
+\newcommand{\todo}[1]{[TODO: #1]}
+
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+\begin{center}
+\textbf{UNIVERSIT\'E LIBRE DE BRUXELLES}\\
+\textbf{Faculté des Sciences}\\
+\textbf{Département d'Informatique}
+\vfill{}\vfill{}
+
+{\Huge  The Coverability problem \vspace*{.5cm}  \linebreak[4] for parametric Petri nets}
+
+{\Huge \par}
+\begin{center}{\LARGE Alexis Reynouard}\end{center}{\Huge \par}
+\vfill{}\vfill{}
+\begin{flushright}{\large \textbf{Promotor :} Prof. Gilles Geeraerts}\hfill{}{\large Master Thesis in Computer Sciences}\\
+{\large }\hfill{}{}\end{flushright}{\large\par}
+\vfill{}\vfill{}\enlargethispage{3cm}
+\textbf{Academic year 2018~-~2019}
+\end{center}
+\end{titlepage}
+\newpage
+\thispagestyle{empty} 
+\null
+
+\newenvironment{vcenterpage}
+{\newpage\thispagestyle{empty} 
+\vspace*{\fill}}
+{\vspace*{\fill}\par\pagebreak}
+
+%\begin{vcenterpage}
+%\begin{flushright}
+%    \large\em\null\vskip1in 
+%    You may want\\
+%   to write a dedication here\vfill
+%  \end{flushright}
+%\end{vcenterpage}
+%\thispagestyle{empty}
+%\vspace*{5cm}
+%
+%\begin{quotation}
+%\noindent ``\emph{You may also include one or more general quotes related to your topic.}''
+%\begin{flushright}\textbf{Name of the author, date}\end{flushright}
+%\end{quotation}
+%
+%\medskip
+%
+%\begin{quotation}
+%\noindent ``\emph{Another quote.}''
+%\begin{flushright}\textbf{Name of the author, date}\end{flushright}
+%\end{quotation}
+%\chapter*{Acknowledgment}
+%\thispagestyle{empty} 
+%
+%\noindent I want to thank ...
+
+\thispagestyle{empty} 
+\setcounter{page}{0}
+\tableofcontents
+
+\acrodef{PN}{Petri net}
+\acrodef{PPN}{parametric Petri net}
+
+\mainmatter
+\setcounter{page}{1}
+
+\chapter{Introduction}
+\input{parts/introduction}
+\section{Definitions}
+\input{parts/definitions}
+\section{Motivations}
+\input{parts/motivations}
+
+%\chapter{Situation}
+\section{Previous work}
+\input{parts/state-of-the-art}
+\section{Objectives (should become Contributions)}
+\input{parts/objectives}
+
+\vspace*{0.5cm}
+\chapter*{Conclusions}
+
+The conclusions are to be written with care\index{Care}, because it will be sometimes the part that could convince a potential reader to read the whole document.
+
+\appendix
+
+\backmatter
+
+\printindex % use makeindex to generate the index
+
+\bibliographystyle{plain}
+
+\bibliography{info} %use bibtex to generate the bibliography
+
+\end{document}
+
+% vim: set spell spelllang=en :

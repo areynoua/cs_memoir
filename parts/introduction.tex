@@ -1,0 +1,19 @@
+\acp{PN} are a mathematical and graphical model introduced by Carl Adam Petri in 1962 \cite{Petri62}. It was successfully used to analyse systems in a wide range of domains, especially for the formal verification of asynchronous systems.
+
+In their standard definition, \acp{PN} are instantiated through many natural numbers which may represent, for example, the amount of resource needed for a given action to be carried out.
+
+The introduction of parameters into the model to avoid the need to state these values explicitly%
+\footnote{One can find in the literature many other way to use parameters in \acp{PN}. For example, place and~/~or transitions may also be parameters in order to dynamically change the network structure, like in \cite{Christensen97}.}
+may have several benefits:
+it may allow to perform analysis of a whole family of \acp{PN} in an efficient way, like in \cite{Abdulla13}; or to model dynamic changes in the system, as introduced by \cite{Badouel99} as a subclass of reconfigurable nets.
+
+The use of parameters increases the modelling power of \acp{PN} but also make some basic coverability problems undecidable in the general case \cite{David17}.
+
+We adopt the parametric Petri net model introduced by \cite{David17}, which seems the most general, and study the existing results and algorithms for conventional Petri nets to determine if they still hold or how to adapt them to the parametric model.
+
+The rest of the document is as follows:
+We define the classical Petri net model and the parametric model.
+We then briefly motivate our study and give concrete examples of applications.
+Third, we recall, first, the results already obtained for the parameterized Petri net as we have defined them, second, the classical results that we will study on this new model.
+
+% vim: set spell spelllang=en :

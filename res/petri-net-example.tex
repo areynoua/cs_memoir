@@ -1,0 +1,17 @@
+\center
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth]
+	\node [place] (d) [label=$p_1$] at (4,2) {};
+	\node [place, tokens=1] (l) [label=west:$p_2$] at (4,1) {};
+	\node [place] (o) [label=east:$p_3$] at (6,1) {};
+	
+	\node [transition] (S) [label=$t_1$] at (3,2) {}
+	edge [post] (d);
+	\node [transition] (C) [label=$t_2$] at (5,2) {}
+	edge [pre]  (d)
+	edge [pre,  bend right] (l)
+	edge [post, bend left]  (o);
+	\node [transition] (F) [label=$t_3$] at (5,0) {}
+	edge [pre,  bend right] (o)
+	edge [post, bend left]  (l);
+\end{tikzpicture}
+\par
