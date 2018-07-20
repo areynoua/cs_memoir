@@ -1,13 +1,11 @@
 all: main.pdf
 
-main.aux: main.tex $(wildcard parts/*.tex)
+main.aux main.bbl: main.tex $(wildcard parts/*.tex) info.bib
 	xelatex main.tex
-
-main.bbl: main.aux info.bib
 	bibtex main.aux
-
-main.pdf: main.tex main.bbl $(wildcard parts/*.tex)
 	xelatex main.tex
+
+main.pdf: main.tex main.aux main.bbl $(wildcard parts/*.tex)
 	xelatex main.tex
 
 clean:

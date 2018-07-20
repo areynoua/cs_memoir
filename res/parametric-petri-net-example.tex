@@ -5,7 +5,7 @@
 	\node [place] (o) [label=east:$p_3$] at (6,1) {};
 	
 	\node [transition] (S) [label=$t_1$] at (3,2) {}
-	edge [post] (d);
+  edge [post] node [auto] {$b$} (d);
 	\node [transition] (C) [label=$t_2$] at (5,2) {}
 	edge [pre]  (d)
 	edge [pre,  bend right] (l)

@@ -1,42 +1,66 @@
-\documentclass[11pt,a4paper,oneside]{book}
-% default
+\documentclass[11pt,a4paper,oneside,draft]{book}
+
+% Math typesetting
+\usepackage{amsmath} % loads amsbsy, amsopn, amstext
+\usepackage{amsthm}
+\usepackage{thmtools, thm-restate}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathrsfs} % script (\mathscr)
+
+\input{res/bordermatrix.tex}
+
+\theoremstyle{plain}
+\newtheorem{lemm}{Lemma}
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}
+\theoremstyle{remark}
+
+% Encoding and Fonts
+\usepackage{xunicode} % replaces fontenc
+\usepackage{xltxtra} % loads fontspec, metalogo, realscripts; redefine \showhyphens; define \vfrac and \namedglyph.
+\setromanfont{CMU Serif}
+\setsansfont{CMU Sans Serif}
+\setmonofont{CMU Typewriter Text}
+\setmathrm{CMU Serif}
+\setmathsf{CMU Sans Serif}
+\setmathtt{CMU Typewriter Text}
+
+% Pdf pages numbers
+\usepackage[breaklinks,hidelinks]{hyperref}
+
+% Typesetting
+\usepackage{xspace}
+\renewcommand{\textomega}{ω\xspace}
+
+% Layout
 \usepackage[hmargin={1.25in,1.25in},vmargin={1.25in,1.25in}]{geometry}
-% draft
-%\usepackage[hmargin={1in,1in},vmargin={1in,1in}]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.5ex}
 
-\usepackage[OT1]{fontenc}
-\usepackage{fontspec}
-\usepackage[Greek]{ucharclasses}
-
-\newfontfamily{\greekfont}[Scale=MatchLowercase]{cmunrm.otf}
-%\setTransitionsForGreek{\begingroup\greekfont}{\endgroup}
-
-\makeindex
-\usepackage{textcomp}
 \usepackage{fancyhdr}
-\usepackage{makeidx}
 \pagestyle{myheadings}
 \fancyhf{}
 \rhead[\leftmark]{thepage}
 
-\usepackage{url}
+% Bibliography
+\usepackage{natbib}
+\makeindex
 
-\parindent0em
-\parskip1.5ex
+% Index
+\usepackage{makeidx}
 
-%%
-
-%%%% Packages
+% Acronyms
 \usepackage{acronym}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{xspace}
-\usepackage{enumitem}
-\usepackage{mathrsfs}
+\acrodef{PN}{Petri net}
+\acrodef{PPN}{parametric Petri net}
+\acrodef{EEC}{Expand, Enlarge and Check}
 
-%%%% PGF/TikZ
+% Lists
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep,nolistsep}
+
+% PGF/TikZ
 \usepackage{tikz}
 \usetikzlibrary{arrows,decorations,backgrounds,positioning,fit,petri}
 \tikzset{
@@ -56,19 +80,8 @@
 	}
 }
 
-%%%% Theorems
-\theoremstyle{plain}
-%\newtheorem{lemme}{Lemme}
-%\newtheorem{prop}{Proposition}
-\theoremstyle{definition}
-\newtheorem{defi}{Definition}
-%\theoremstyle{remark}
-%\newtheorem{conv}{Convention}
-
-%%%% Matrices
-\input{res/bordermatrix.tex}
-
 %%%% Document specific
+\newcommand{\omark}{\textomega-marking\xspace}
 \newcommand{\tupleN}{\ensuremath{\mathcal{N}}\xspace}
 \newcommand{\tupleS}{\ensuremath{\mathcal{S}}\xspace}
 \newcommand{\marq}{\ensuremath{\mathbf{m}}\xspace}
@@ -93,56 +106,27 @@
 \newcommand{\matOS}{\matO_\tupleS}
 \newcommand{\Ecov}{\ensuremath{\mathscr{E}\text{-cov}}\xspace}
 \newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
-% prec pleq npleq
-\newcommand{\pleq}{\preccurlyeq}
-\newcommand{\npleq}{\npreccurlyeq}
+\newcommand{\pleq}{\preceq}
+\newcommand{\npleq}{\npreceq}
+%\newcommand{\npleq}{\npreccurlyeq}
+%\newcommand{\npleq}{⋨}
+\DeclareMathOperator{\Post}{Post}
+\DeclareMathOperator{\Pre}{Pre}
+\DeclareMathOperator{\Cover}{Cover}
+\DeclareMathOperator{\Min}{Min^\pleq}
+\DeclareMathOperator{\upc}{\uparrow^\pleq}
+\DeclareMathOperator{\downc}{\downarrow^\pleq}
+\DeclareMathOperator{\KMAcc}{Acceleration}
 
-%%%% Layout
-\setlist[itemize]{noitemsep,nolistsep}
-%\makeatletter
-%\parindent 10pt
-%\topsep 4pt plus 1pt minus 2pt
-%\partopsep 1pt plus 0.5pt minus 0.5pt
-%\itemsep 2pt plus 1pt minus 0.5pt
-%\parsep 2pt plus 1pt minus 0.5pt
-%
-%\leftmargin 10pt \leftmargini\leftmargin \leftmarginii 10pt
-%\leftmarginiii 5pt \leftmarginiv 5pt \leftmarginv 5pt \leftmarginvi 5pt
-%\labelwidth\leftmargini\advance\labelwidth-\labelsep \labelsep 5pt
-%
-%\def\@listi{\leftmargin\leftmargini}
-%\def\@listii{\leftmargin\leftmarginii
-%   \labelwidth\leftmarginii\advance\labelwidth-\labelsep
-%   \topsep 2pt plus 1pt minus 0.5pt
-%   \parsep 1pt plus 0.5pt minus 0.5pt
-%   \itemsep \parsep}
-%\def\@listiii{\leftmargin\leftmarginiii
-%    \labelwidth\leftmarginiii\advance\labelwidth-\labelsep
-%    \topsep 1pt plus 0.5pt minus 0.5pt
-%    \parsep \z@ \partopsep 0.5pt plus 0pt minus 0.5pt
-%    \itemsep \topsep}
-%\def\@listiv{\leftmargin\leftmarginiv
-%     \labelwidth\leftmarginiv\advance\labelwidth-\labelsep}
-%\def\@listv{\leftmargin\leftmarginv
-%     \labelwidth\leftmarginv\advance\labelwidth-\labelsep}
-%\def\@listvi{\leftmargin\leftmarginvi
-%     \labelwidth\leftmarginvi\advance\labelwidth-\labelsep}
-%
-%\abovedisplayskip 7pt plus2pt minus5pt%
-%\belowdisplayskip \abovedisplayskip
-%\abovedisplayshortskip  0pt plus3pt%
-%\belowdisplayshortskip  4pt plus3pt minus3pt%
-%\makeatother
-
-
-%%%% TMP
-\newcommand{\todo}[1]{[TODO: #1]}
-
+% TMP
+\newcommand{\todo}[1]{[TODO: {\color{red} #1}]}
+\newcommand{\removed}[1]{[REMOVED: {\color{gray} #1}]}
 
 \begin{document}
 
 \frontmatter
 \begin{titlepage}
+\setcounter{page}{0}
 \begin{center}
 \textbf{UNIVERSIT\'E LIBRE DE BRUXELLES}\\
 \textbf{Faculté des Sciences}\\
@@ -161,7 +145,7 @@
 \end{center}
 \end{titlepage}
 \newpage
-\thispagestyle{empty} 
+\thispagestyle{empty}
 \null
 
 \newenvironment{vcenterpage}
@@ -198,16 +182,13 @@
 \thispagestyle{empty} 
 \setcounter{page}{0}
 \tableofcontents
-
-\acrodef{PN}{Petri net}
-\acrodef{PPN}{parametric Petri net}
+\acresetall
 
 \mainmatter
 \setcounter{page}{1}
 
 \chapter{Introduction}
 \input{parts/introduction}
-\input{parts/contributions}
 \section{Definitions}
 \input{parts/definitions}
 \section{Motivations}
@@ -218,11 +199,14 @@
 \input{parts/state-of-the-art}
 
 \chapter{Preliminary results}
-\section{Known results on \ac{PPN}}
-\input{parts/preliminaries-ppn}
-\section{Known results on class \ac{PN}}
+\section{Known results for coverability on plain \acp{PN}}
 \input{parts/preliminaries-pn}
+\section{Known results on \acp{PPN}}
+\input{parts/preliminaries-ppn}
 
+\chapter{Contributions}
+\section{Adapting \ac{EEC} for PreT-\acp{PPN}}
+\input{parts/eec-pret-ppn}
 \vspace*{0.5cm}
 \chapter*{Conclusions}
 

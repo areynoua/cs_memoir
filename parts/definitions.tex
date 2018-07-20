@@ -17,7 +17,7 @@
   Given a set of place $P$, a marking over $P$ is a function $\marq : P \mapsto \mathbb{N}$ that associates $\marq(p)$ tokens to each place $p \in P$.
 \end{defi}
 
-An order on the markings is essential for the analysis of Petri nets. The order we will define is a well quasi order and a partial order.
+An order on the markings is essential for the analysis of \acp{PN}. The order we will define is a well quasi order and a partial order.
 
 \begin{defi}[quasi order]
   A quasi order on a set $\mathcal{E}$ is a binary relation $R$ that is:
@@ -34,13 +34,26 @@ An order on the markings is essential for the analysis of Petri nets. The order 
 \begin{defi}[partial order]
   A partial order on a set $\mathcal{E}$ is a quasi order $R$ that is
   \begin{align*}
-    \text{antisymmetric: } &&\forall (x, y) \in \mathcal{E}^2,\ & (x \mathrel{R} y\land y \mathrel{R} x)\Rightarrow x = z
+    \text{antisymmetric: } &&\forall (x, y) \in \mathcal{E}^2,\ & (x \mathrel{R} y\land y \mathrel{R} x)\Rightarrow x = y
   \end{align*}
 \end{defi}
 
 \begin{defi}[partial order \(\pleq\) on the markings]
   Given a set of places $P$, the partial order \(\pleq \subseteq \mathbb{N}^{|P|} \times \mathbb{N}^{|P|}\) is such that for all pair of markings \((\marq_1, \marq_2) \in \mathbb{N}^{|P|} \times \mathbb{N}^{|P|}\) we have that \(\marq_1 \pleq \marq_2\) if and only if for all place \(p \in P : \marq_1(p) \leq \marq_2(p)\).
 \end{defi}
+
+\(\marq \prec \marqp\) denote that \(\marq \pleq \marqp \text{ and } \marqp \npleq \marq\).
+
+\begin{lemm}[\cite{Dickson13}]
+  \label{lemm:wqo}
+  $\pleq$ is a well quasi order.
+\end{lemm}
+
+The following result will be useful in the sequel.
+
+\begin{lemm}[\cite{Brams83}]
+  The \ac{PN} model is \emph{strongly monotonic with regard to $\pleq$}. That is, for all \ac{PN} $\tupleN = \PTm$, for all transition $t \in T$ and for all markings $\marq_1, \marq_2, \marq_3$ of \tupleN such that $\marq_1 \prec \marq_2$ and $\marq_1 \fire{t} \marq_3$, there exists a marking $\marq_4$ of \tupleN such that $\marq_2 \fire{t} \marq_4$ and $\marq_3 \prec \marq_4$. 
+\end{lemm}
 
 In this work we will focus on an extension of \acp{PN} with parameters as input and output weights.
 
@@ -65,26 +78,26 @@ A marking of a \ac{PN} \NPT is a marking over $P$.
 A marking of a \ac{PPN} \SPTP is a \emph{parametric} marking over $P$.
 Note that a marking \marq is a parametric marking where $\marq(p) \in \mathbb{N}$ for all $p \in P$.
 
-\begin{defi}[initialized (parametric) Petri net]
+\begin{defi}[initialized (parametric) \ac{PN}]
   An initialized \ac{PN} \NPTm (resp. \ac{PPN} \SPTPm) is a \ac{PN} (resp. \ac{PPN}) with an initial marking \marqi.
 \end{defi}
 
-This is sometimes called a \emph{marked (parametric) Petri net}.
-We will often refer to an initialized (parametric) Petri net loosely as a (parametric) Petri net.
+This is sometimes called a \emph{marked (parametric) \ac{PN}}.
+We will often refer to an initialized (parametric) \ac{PN} loosely as a (parametric) \ac{PN}.
 
 The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} with an initial marking \marqi such that $\marqi(p_1) = 0$, $\marqi(p_2) = a$ and $\marqi(p_3) = 0$. The circles represent the places, the rectangles are the transitions and the dots are the tokens. An arrow from a place $p$ and to a transition $t$ denotes that $I_t(p) = 1$. If there is no arrow from $p$ to $t$, $I_t(p) = 0$. If $I_t(p) \notin \{0, 1\}$, a label with the value of $I_t(p)$ is added to the arrow.
 Symmetrically, the arrows from the transitions to the places indicate the output weights.
 
 \begin{figure}[h]
+  \label{fig:parametric-petri-net-example}
   \include{res/parametric-petri-net-example}
   \caption{An initialized \ac{PPN}}
-  \label{fig:parametric-petri-net-example}
 \end{figure}
 
 We usually set an order on the places.
 This allows to view the markings as vectors (here, \marqi is the column vector $(0, a, 0)^T$, where $\cdot^T$ is the transpose operator) as well as the $I$ and $O$ functions.
 Likewise, we define an order on the transitions.
-Therefore, $I_t$ and $O_t$ denote respectively the $I$ and $O$ functions defined for the $t$\textsuperscript{th} transition (here, $I_1 = (0, 0, 0)^T$ and $O_1 = (1, 0, 0)^T$).
+Therefore, $I_t$ and $O_t$ denote respectively the $I$ and $O$ functions defined for the $t$\textsuperscript{th} transition (here, $I_1 = (0, 0, 0)^T$ and $O_1 = (b, 0, 0)^T$).
 Given a \ac{PPN} \SPTP, the backward and forward incidence matrices $\matIS \in (\mathbb{N} \cup \mathbb{P})^{|P|\times|T|}$ and $\matOS \in (\mathbb{N} \cup \mathbb{P})^{|P|\times|T|}$ are naturally defined by $\matIS(p, t) = I_t(p)$ and $\matOS(p, t) = O_t(p)$.
 ($\tupleS$ is omitted when it is obvious from the context.)
 %In addition, it makes the equivalence between \acp{PN} and \emph{vector addition systems} introduced in \cite{Karp69} more explicit and
@@ -100,7 +113,7 @@ This allows to use linear algebra to analyse \acp{PN}.
 		\mspace{56mu}
 		\matO = \bordermatrix[{[]}]{%
 					& t_1 & t_2 & t_3 \cr
-			p_1 & 1   & 0   & 0   \cr
+			p_1 & b   & 0   & 0   \cr
 			p_2 & 0   & 0   & 1   \cr
 			p_3 & 0   & 1   & 0   }
 	\]
@@ -113,21 +126,42 @@ This allows to use linear algebra to analyse \acp{PN}.
 %\end{defi}
 %This corresponds to the definition of an initialized \ac{PN} and \todo{we will see that the semantic corresponds too}.
 
-\subsection{Operational semantic of \aclp{PN}}
+\subsection{Operational semantic of \acp{PN}}
 
 Given a \ac{PN} \NPT and a marking \marq on \tupleN, a transition $t \in T$ is said \emph{enabled} by \marq if $\forall p \in P : \marq(p) \geq I_t(p)$. An enabled transition can be \emph{fired} to produce a new marking \marqp such that $\forall p \in P : \marqp(p) = \marq(p) - I_t(p) + O_t(p)$. This is denoted by $\marq \fire{t} \marqp$.
 It is important to note that the effect of a transition is to add or remove a constant number of tokens at each place and does not depend on the marking from which it is fired. A \ac{PN} transition is said to have a \emph{constant effect}.
-\todo{Note difference when talking about {\greekfont{}ω}-Petri nets}
+\todo{Note difference when talking about {\textomega}-Petri nets}
 
 Here are some additional notations:
 \begin{itemize}
   \item $\marq \rightarrow \marqp$ denotes that there exists $t \in T$ such that $\marq \fire{t} \marqp$.
   \item $\marq \fire{\sigma} \marqp$ where $\sigma$ is a sequence of transitions $\sigma = (t_1, \dots, t_{n-1}), t_i \in T, i \in \{1, \dots, n-1\}$ denotes that there exists a sequence of markings $\marq_1, \dots, \marq_n$ such that : $\marq = \marq_1 \fire{t_1} \cdots \fire{t_{n-1}} \marq_n = \marqp$.
   \item $\marq \fire{*} \marqp$ denotes that there exists a sequence of transition $\sigma$ such that $\marq \fire{\sigma} \marqp$.
+    Note that the $\fire{*}$ relation is the reflexive and transitive closure of the relation $\rightarrow$.
 \end{itemize}
 
+\begin{defi}
+  Given an \ac{PN} \NPT and a marking \marq of \tupleN:
+  \begin{itemize}
+    \item $\Post(\marq) = \{\marqp \mid \marq \rightarrow \marqp\}$ is the set of one-step successors of \marq,
+    \item $\Pre(\marq) = \{\marqp \mid \marqp \rightarrow \marq\}$ is the set of one-step predecessors of \marq,
+    \item $\Post^*(\marq) = \{\marqp \mid \marq \fire{*} \marqp\}$ is the set of successors of \marq, in any number of step.
+      With $\marqi$ the initial marking of \tupleN, $\Post^*(\marqi)$ is the \emph{reachability set} of \tupleN.
+    \item $\Pre^*(\marq) = \{\marqp \mid \marqp \fire{*} \marq\}$ is the set of predecessors of \marq, in any number of step.
+  \end{itemize}
+\end{defi}
+
+These operators are naturally extended to sets of markings as the union of the sets obtained by applying the operator on each marking of the sets.
+That is, with $M$ a set of markings of \NPT,
+$\Post(M) = \{\marqp \mid \exists \marq \in M : \marq \rightarrow \marqp\}$.
+
+For example, regarding the \ac{PPN} shown on figure \ref{fig:parametric-petri-net-example},
+$\Post((0,1,0)) = \{(b, 1, 0)\}$
+and
+$\Post^*((0,1,0)) = \{(i, 1, 0) \mid i \in \mathbb{N}\} \cup \{(i, 0, 1) \mid i \in \mathbb{N}\}$.
+
 All of this applies to \ac{PPN} through valuations of the parameters:
-\begin{defi}[Instantiation of \aclp{PPN}]
+\begin{defi}[Instantiation of \acp{PPN}]
   Let \SPTPm be a \ac{PPN} and $v : \mathbb{P} \mapsto \mathbb{N}$ be a \emph{valuation} on $\mathbb{P}$.
   Then $v(\tupleS)$ is defined as the \ac{PN} obtained by replacing each parameter $a \in \mathbb{P}$ by $v(a)$.
   Thus, we have $v(\tupleS) = \langle P, T, \marqpi\rangle$ such that :
@@ -150,11 +184,11 @@ All of this applies to \ac{PPN} through valuations of the parameters:
   \end{itemize}
 \end{defi}
 
-Given \ac{PPN} \tupleS and a valuation $v$, one can thus instantiate a \ac{PN} $v(\tupleS)$ from \tupleS and apply the semantic described above.  When the \ac{PPN} under consideration is clear from the context, $\matI_v$ is used to denote $\matI_{v(\tupleS)}$ and $\matO_v$ to denote $\matO_{v(\tupleS)}$. We write $\marq \firev{t} \marqp$, $\marq \rightarrow_v \marqp$, $\marq \firev{\sigma} \marqp$ and $\marq \firev{*} \marqp$ to denote $\fire{t}$, $\rightarrow$, $\fire{\sigma}$ and $\fire{*}$ on the classic \ac{PN} $v(\tupleS)$.
+Given \tupleS a \ac{PPN} and a valuation $v$, one can thus instantiate a \ac{PN} $v(\tupleS)$ from \tupleS and apply the semantic described above.  When the \ac{PPN} under consideration is clear from the context, $\matI_v$ is used to denote $\matI_{v(\tupleS)}$ and $\matO_v$ to denote $\matO_{v(\tupleS)}$. We write $\firev{t}$, $\rightarrow_v$, $\firev{\sigma}$, $\firev{*}$, $\Post_v$, $\Pre_v$, $\Post^*_v$ and $\Pre^*_v$ to denote $\fire{t}$, $\rightarrow$, $\fire{\sigma}$, $\fire{*}$, $\Post$, $\Pre$, $\Post^*$ and $\Pre^*$ on the plain \ac{PN} $v(\tupleS)$.
 
-This make it possible to formally represent a system and interactions between its components. We will now define some properties that the model may have and that are usually of interest to show that the modelled system meets some requirement.
+This makes it possible to formally represent a system and interactions between its components. We will now define some properties that the model may have and that are usually of interest to show that the modelled system meets some requirements.
 
-\subsection{Behavioural properties of \aclp{PN}}
+\subsection{Behavioural properties of \acp{PN}}
 
 The markings basically indicate the state of the system. Thus, knowing if an initialized \ac{PN} may reach a given marking, that represents for example a bad state, is essential to check properties of the modelled system. This is the \emph{reachability problem}.
 
@@ -164,9 +198,11 @@ The markings basically indicate the state of the system. Thus, knowing if an ini
 
 However safety properties are more often analysed through the \emph{coverability problem}, that is essentially asking if a \ac{PN} can reach or exceed a given marking.
 
-\begin{defi}[Coverability]
+\begin{restatable}[Coverability]{defi}{coverability}
   Given an initialized \ac{PN} \NPTm and a marking \marq of \tupleN, \marq is said coverable if there exists a marking \marqp such that $\marq \pleq \marqp$ and $\marqi \fire{*} \marqp$.
-\end{defi}
+
+  A set of markings is said coverable whenever one of them is coverable.
+\end{restatable}
 
 The behaviour of a \ac{PPN} is defined by the behaviours of all the \acp{PN} that can be obtained by a valuation of its parameters.
 So, for an initialized \ac{PPN} \tupleS, the coverability problem may be declined in an existential and an universal form.

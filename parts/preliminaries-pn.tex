@@ -1,0 +1,159 @@
+We now present the results relating to the coverability problem on the plain \acp{PN} which seem to us the most interesting.
+
+To introduce these results, we need some additional definitions.
+They will be given for plain \acp{PN}, but most of them are naturally extended to \acp{PPN}.
+
+The \emph{coverability set} of an initialized \ac{PN} is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
+In order to define it formally, we need to know about the upward and downward closure of a (set of) marking(s).
+
+\begin{defi}[Upward- and downward-closure on markings]
+  Let $S \subseteq \mathbb{N}^{|P|}$ be a set of markings on the places $P$:
+  \begin{itemize}
+    \item The \emph{upward-closure} of $S$, noted $\upc(S)$, is the set
+      $\{\marq \in \mathbb{N}^{|P|} \mid \exists \marqp \in S : \marqp \pleq \marq\}$,
+    \item The \emph{downward-closure} of $S$, noted $\downc(S)$, is the set
+      $\{\marq \in \mathbb{N}^{|P|} \mid \exists \marqp \in S : \marq \pleq \marqp\}$.
+  \end{itemize}
+  The closure of a marking \marq is the closure of the singleton $\{\marq\}$.
+\end{defi}
+
+For instance, with $\marq = (1, 2, 3)$, we have that its upward-closure is $\upc(\marq) = \{(i, j, k) \mid i \geq 1, j \geq 2, k \geq 3\}$.
+
+\begin{defi}[Upward- and downward-closed set of markings]
+  A set $S$ of markings is said \emph{upward-closed} if $S = \upc(S)$.
+  It is said \emph{downward-closed} if $S = \downc(S)$.
+\end{defi}
+
+\begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
+  Given an initialized \ac{PN} $\tupleN = \PTm$, a \emph{coverability set} $S$ of \tupleN is a set of markings such that $\downc(S) = \downc(\Post^*(\marqi))$.
+  
+  The minimal coverability set is thus $\downc(\Post^*(\marqi))$ \todo{one-line demonstration required?} and is noted $\Cover(\tupleN)$.
+\end{defi}
+
+\todo{examples}
+
+
+
+Sometimes the number of token in a place is unbounded (\textit{c.f.} the place boundedness problem).
+Therefore, the reachability and coverability sets are infinite.
+This is due to the existence of an increasing self-covering sequence.
+\begin{defi}[Self-covering sequence]
+  Given an initialized \ac{PN} $\tupleN = \PTm$,
+  a self-covering sequence is a sequence of the form:
+  \[
+    \marqi \fire{\rho} \marq_i \fire{\sigma} \marq_j
+  \]
+  with $\rho$ and $\sigma$ two sequences of transitions of $T$
+  and with $\marq_i \pleq \marq_j$.
+\end{defi}
+
+Note that, since $\marq_i \pleq \marq_j$, $\sigma$ is firable from $\marq_j$.
+In addition, the monotonicity of \acp{PN} ensure that, with $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$, we have $\marq_j \pleq \marqp_j$.
+Thus, we see that it is a sufficient condition for the \emph{non-termination} of the system (the system may be able to fire transitions infinitely often).
+In fact, because $\pleq$ is a well quasi order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\marqi \fire{} \marq_1 \fire{} \dots$ two markings $\marq_i$ and $\marq_j$ such that $\marq_i \pleq \marq_j$.
+And so, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
+
+\begin{defi}[Increasing self-covering sequence]
+  Given an initialized \ac{PN} $\tupleN = \PTm$,
+  an increasing self-covering sequence is a sequence of the form:
+  \[
+    \marqi \fire{\rho} \marq_i \fire{\sigma} \marq_j
+  \]
+  with $\rho$ and $\sigma$ two sequences of transitions of $T$
+  and with $\marq_i \prec \marq_j$.
+\end{defi}
+
+Let $Q \subseteq P$ be the set of places $Q = \{q \in P \mid \marq_i(q) < \marq_j(q)\}$.
+$Q \neq \emptyset$ since $\marq_i \prec \marq_j$.
+
+With a similar reasoning to the above, we see that having such a sequence ensure that one can reach a marking $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$ such that $\marq_j \prec \marqp_j$.
+Because of the constant effect of transitions, we know that $\forall q \in Q : \marq_j(q) < \marqp_j(q)$.
+The unboundedness of the places in $Q$ follows.
+\todo{A more formal proof that the existence of an increasing self-covering sequence is a necessary and sufficient condition for unboundedness on places is either to be done here or to reference.}
+
+
+
+An \omark is a way to represent a set of markings which have the same number of tokens in some places, and may have any number of tokens, potentially an infinity, in the other places.
+They are useful to effectively represent potentially infinite downward-closed set, like a coverability set or the sets of markings of an increasing self-covering sequence.
+
+\begin{defi}[\omark]
+  We define $\omega$ to be such that:
+  $\omega \notin \mathbb{N}$
+  and for all constant $c \in \mathbb{N}$:
+  \begin{itemize}
+    \item $c \leq \omega$
+    \item $\omega + c = \omega$
+    \item $\omega - c = \omega$
+  \end{itemize}
+
+  \emph{An \omark} \marq over a set of places $P$ is a function $\marq : P \mapsto \mathbb{N} \cup \{\omega\}$ that associates $\marq(p)$ tokens to each place $p \in P$.
+
+  With $\mathbb{P}$ a set of parameters, $\omega \notin \mathbb{P}$,
+  \emph{a parametric \omark} \marq over a set of places $P$ is a function $\marq : P \mapsto \mathbb{N} \cup \mathbb{P} \cup \{\omega\}$ that associates $\marq(p)$ tokens to each place $p \in P$.
+\end{defi}
+
+Note that an \omark \marq is a parametric \omark where $\marq(p) \in \mathbb{N} \cup \{\omega\}$ for all places $p \in P$.
+Similarly, a parametric marking \marq is a parametric \omark where $\marq(p) \neq \omega$ for all places $p \in P$.
+As for parametric markings, we often refer to a parametric \omark simply as \omark.
+
+Having an \omark $\marq \in \Cover(\tupleN)$ denotes that for all marking $\marq_1$ such that $\marq_1(p) = \marq(p) \forall p \in \{p \mid \marq(p) \neq \omega\}$, there exists an marking $\marq_2$ in the reachability set of \tupleN such that $\marq_1 \pleq \marq_2$.
+
+\subsection{Karp and Miller procedure}
+
+The Karp and Miller algorithm\cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
+More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences.
+
+\begin{defi}[Coverability tree]
+  Given a \ac{PN} $\tupleN = \PTm$, a coverability tree $\mathcal{T}$ of \tupleN is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
+  \begin{itemize}
+    \item $N$ is the set of nodes of the tree.%, is a set of \omark of \tupleN such that $\downc(N) = \Cover(\tupleN)$.
+    \item $n_0 \in N$ is the root of the tree, \textit{i.e.} $\nexists n \in N$ such that $(n, n_0) \in B$.
+    \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node a \textomega-marking of \tupleN.
+    \item $B \subseteq N \times N$, the set of edges, is such that:
+      \begin{itemize}
+        \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$, and
+        \item for all node $n \in N \setminus n_0$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i > 1$, and
+        \item there is no cycles, that is, there is no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
+      \end{itemize}
+  \end{itemize}
+\end{defi}
+
+\todo{describe K\&M procedure}
+
+\subsection{\ac{EEC} algorithm}
+\label{sec:ecc}
+
+\citep{Geeraerts07thesis, Geeraerts06}
+
+\removed{A backward algorithm \citep{Finkel90, Abdulla96}}
+%\subsection{A backward algorithm \citep{Finkel90, Abdulla96}}
+%
+%We will now present an algorithm to solve the coverability problem for a marking \marq of a \ac{PN} $\tupleN = \PTm$.
+%
+%This algorithm was introduced by Abdulla \textit{et al.} \cite{Abdulla96} for well structured transition systems, a more general class of models which includes \acp{PN}.
+%It is close of the one introduced earlier in \cite{Finkel90}.
+%
+%Recall the definition for a marking of being coverable.
+%\coverability*
+%
+%For convenience, we will use an other equivalent definition.
+%
+%\begin{defi}[Coverability]
+%  Given an initialized \ac{PN} \NPTm and an upward-closed set $U$, $U$ is said coverable if there exists a marking \marqp such that $\marqp \in U$ and $\marqi \fire{*} \marqp$.
+%\end{defi}
+%
+%By choosing $\upc(\marq)$ as $U$, these two definitions set out the same instance of the coverability problem.
+%With a set of markings considered in the first definition, $U$ may be the union of their upward-closure in the second.
+%
+%We say it is a backward algorithm in the sense that it is based on the computation of the set $\Pre^*(\marq)$ and answer by checking whether $\marqi \in \Pre^*(\marq)$; unlike a forward approach which would have calculated the reachability set and conclude by checking whether \marq was in it. In other words, it compute all the configurations that can reach $U$ in any number of steps.
+%
+%The calculation is a fixed point algorithm that compute the increasing sequence, for the inclusion relation, of sets of markings: $(R_n)_{n \in \mathbb{N}}$, with $R_0 = U$ and $R_{n+1} = \Pre(R_n) \cup R_n$.
+%Thus, $R_n$ is the set of markings from which there exists a sequence of at most $n$ transitions which may be fired and that cover $U$.
+%Because, with $U$ an upward-closed set of markings, $\Pre(U)$ is upward-closed too%
+%\footnote{This is due to the monotonicity of \acp{PN}, \todo{see for example cite\{someone\}}},
+%and because the union of two upward-closed sets is an upward-closed set,
+%$R_n$ is upward-closed for all $n$.
+%
+%\todo{summarize correctness and termination from \cite{Abdulla96}}
+
+% vim: set spell spelllang=en :
