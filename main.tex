@@ -67,6 +67,9 @@
 \usepackage{enumitem}
 \setlist[itemize]{noitemsep,nolistsep}
 
+% Figures
+\usepackage[format=hang]{subfig}
+
 % PGF/TikZ
 \usepackage{tikz}
 \usetikzlibrary{arrows,decorations,backgrounds,positioning,fit,petri}
@@ -89,6 +92,8 @@
 
 %%%% Document specific
 \newcommand{\omark}{\textomega-marking\xspace}
+\newcommand{\opn}{\textomega-\ac{PN}\xspace}
+\newcommand{\opns}{\textomega-\acp{PN}\xspace}
 \newcommand{\tupleN}{\ensuremath{\mathcal{N}}\xspace}
 \newcommand{\tupleS}{\ensuremath{\mathcal{S}}\xspace}
 \newcommand{\marq}{\ensuremath{\mathbf{m}}\xspace}
@@ -212,6 +217,7 @@
 \input{parts/preliminaries-ppn}
 
 \chapter{Contributions}
+\section{Adapting Geeraerts efficient computation method of the coverability set of Petri nets for PostT-\acp{PPN}}
 \section{Adapting \ac{EEC} for PreT-\acp{PPN}}
 \input{parts/eec-pret-ppn}
 \vspace*{0.5cm}
