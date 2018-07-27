@@ -57,7 +57,7 @@ One can therefore represents the markings as points on a plane.
 The figure~\ref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
 In~\ref{fig:two-cover} we see the minimal coverability set.
 
-Sometimes the number of token in a place is unbounded (\textit{c.f.} the place boundedness problem).
+Sometimes the number of token in a place is unbounded (\lang{c.f.} the place boundedness problem).
 Therefore, the reachability and coverability sets are infinite.
 In a plain \ac{PN}, this is due to the existence of an increasing self-covering sequence.
 \begin{defi}[Self-covering sequence]
@@ -131,7 +131,7 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
   Given a \ac{PN} $\tupleN = \PTm$, a coverability tree $\mathcal{T}$ of \tupleN is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
   \begin{itemize}
     \item $N$ is the set of nodes of the tree.%, is a set of \omark of \tupleN such that $\downc(N) = \Cover(\tupleN)$.
-    \item $n_0 \in N$ is the root of the tree, \textit{i.e.} $\nexists n \in N$ such that $(n, n_0) \in B$.
+    \item $n_0 \in N$ is the root of the tree, \lang{i.e.} $\nexists n \in N$ such that $(n, n_0) \in B$.
     \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node a \textomega-marking of \tupleN.
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
@@ -164,7 +164,7 @@ it is removed from $F$ and, if there is no node $n'$ in $\mathscr{T}_n$ such tha
 The correctness and the termination of the algorithm lies on the strict monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
 The Karp and Miller tree has a lot of convenient properties, and allows to answer coverability and \todo{} problems.
-Furthermore, the Karp and Miller procedure can easily be adapted to some parametrised problems \cite{David17}, as we will show in section~\todo{}.
+Furthermore, the Karp and Miller procedure can easily be adapted to some parametric problems \cite{David17}, as we will show in section~\todo{}.
 
 However, this tree, although finite, is often much larger than the minimal coverability set, and cannot be constructed in reasonable time.
 As a consequence, many improvement were proposed, as well as other algorithms with different approaches.
