@@ -19,6 +19,13 @@
 % Encoding and Fonts
 \usepackage{xunicode} % replaces fontenc
 \usepackage{xltxtra} % loads fontspec, metalogo, realscripts; redefine \showhyphens; define \vfrac and \namedglyph.
+
+\DeclareSymbolFont{sfoperators}{OT1}{cmss}{m}{n}
+\SetSymbolFont{sfoperators}{normal}{OT1}{cmss}{m}{n}
+\makeatletter
+\renewcommand{\operator@font}{\mathgroup\symsfoperators}
+\makeatother
+
 \setromanfont{CMU Serif}
 \setsansfont{CMU Sans Serif}
 \setmonofont{CMU Typewriter Text}
