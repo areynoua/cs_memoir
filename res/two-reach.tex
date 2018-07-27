@@ -1,0 +1,32 @@
+\begin{tikzpicture}[auto,x=1.1cm,y=1.1cm]
+  \tikzset{
+    >=stealth',
+    axis/.style={thin, ->, line join=miter, color=gray},
+    dot/.style={circle,fill=black,minimum size=4pt,inner sep=0pt,
+          outer sep=-1pt}
+  }
+  \draw[axis,<->] (2.5,0) node(xline)[right] {$x$} -|
+          (0,4.5) node(yline)[above] {$y$};
+
+  \draw (1,1pt) -- (1,-1pt) node[anchor=north] {$1$};
+  \draw (1pt,1) -- (-1pt,1) node[anchor=east] {$1$};
+
+  \node[dot] (04) at (0,4) {};
+
+  \node[dot] (12) at (1,2) {};
+  \node[dot] (02) at (0,2) {};
+
+  \node[dot] (20) at (2,0) {};
+  \node[dot] (10) at (1,0) {};
+  \node[dot] (00) at (0,0) {};
+
+  \draw[->] (04) to node {$t_1$} (12);
+  \draw[->] (12) to node {$t_1$} (20);
+  \draw[->] (02) to node {$t_1$} (10);
+
+  \draw[->] (12) to node[above] {$t_2$} (02);
+  \draw[->] (20) to node[above] {$t_2$} (10);
+  \draw[->] (10) to node[above] {$t_2$} (00);
+
+  %\node at (1.2,-1) {\label{2reach} (2)\enspace Les marquages accessibles};
+\end{tikzpicture}

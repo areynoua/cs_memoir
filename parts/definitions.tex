@@ -55,7 +55,7 @@ The following result will be useful in the sequel.
   The \ac{PN} model is \emph{strongly monotonic with regard to $\pleq$}. That is, for all \ac{PN} $\tupleN = \PTm$, for all transition $t \in T$ and for all markings $\marq_1, \marq_2, \marq_3$ of \tupleN such that $\marq_1 \prec \marq_2$ and $\marq_1 \fire{t} \marq_3$, there exists a marking $\marq_4$ of \tupleN such that $\marq_2 \fire{t} \marq_4$ and $\marq_3 \prec \marq_4$. 
 \end{lemm}
 
-In this work we will focus on an extension of \acp{PN} with parameters as input and output weights.
+In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} model, that is extended thanks to the use of parameters as input and output weights.
 
 \begin{defi}[\acl{PPN}]
   A \acf{PPN} \SPTP is a weighted oriented bipartite graph with a finite set $\mathbb{P}$ of parameters. The two subsets of vertices are:
@@ -69,6 +69,8 @@ In this work we will focus on an extension of \acp{PN} with parameters as input 
     \item $O_t : P \mapsto \mathbb{N} \cup \mathbb{P}$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
   \end{itemize}
 \end{defi}
+
+As for plain \acp{PN}, this is denoted $t = \langle I_t, O_t \rangle$.
 
 \begin{defi}[parametric marking]
   Given a set of place $P$, a parametric marking over $P$ is a function $\marq : P \mapsto \mathbb{N} \cup \mathbb{P} $ that associates $\marq(p)$ tokens to each place $p \in P$.
@@ -85,17 +87,19 @@ Note that a marking \marq is a parametric marking where $\marq(p) \in \mathbb{N}
 This is sometimes called a \emph{marked (parametric) \ac{PN}}.
 We will often refer to an initialized (parametric) \ac{PN} loosely as a (parametric) \ac{PN}.
 
-The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} with an initial marking \marqi such that $\marqi(p_1) = 0$, $\marqi(p_2) = a$ and $\marqi(p_3) = 0$. The circles represent the places, the rectangles are the transitions and the dots are the tokens. An arrow from a place $p$ and to a transition $t$ denotes that $I_t(p) = 1$. If there is no arrow from $p$ to $t$, $I_t(p) = 0$. If $I_t(p) \notin \{0, 1\}$, a label with the value of $I_t(p)$ is added to the arrow.
+The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\mathbb{P} = \{a, b\}$ and with an initial marking \marqi such that $\marqi(p_1) = 1$, $\marqi(p_2) = a$ and $\marqi(p_3) = 0$. The circles represent the places, the rectangles are the transitions and the dots are the tokens. If the number of token at a given place is parametric (\textit{i.e.} depends on a parameter of $\mathbb{P}$), it is written inside the circle. An arrow from a place $p$ and to a transition $t$ denotes that $I_t(p) = 1$. If there is no arrow from $p$ to $t$, $I_t(p) = 0$. If $I_t(p) \notin \{0, 1\}$, a label with the value of $I_t(p)$ is added to the arrow.
 Symmetrically, the arrows from the transitions to the places indicate the output weights.
 
 \begin{figure}[h]
-  \label{fig:parametric-petri-net-example}
+  \centering
   \include{res/parametric-petri-net-example}
+  \par
   \caption{An initialized \ac{PPN}}
+  \label{fig:parametric-petri-net-example}
 \end{figure}
 
 We usually set an order on the places.
-This allows to view the markings as vectors (here, \marqi is the column vector $(0, a, 0)^T$, where $\cdot^T$ is the transpose operator) as well as the $I$ and $O$ functions.
+This allows to view the markings as vectors (here, \marqi is the column vector $(1, a, 0)^T$, where $\cdot^T$ is the transpose operator) as well as the $I$ and $O$ functions.
 Likewise, we define an order on the transitions.
 Therefore, $I_t$ and $O_t$ denote respectively the $I$ and $O$ functions defined for the $t$\textsuperscript{th} transition (here, $I_1 = (0, 0, 0)^T$ and $O_1 = (b, 0, 0)^T$).
 Given a \ac{PPN} \SPTP, the backward and forward incidence matrices $\matIS \in (\mathbb{N} \cup \mathbb{P})^{|P|\times|T|}$ and $\matOS \in (\mathbb{N} \cup \mathbb{P})^{|P|\times|T|}$ are naturally defined by $\matIS(p, t) = I_t(p)$ and $\matOS(p, t) = O_t(p)$.
@@ -210,7 +214,7 @@ The existential coverability problem (\Ecov) ask if there exists a valuation $v$
 The universal coverability problem (\Ucov) ask if \marq is coverable for all valuations $v$.
 
 \begin{defi}[Universal and existential coverability problems]
-  Given a \ac{PPN} \SPTP and a marking \marq of \tupleS
+  Given a \ac{PPN} \SPTP and a non-parametric marking \marq of \tupleS
   \begin{itemize}
     \item the \emph{existential coverability problem} ask if there is a valuation $v$ for $\mathbb{P}$ such that \marq is coverable,
     \item the \emph{universal   coverability problem} ask if \marq is coverable for all valuations of $\mathbb{P}$.

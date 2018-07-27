@@ -1,0 +1,11 @@
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth]
+  \node [place, tokens=4] (y) [label=$y$] at (0,0) {};
+  \node [place] (x) [label=$x$] at (2,0) {};
+
+  \node [transition] (1) [label=$t_1$] at (1,0) [transition] {}
+    edge [pre] node[midway, above] {2} (y)
+    edge [post] (x);
+  \node [transition] (2) [label=$t_2$] at (3,0) [transition] {}
+    edge [pre] (x);
+    %\node at (1.5,-0.75) {\label{2net} (1)\quad Un réseau de Petri ($|P| = 2$)};
+\end{tikzpicture}

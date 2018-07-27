@@ -1,4 +1,4 @@
-We now present the results relating to the coverability problem on the plain \acp{PN} which seem to us the most interesting.
+We now present the results related to the coverability problem on the plain \acp{PN} which seem to us the most interesting.
 
 To introduce these results, we need some additional definitions.
 They will be given for plain \acp{PN}, but most of them are naturally extended to \acp{PPN}.
@@ -27,16 +27,39 @@ For instance, with $\marq = (1, 2, 3)$, we have that its upward-closure is $\upc
 \begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
   Given an initialized \ac{PN} $\tupleN = \PTm$, a \emph{coverability set} $S$ of \tupleN is a set of markings such that $\downc(S) = \downc(\Post^*(\marqi))$.
   
-  The minimal coverability set is thus $\downc(\Post^*(\marqi))$ \todo{one-line demonstration required?} and is noted $\Cover(\tupleN)$.
+  Obviously, the minimal coverability set is thus $\downc(\Post^*(\marqi))$ and is noted $\Cover(\tupleN)$.
 \end{defi}
 
-\todo{examples}
+\begin{figure}[htbp]
+  \label{fig:reach-and-cover-example}
+  \centering
+  \subfloat[A \ac{PN} ($|P| = 2$)]{
+    \label{fig:two-net}
+    \input{res/two-net}
 
+  }
 
+  \subfloat[The reachable markings]{
+    \label{fig:two-reach}
+    \input{res/two-reach}
+
+  }\qquad
+  \subfloat[The minimal coverability set]{
+    \label{fig:two-cover}
+    \input{res/two-cover}
+
+  }
+  \caption{Reachability and minimal coverability sets}
+\end{figure}
+
+The figure~\ref{fig:two-net} shows a marked \ac{PN} with two places.
+One can therefore represents the markings as points on a plane.
+The figure~\ref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
+In~\ref{fig:two-cover} we see the minimal coverability set.
 
 Sometimes the number of token in a place is unbounded (\textit{c.f.} the place boundedness problem).
 Therefore, the reachability and coverability sets are infinite.
-This is due to the existence of an increasing self-covering sequence.
+In a plain \ac{PN}, this is due to the existence of an increasing self-covering sequence.
 \begin{defi}[Self-covering sequence]
   Given an initialized \ac{PN} $\tupleN = \PTm$,
   a self-covering sequence is a sequence of the form:
@@ -97,11 +120,12 @@ Similarly, a parametric marking \marq is a parametric \omark where $\marq(p) \ne
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
 Having an \omark $\marq \in \Cover(\tupleN)$ denotes that for all marking $\marq_1$ such that $\marq_1(p) = \marq(p) \forall p \in \{p \mid \marq(p) \neq \omega\}$, there exists an marking $\marq_2$ in the reachability set of \tupleN such that $\marq_1 \pleq \marq_2$.
+Notice also that an \omark stands for one and only one downward closed set.
 
 \subsection{Karp and Miller procedure}
 
-The Karp and Miller algorithm\cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
-More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences.
+The Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
+More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensure the termination.
 
 \begin{defi}[Coverability tree]
   Given a \ac{PN} $\tupleN = \PTm$, a coverability tree $\mathcal{T}$ of \tupleN is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
@@ -112,16 +136,46 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
         \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$, and
-        \item for all node $n \in N \setminus n_0$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i > 1$, and
+        \item for all node $n \in N \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i > 1$, and
         \item there is no cycles, that is, there is no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
       \end{itemize}
   \end{itemize}
+  and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\tupleN)$.
 \end{defi}
 
-\todo{describe K\&M procedure}
+To keep $N$ finite, the Karp and Miller procedure exploits the monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
+This function takes a marking \marq to accelerate and a set of markings $S$ as a base \todo{?} for the acceleration and returns a marking $\marq_\omega$ such that:
+\[
+  \marq_\omega(p) = 
+  \begin{cases}
+    \omega    &\text{if } \exists \marqp \in S : \marqp \prec \marq \text{ and } \marqp(p) < \marq(p) \\
+    \marq(p)  &\text{otherwise}
+  \end{cases}
+\]
+
+We denote by $\mathscr{T}_n$ the path in the tree from the root to $n$.
+
+The algorithm constructs the tree $\mathcal{T}$ as follows:
+The root $n_0$ of the tree is labelled with \marqi.
+A frontier $F$ is defined to be the set of unprocessed nodes of the tree and is initialised to $\{n_0\}$.
+Then, while $F$ is non empty, a node $n$ is chosen to be processed:
+it is removed from $F$ and, if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark in $\{\KMAcc(\marq, \mathscr{T}_n) \mid \marq \in \Post(\Lambda(n))\}$, a node labelled with $\KMAcc(\marq, \mathscr{T}_n)$ is added to the frontier and to the tree as a child of $n$.
+
+The correctness and the termination of the algorithm lies on the strict monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
+
+The Karp and Miller tree has a lot of convenient properties, and allows to answer coverability and \todo{} problems.
+Furthermore, the Karp and Miller procedure can easily be adapted to some parametrised problems \cite{David17}, as we will show in section~\todo{}.
+
+However, this tree, although finite, is often much larger than the minimal coverability set, and cannot be constructed in reasonable time.
+As a consequence, many improvement were proposed, as well as other algorithms with different approaches.
+
+\subsection{An efficient computation method of the coverability set of Petri nets}
+\label{sec:eff}
+
+\citep{Geeraerts07thesis, Geeraerts07}
 
 \subsection{\ac{EEC} algorithm}
-\label{sec:ecc}
+\label{sec:eec}
 
 \citep{Geeraerts07thesis, Geeraerts06}
 

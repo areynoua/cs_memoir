@@ -1,0 +1,29 @@
+\begin{tikzpicture}[auto,x=1.1cm,y=1.1cm]
+  \tikzset{
+    >=stealth',
+    axis/.style={thin, ->, line join=miter, color=gray},
+    dot/.style={circle,fill=black,minimum size=4pt,inner sep=0pt,
+          outer sep=-1pt}
+  }
+
+  \draw[axis,<->] (2.5,0) node(xline)[right] {$x$} -|
+          (0,4.5) node(yline)[above] {$y$};
+
+  \draw (1,1pt) -- (1,-1pt) node[anchor=north] {$1$};
+  \draw (1pt,1) -- (-1pt,1) node[anchor=east] {$1$};
+
+  \node[dot] at (0,4) {};
+
+  \node[dot] at (1,2) {};
+  \node[dot] at (0,2) {};
+
+  \node[dot] at (2,0) {};
+  \node[dot] at (1,0) {};
+  \node[dot] at (0,0) {};
+
+  \node[dot, color=black!60!white] at (0,3) {};
+  \node[dot, color=black!60!white] at (0,1) {};
+  \node[dot, color=black!60!white] at (1,1) {};
+
+  %\node at (1.2,-1) {\label{2cover} (3)\enspace L'ensemble de couverture};
+\end{tikzpicture}
