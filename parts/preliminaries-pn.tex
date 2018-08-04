@@ -254,7 +254,19 @@ The correction and termination of the algorithm as well as useful properties of 
 \subsection{\ac{EEC} algorithm}
 \label{sec:eec}
 
-\citep{Geeraerts07thesis, Geeraerts06}
+\ac{EEC}, introduced in \citep{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \acp{PN}.
+We present it restricted to this context.
+
+The idea is to compute and refine simultaneously an over- and an under-approximation of the coverability set of the \ac{PN} until one or the other allows to conclude.
+
+The under-approximation is computed as follows:
+We define $(C_i)_{i \geq 0}$ to be the sequence of set of markings holding no more than $i$ tokens in each places (plus \marqi):
+\[
+  \forall i \in \mathbb{N} : C_i = \{0, ..., i\}^{|P|} \cup \{\marqi\}
+\]
+At step $i$, the algorithm computes $\Sous(\tupleN, C_i)$ defined as the graph $\langle C_i, \marqi, \sousrel \rangle$
+
+
 
 \removed{A backward algorithm \citep{Finkel90, Abdulla96}}
 %\subsection{A backward algorithm \citep{Finkel90, Abdulla96}}
