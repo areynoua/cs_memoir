@@ -92,7 +92,9 @@
 
 %%%% Document specific
 \newcommand{\lang}[1]{{\em{}#1}}
+\newcommand{\overbar}[1]{\overline{#1\mkern-1.5mu}\mkern 1.5mu}
 \newcommand{\omark}{\textomega-marking\xspace}
+\newcommand{\omarks}{\textomega-markings\xspace}
 \newcommand{\opn}{\textomega-\ac{PN}\xspace}
 \newcommand{\opns}{\textomega-\acp{PN}\xspace}
 \newcommand{\tupleN}{\ensuremath{\mathcal{N}}\xspace}
@@ -121,15 +123,22 @@
 \newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
 \newcommand{\pleq}{\preceq}
 \newcommand{\npleq}{\npreceq}
+\newcommand{\sousrel}{\stackrel{\Sous}{\Longrightarrow}}
 %\newcommand{\npleq}{\npreccurlyeq}
 %\newcommand{\npleq}{⋨}
 \DeclareMathOperator{\Post}{Post}
+\DeclareMathOperator{\Postb}{P\overbar{ost}}
 \DeclareMathOperator{\Pre}{Pre}
 \DeclareMathOperator{\Cover}{Cover}
 \DeclareMathOperator{\Min}{Min^\pleq}
 \DeclareMathOperator{\upc}{\uparrow^\pleq}
 \DeclareMathOperator{\downc}{\downarrow^\pleq}
 \DeclareMathOperator{\KMAcc}{Acceleration}
+\DeclareMathOperator{\Accelb}{A\overline{cce}l}
+\DeclareMathOperator{\Flatten}{Flatten}
+\DeclareMathOperator{\CovSeq}{CovSeq}
+\DeclareMathOperator{\Sous}{Sous}
+\DeclareMathOperator{\maxs}{Max^\sqsubseteq}
 
 % TMP
 \newcommand{\todo}[1]{[TODO: {\color{red} #1}]}
