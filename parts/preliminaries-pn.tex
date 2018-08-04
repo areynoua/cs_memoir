@@ -227,8 +227,6 @@ Formally, given two \omarks $\marq_1$ and $\marq_2$ on a set of places $P$, $(\m
   \end{cases}
 \]
 
-For a set of \omarks $S$, $\maxs(S) = \{ s \in S \mid \nexists s' \in S, s \sqsubseteq s'\}$ is the set of highest \omark of $S$ with respect to $\sqsubseteq$.
-
 Now we can define $\sqsubseteq$.
 Given two pairs $(\marq_1, \marq_2)$ and $(\marqp_1, \marqp_2)$ of \omarks over a set of places $P$:
 \[
@@ -239,6 +237,8 @@ Given two pairs $(\marq_1, \marq_2)$ and $(\marqp_1, \marqp_2)$ of \omarks over 
     \wedge & \forall p \in P : (\marq_2 \ominus \marq_1)(p) \leq (\marqp_2 \ominus \marqp_1)(p)
   \end{cases}
 \]
+
+For a set of \omarks $S$, $\maxs(S) = \{ s \in S \mid \nexists s' \in S, s \sqsubseteq s'\}$ is the set of highest \omark of $S$ with respect to $\sqsubseteq$.
 
 This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
 Thus, one can compute $\Cover(\tupleN)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
