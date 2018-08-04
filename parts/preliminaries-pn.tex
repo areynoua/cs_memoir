@@ -182,7 +182,74 @@ But here, the acceleration of a marking is performed with only one marking as th
 To choose the base to use, the algorithm work on pair of \omarks.
 Thus we will need the following definitions:
 
+Given a pair of \omarks $(\marq_1, \marq_2)$, we define:
+\begin{itemize}
+  \item $\Postb((\marq_1, \marq_2)) = \{(\marq_1, \marqp), (\marq_2, \marqp) \mid \marqp \in \Post(\marq_2)\}$,
+  \item with $\marq_1 \prec \marq_2$, $\Accelb(\marq_1, \marq_2) = \{(\marq_2, \KMAcc(\{\marq_1\}, \marq_2))\}$.
+    $\Accelb(\marq_1, \marq_2)$ is not defined whenever $\marq_1 \nprec \marq_2$,
+\end{itemize}
 
+With $R$ a set of pair of markings, we define:
+\begin{itemize}
+  \item $\Postb(R) = \bigcup_{(\marq_1, \marq_2) \in R} \Postb((\marq_1, \marq_2))$
+  \item $\Accelb(R) = \bigcup_{(\marq_1, \marq_2) \in R}^{\marq_1 \prec \marq_2} \Accelb((\marq_1, \marq_2))$
+  \item $\Flatten(R) = \{\marq \mid \exists \marqp : (\marqp, \marq) \in R\}$
+\end{itemize}
+
+The efficient computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\tupleN) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\tupleN$ we have:
+\begin{gather*}
+  V_0 = \{(\marqi, \marqi)\} \text{ and } \\
+  \forall i \geq 1 : V_i = V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1})
+\end{gather*}
+
+One can shows that,
+first, for all node $n$ of the Karp and Miller tree, there exists a value $k \geq 0$ of $i$ such that $\Lambda(n) \in \Flatten(V_k)$,
+second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \tupleN.
+\todo{Indeed...}
+
+This two results lead us to the following lemma:
+\begin{lemm}[\cite{Geeraerts07}]
+  Given a marked \ac{PN} \tupleN such that $\CovSeq(\tupleN) = (V_i)_{i \geq 0}$,
+  there exists $k \geq 0$ such that for all $l \in \{0, ..., k-1\}$ we have that $\downc(\Flatten(V_l)) \subset \downc(\Flatten(V_{l+1}))$
+  and for all $l \geq k : \downc(\Flatten(V_l)) = \Cover(\tupleN)$.
+\end{lemm}
+
+Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc(\Flatten(V_l)) = \downc(\Flatten(V_{l-1}))$ and to return $\downc(\Flatten(V_l))$. \todo{Est-ce que $V_l = V_{l-1}$?}
+
+To perform it efficiently, one can use an order $\sqsubseteq$ on the pair of markings to keep only the highest pair with respect to this order.
+Let us denote by $\ominus$ the componentwise difference between two markings and to extend it to \omarks.
+Formally, given two \omarks $\marq_1$ and $\marq_2$ on a set of places $P$, $(\marq_1 \ominus \marq_2)(p)$ is defined for all $p \in P$ as:
+\[
+  \begin{cases}
+    \omega & \text{ whenever } \marq_1(p) = \omega \\
+    -\omega & \text{ whenever } \marq_2(p) = \omega \text{ and } \marq_1(p) \neq \omega \\
+    \marq_1(p) - \marq_2(p) & \text{ otherwise}
+  \end{cases}
+\]
+
+For a set of \omarks $S$, $\maxs(S) = \{ s \in S \mid \nexists s' \in S, s \sqsubseteq s'\}$ is the set of highest \omark of $S$ with respect to $\sqsubseteq$.
+
+Now we can define $\sqsubseteq$.
+Given two pairs $(\marq_1, \marq_2)$ and $(\marqp_1, \marqp_2)$ of \omarks over a set of places $P$:
+\[
+  (\marq_1, \marq_2) \sqsubseteq (\marqp_1, \marqp_2) \Leftrightarrow
+  \begin{cases}
+    & \marq_1 \pleq \marqp_1 \\
+    \wedge & \marq_2 \pleq \marqp_2 \\
+    \wedge & \forall p \in P : (\marq_2 \ominus \marq_1)(p) \leq (\marqp_2 \ominus \marqp_1)(p)
+  \end{cases}
+\]
+
+This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
+Thus, one can compute $\Cover(\tupleN)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
+\begin{gather*}
+  V_0 = \{(\marqi, \marqi)\} \text{ and } \\
+  \forall i \geq 1 : V_i = \maxs(V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1}))
+\end{gather*}
+
+At the end, we have that $\downc(\Flatten(V_i)) = \Cover(\tupleN)$.
+
+The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ are presented in \citep{Geeraerts07, Ganty09}.
 
 \subsection{\ac{EEC} algorithm}
 \label{sec:eec}
