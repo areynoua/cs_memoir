@@ -62,6 +62,11 @@ One can therefore represents the markings as points on a plane.
 The figure~\ref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
 In~\ref{fig:two-cover} we see the minimal coverability set.
 
+It worth notice that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
+\begin{defi}[Coverability problem]
+  Given a \ac{PN} \tupleN and an upward-closed set $U = \upc(S)$ of markings of \tupleN, detemine whether $\Post^*(\marqi) \cap U = \emptyset$.
+\end{defi}
+
 Sometimes the number of token in a place is unbounded (\lang{c.f.} the place boundedness problem).
 Therefore, the reachability and coverability sets are infinite.
 In a plain \ac{PN}, this is due to the existence of an increasing self-covering sequence.
