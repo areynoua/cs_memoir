@@ -3,7 +3,7 @@ We now present the results related to the coverability problem on the plain \acp
 To introduce these results, we need some additional definitions.
 They will be given for plain \acp{PN}, but most of them are naturally extended to \acp{PPN}.
 
-The \emph{coverability set} of an initialized \ac{PN} is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
+A \emph{coverability set} of an initialized \ac{PN} is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
 In order to define it formally, we need to know about the upward and downward closure of a (set of) marking(s).
 
 \begin{defi}[Upward- and downward-closure on markings]
@@ -26,8 +26,13 @@ For instance, with $\marq = (1, 2, 3)$, we have that its upward-closure is $\upc
 
 \begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
   Given an initialized \ac{PN} $\tupleN = \PTm$, a \emph{coverability set} $S$ of \tupleN is a set of markings such that $\downc(S) = \downc(\Post^*(\marqi))$.
+\end{defi}
   
-  Obviously, the minimal coverability set is thus $\downc(\Post^*(\marqi))$ and is noted $\Cover(\tupleN)$.
+Obviously, the minimal coverability set is $\downc(\Post^*(\marqi))$.
+It is called the covering set of \tupleN and is noted $\Cover(\tupleN)$.
+
+\begin{defi}[Covering set]
+  Let $\tupleN = \PTm$ be an initialized \ac{PN}. The \emph{covering set} $S$ of \tupleN, noted $\Cover(\tupleN)$, is the set $\{c \mid \exists c' \in \Post^*(\tupleN) : c \leq c' \}$.
 \end{defi}
 
 \begin{figure}[htbp]
@@ -74,7 +79,7 @@ Note that, since $\marq_i \pleq \marq_j$, $\sigma$ is firable from $\marq_j$.
 In addition, the monotonicity of \acp{PN} ensure that, with $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$, we have $\marq_j \pleq \marqp_j$.
 Thus, we see that it is a sufficient condition for the \emph{non-termination} of the system (the system may be able to fire transitions infinitely often).
 In fact, because $\pleq$ is a well quasi order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\marqi \fire{} \marq_1 \fire{} \dots$ two markings $\marq_i$ and $\marq_j$ such that $\marq_i \pleq \marq_j$.
-And so, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
+Therefore, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
 
 \begin{defi}[Increasing self-covering sequence]
   Given an initialized \ac{PN} $\tupleN = \PTm$,
@@ -120,11 +125,12 @@ Similarly, a parametric marking \marq is a parametric \omark where $\marq(p) \ne
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
 Having an \omark $\marq \in \Cover(\tupleN)$ denotes that for all marking $\marq_1$ such that $\marq_1(p) = \marq(p) \forall p \in \{p \mid \marq(p) \neq \omega\}$, there exists an marking $\marq_2$ in the reachability set of \tupleN such that $\marq_1 \pleq \marq_2$.
-Notice also that an \omark stands for one and only one downward closed set.
+Notice also that an \omark always stands for one and only one downward closed set.
+Symmetrically, any downward closed set may be represented by a finite set of \omarks. \todo{Indeed...}
 
 \subsection{Karp and Miller procedure}
 
-The Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
+Although it was not originally designed for this purpose, the Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
 More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensure the termination.
 
 \begin{defi}[Coverability tree]
@@ -135,7 +141,7 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
     \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node a \textomega-marking of \tupleN.
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
-        \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$, and
+        \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$,
         \item for all node $n \in N \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i > 1$, and
         \item there is no cycles, that is, there is no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
       \end{itemize}
@@ -143,7 +149,7 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
   and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\tupleN)$.
 \end{defi}
 
-To keep $N$ finite, the Karp and Miller procedure exploits the monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
+To keep $N$ finite, the Karp and Miller procedure exploits the strong monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
 This function takes a marking \marq to accelerate and a set of markings $S$ as a base \todo{?} for the acceleration and returns a marking $\marq_\omega$ such that:
 \[
   \marq_\omega(p) = 
@@ -158,10 +164,10 @@ We denote by $\mathscr{T}_n$ the path in the tree from the root to $n$.
 The algorithm constructs the tree $\mathcal{T}$ as follows:
 The root $n_0$ of the tree is labelled with \marqi.
 A frontier $F$ is defined to be the set of unprocessed nodes of the tree and is initialised to $\{n_0\}$.
-Then, while $F$ is non empty, a node $n$ is chosen to be processed:
+Then, while $F$ is non empty, a node $n$ is chosen from $F$ to be processed:
 it is removed from $F$ and, if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark in $\{\KMAcc(\marq, \mathscr{T}_n) \mid \marq \in \Post(\Lambda(n))\}$, a node labelled with $\KMAcc(\marq, \mathscr{T}_n)$ is added to the frontier and to the tree as a child of $n$.
 
-The correctness and the termination of the algorithm lies on the strict monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
+The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
 The Karp and Miller tree has a lot of convenient properties, and allows to answer coverability and \todo{} problems.
 Furthermore, the Karp and Miller procedure can easily be adapted to some parametric problems \cite{David17}, as we will show in section~\todo{}.
@@ -176,7 +182,7 @@ As a consequence, many improvement were proposed, as well as other algorithms wi
 It is not based on the Karp and Miller algorithm and is not an alternative to the Karp and Miller procedure in the sense that it does not allow to answer the same set of questions that the Karp and Miller tree solves.
 However, this techniques solve coverability problems more efficiently in practice.
 
-As in the Karp and Miller algorithm, an acceleration function exploits the strict monotonicity of \acp{PN} to allow termination.
+As in the Karp and Miller algorithm, an acceleration function exploits the strong monotonicity of \acp{PN} to allow termination.
 But here, the acceleration of a marking is performed with only one marking as the base (instead of a set of marking).
 
 To choose the base to use, the algorithm work on pair of \omarks.
@@ -255,16 +261,16 @@ The correction and termination of the algorithm as well as useful properties of 
 \label{sec:eec}
 
 \ac{EEC}, introduced in \citep{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \acp{PN}.
-We present it restricted to this context.
+We present it restricted to this context, but it may be used for a wide range of well structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strict monotonicity of these models.
 
-The idea is to compute and refine simultaneously an over- and an under-approximation of the coverability set of the \ac{PN} until one or the other allows to conclude.
+The idea is to compute and refine simultaneously an over- and an under-approximation of the covering set of the \ac{PN} until one or the other allows to conclude.
 
 The under-approximation is computed as follows:
 We define $(C_i)_{i \geq 0}$ to be the sequence of set of markings holding no more than $i$ tokens in each places (plus \marqi):
 \[
   \forall i \in \mathbb{N} : C_i = \{0, ..., i\}^{|P|} \cup \{\marqi\}
 \]
-At step $i$, the algorithm computes $\Sous(\tupleN, C_i)$ defined as the graph $\langle C_i, \marqi, \sousrel \rangle$
+At step $i$, the algorithm computes $\Sous(\tupleN, C_i)$ defined as the graph $\langle C_i, \marqi, \sousrel \rangle$ where 
 
 
 

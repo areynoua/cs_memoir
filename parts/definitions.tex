@@ -87,7 +87,7 @@ Note that a marking \marq is a parametric marking where $\marq(p) \in \mathbb{N}
 This is sometimes called a \emph{marked (parametric) \ac{PN}}.
 We will often refer to an initialized (parametric) \ac{PN} loosely as a (parametric) \ac{PN}.
 
-The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\mathbb{P} = \{a, b\}$ and with an initial marking \marqi such that $\marqi(p_1) = 1$, $\marqi(p_2) = a$ and $\marqi(p_3) = 0$. The circles represent the places, the rectangles are the transitions and the dots are the tokens. If the number of token at a given place is parametric (\lang{i.e.} depends on a parameter of $\mathbb{P}$), it is written inside the circle. An arrow from a place $p$ and to a transition $t$ denotes that $I_t(p) = 1$. If there is no arrow from $p$ to $t$, $I_t(p) = 0$. If $I_t(p) \notin \{0, 1\}$, a label with the value of $I_t(p)$ is added to the arrow.
+The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\mathbb{P} = \{a, b\}$ and with an initial marking \marqi such that $\marqi(p_1) = 1$, $\marqi(p_2) = a$ and $\marqi(p_3) = 0$. The circles represent the places, the rectangles are the transitions, and the dots are the tokens. If the number of token at a given place is parametric (\lang{i.e.} depends on a parameter of $\mathbb{P}$), it is written inside the circle. An arrow from a place $p$ and to a transition $t$ denotes that $I_t(p) = 1$. The absence of an arrow from $p$ to $t$ indicates that $I_t(p) = 0$. If $I_t(p) \notin \{0, 1\}$, a label with the value of $I_t(p)$ is added to the arrow.
 Symmetrically, the arrows from the transitions to the places indicate the output weights.
 
 \begin{figure}[h]
@@ -156,7 +156,7 @@ Here are some additional notations:
 \end{defi}
 
 These operators are naturally extended to sets of markings as the union of the sets obtained by applying the operator on each marking of the sets.
-That is, with $M$ a set of markings of \NPT,
+That is, with $M$ a set of markings of \tupleN,
 $\Post(M) = \{\marqp \mid \exists \marq \in M : \marq \rightarrow \marqp\}$.
 
 For example, regarding the \ac{PPN} shown on figure \ref{fig:parametric-petri-net-example},
@@ -200,7 +200,7 @@ The markings basically indicate the state of the system. Thus, knowing if an ini
   Given an initialized \ac{PN} \NPTm and a marking \marq of \tupleN, \marq is said reachable if $\marqi \fire{*} \marq$.
 \end{defi}
 
-However safety properties are more often analysed through the \emph{coverability problem}, that is essentially asking if a \ac{PN} can reach or exceed a given marking.
+However, the verification of safety properties are more often reduced to a \emph{coverability problem}, that is essentially asking if a \ac{PN} can reach or exceed a given marking.
 
 \begin{restatable}[Coverability]{defi}{coverability}
   Given an initialized \ac{PN} \NPTm and a marking \marq of \tupleN, \marq is said coverable if there exists a marking \marqp such that $\marq \pleq \marqp$ and $\marqi \fire{*} \marqp$.
