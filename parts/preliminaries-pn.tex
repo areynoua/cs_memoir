@@ -265,18 +265,45 @@ The correction and termination of the algorithm as well as useful properties of 
 \subsection{\ac{EEC} algorithm}
 \label{sec:eec}
 
-\ac{EEC}, introduced in \citep{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \acp{PN}.
-We present it restricted to this context, but it may be used for a wide range of well structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strict monotonicity of these models.
+\ac{EEC}, introduced in \citep{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \ac{PN}.
+We present it restricted to this context, but it may be used for a wide range of well structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strong monotonicity, of these models.
 
 The idea is to compute and refine simultaneously an over- and an under-approximation of the covering set of the \ac{PN} until one or the other allows to conclude.
 
 The under-approximation is computed as follows:
-We define $(C_i)_{i \geq 0}$ to be the sequence of set of markings holding no more than $i$ tokens in each places (plus \marqi):
+We define $(C_i)_{i \geq 0}$ to be the sequence of finite set of markings holding no more than $i$ tokens in each places (plus \marqi):
 \[
   \forall i \in \mathbb{N} : C_i = \{0, ..., i\}^{|P|} \cup \{\marqi\}
 \]
-At step $i$, the algorithm computes $\Sous(\tupleN, C_i)$ defined as the graph $\langle C_i, \marqi, \sousrel \rangle$ where 
+At step $i$, the algorithm computes $\Sous(\tupleN, C_i)$ defined as the graph $\langle C_i, \marqi, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \tupleN restricted to the markings of $C_i$, \lang{i.e.} $(\marq_1, \marq_2) \in \sousrel$ if, and only if, $\marq_1 \rightarrow \marq_2$.
+The under-approximation sought is the set of markings reachable through $\sousrel$ from \marqi and is denoted $\R(\Sous(\tupleN, C_i))$.
 
+At step $i$, the algorithm also uses $L_i$ from the sequence $(L_i)_{i \geq 0}$ of finite set of \omarks such that $L_i = \{0, ..., i, \omega \}^{|P|} \cup \{\marqi\}$.
+That is, $L_i$ contains all the markings with at most $i$ tokens in any place, or $\omega$ (plus \marqi).
+This set is used to constructs the graph $\Sur(\tupleN, C_i)$ defined as the graph $\langle L_i, \marqi, \surrel \rangle$ where $(\marq_1, \marq_2) \in \surrel$ if, and only if:
+\begin{itemize}
+  \item either $\marq_1 \rightarrow \marq_2$,
+  \item either $\marq_1 \rightarrow \marqp_2, \marqp_2 \notin L_i, \marqp_2 \pleq \marq_2, \text{ and } \nexists \marqpp_2 \in L_i \text{ such that } \marqp_2 \prec \marqpp_2 \prec \marq_2$.
+\end{itemize}
+In other words: if $\marq_2 \notin L_i$, it is replaced by the lowest marking of $L_i$ which over-approximate it.
+Note that this is an \omark which exists and is unique. \todo{Indeed...}
+The over-approximation, then, is the set of markings of $L_i$ reachable through $\surrel$ from \marqi. It is denoted $\R(\Sur(\tupleN, L_i))$.
+
+We can say that they are under- and over-approximations thanks to the following lemmata:
+\begin{lemm}[Under-approximation \cite{Ganty09}]
+  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \R(\Sous(\tupleN,C_i)) \cap U \neq \emptyset \Rightarrow \Post^*(\marqi) \cap U \neq \emptyset$.
+\end{lemm}
+\begin{lemm}[Over-approximation \cite{Ganty09}]
+  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \downc(\R(\Sur(\tupleN,L_i))) \cap U = \emptyset \Rightarrow \Post^*(\marqi) \cap U = \emptyset$.
+\end{lemm}
+
+One can prove that one of the conditions mentioned in the lemmata will eventually happen.
+This ensure the termination of the algorithm.
+
+Indeed, let $S$ be the set of marking we wants to cover and let $U$ be $\upc(S)$.
+If $U$ is reachable, we will eventually get a $C_i$ that contains all the markings of a path from $\marqi$ to $U$.
+As this path will be present in $\Sous(\tupleN, C_i)$, we will have that $\R(\Sous(\tupleN,C_i)) \cup U \neq \emptyset$.\\
+Symmetrically, if $U$ is not reachable, we know that $\downc(\R(\Sur(\tupleN,L_i))) \cap U = \emptyset$ will eventually happen because, as for a $j$ great enough, $j \geq i$, $L_j$ will contains the cover set of \tupleN, we will have that $\downc(\R(\Sur(\tupleN,L_j))) = \Cover(\tupleN)$.
 
 
 \removed{A backward algorithm \citep{Finkel90, Abdulla96}}
