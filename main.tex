@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,oneside,draft]{book}
+\documentclass[11pt,a4paper,oneside]{book}
 
 % Math typesetting
 \usepackage{amsmath} % loads amsbsy, amsopn, amstext
@@ -34,7 +34,15 @@
 \setmathtt{CMU Typewriter Text}
 
 % Pdf pages numbers
-\usepackage[breaklinks,hidelinks]{hyperref}
+\usepackage[
+  unicode,
+  breaklinks,
+  hidelinks,
+  pdftitle={The Coverability problem for parametric Petri nets},
+  pdfauthor={Alexis Reynouard},
+  pdfsubject={Formal verification},
+  xetex
+]{hyperref}
 
 % Typesetting
 \usepackage{xspace}
@@ -62,6 +70,7 @@
 \acrodef{PN}{Petri net}
 \acrodef{PPN}{parametric Petri net}
 \acrodef{EEC}{Expand, Enlarge and Check}
+\acrodef{WSTS}{well-structured transition system}
 
 % Lists
 \usepackage{enumitem}
@@ -91,6 +100,10 @@
 }
 
 %%%% Document specific
+\title{The Coverability problem for parametric Petri nets}
+\author{Alexis Reynouard}
+\date{}
+
 \newcommand{\lang}[1]{{\em{}#1}}
 \newcommand{\overbar}[1]{\overline{#1\mkern-1.5mu}\mkern 1.5mu}
 \newcommand{\omark}{\textomega-marking\xspace}
@@ -143,9 +156,11 @@
 \DeclareMathOperator{\Sur}{Sur}
 \DeclareMathOperator{\maxs}{Max^\sqsubseteq}
 \DeclareMathOperator{\R}{\mathcal{R}}
+\DeclareMathOperator{\Acc}{Acc}
+\DeclareMathOperator{\Effect}{Effect}
 
 % TMP
-\newcommand{\todo}[1]{[TODO: {\color{red} #1}]}
+\newcommand{\todo}[1]{[TODO: {\color{red} #1}]\message{TODO: #1}}
 \newcommand{\removed}[1]{[REMOVED: {\color{gray} #1}]}
 
 \begin{document}
@@ -164,10 +179,10 @@
 {\Huge \par}
 \begin{center}{\LARGE Alexis Reynouard}\end{center}{\Huge \par}
 \vfill{}\vfill{}
-\begin{flushright}{\large \textbf{Promotor :} Prof. Gilles Geeraerts}\hfill{}{\large Master Thesis in Computer Sciences}\\
+\begin{flushright}{\large \textbf{Promoter :} Prof. Gilles Geeraerts}\hfill{}{\large Master Thesis in Computer Sciences}\\
 {\large }\hfill{}{}\end{flushright}{\large\par}
 \vfill{}\vfill{}\enlargethispage{3cm}
-\textbf{Academic year 2018~-~2019}
+\textbf{Academic year 2018~--~2019}
 \end{center}
 \end{titlepage}
 \newpage
