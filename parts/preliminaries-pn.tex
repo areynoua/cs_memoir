@@ -132,7 +132,16 @@ Having an \omark $\marq \in \Cover(\tupleN)$ denotes that for all marking $\marq
 Notice also that an \omark always stands for one and only one downward closed set.
 Symmetrically, any downward closed set may be represented by a finite set of \omarks. \todo{Indeed...} \todo{See ... for a complete proof}
 
-\subsection{Karp and Miller procedure}
+This allow to represent any infinite downward closed set of markings by a unique finite set of \omarks.
+
+An upward closed set is always infinite.
+It can be effectively represented through its unique set of minimal elements whose it is the upward closure \todo{citep\{someone\}}.
+This is a direct consequence of the \todo{someone} lemma:
+\todo{Someone's lemma: every set of tuple has finitely many minimal elements.}
+Moreover this reprenstation is effective in the sense that the set may be manipulated through it.
+\todo{cite\{someone\}} give the way to perform the operations on upward closed sets through their minimal elements.
+
+\subsection{The Karp and Miller algorithm}
 
 Although it was not originally designed for this purpose, the Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
 More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensures the termination.
