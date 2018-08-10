@@ -26,7 +26,7 @@ To give a more concrete intuition on the interest, consider a system that execut
 At each instant (whatever an instant is), the system may receive requests to perform the task from many other systems. We say that each request creates a \emph{job}.
 We would like to have a system that is not too expensive to implement, but also capable of completing the tasks quickly enough.
 For this we make our system capable of performing $a$ jobs at the same time, keeping $a$ as low as possible to reduce costs.
-This system may be modeled as shown on the figure~\ref{fig:parametric-petri-net-example} with $\marqi = (0, a, 0)$ as initial marking.
+This system may be modeled as shown on the figure~\ref{fig:parametric-petri-net-example} with $\mari = (0, a, 0)$ as initial marking.
 $p_1$ represents the job queue and $p_3$ the execution unit.\\
 We can now formally verify that, whatever the parameter values, the execution unit will not receive more than $a$ jobs to perform at the same time, that is an instance of the \Ecov for the marking $(0, 0, a+1)$. Indeed, it is easy to see that $\Post^*((0, a, 0)) = \{(i, j, k) \mid i, j \text{ and } k \in \mathbb{N}, j + k = a\}$.
 \todo{maybe remove part on `$a$ as low as possible'}

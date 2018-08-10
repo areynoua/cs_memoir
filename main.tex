@@ -105,56 +105,54 @@
 \date{}
 
 \newcommand{\lang}[1]{{\em{}#1}}
+
 \newcommand{\overbar}[1]{\overline{#1\mkern-1.5mu}\mkern 1.5mu}
-\newcommand{\omark}{\textomega-marking\xspace}
-\newcommand{\omarks}{\textomega-markings\xspace}
-\newcommand{\opn}{\textomega-\ac{PN}\xspace}
-\newcommand{\opns}{\textomega-\acp{PN}\xspace}
-\newcommand{\tupleN}{\ensuremath{\mathcal{N}}\xspace}
-\newcommand{\tupleS}{\ensuremath{\mathcal{S}}\xspace}
-\newcommand{\marq}{\ensuremath{\mathbf{m}}\xspace}
-\newcommand{\marqi}{\ensuremath{\mathbf{m}_0}\xspace}
-\newcommand{\marqp}{\ensuremath{\mathbf{m'}}\xspace}
-\newcommand{\marqpp}{\ensuremath{\mathbf{m''}}\xspace}
-\newcommand{\marqpi}{\ensuremath{\mathbf{m'}_0}\xspace}
+\newcommand{\omark}{$\omega$-marking\xspace}
+\newcommand{\omarks}{$\omega$-markings\xspace}
+\newcommand{\opn}{$\omega$-\ac{PN}\xspace}
+\newcommand{\opns}{$\omega$-\acp{PN}\xspace}
+
+\newcommand{\PN}{\ensuremath{\mathcal{N}}\xspace}
+\newcommand{\PPN}{\ensuremath{\mathcal{S}}\xspace}
+\newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}
+\newcommand{\mari}{\ensuremath{\mathbf{m}_0}\xspace}
+\newcommand{\marp}{\ensuremath{\mathbf{m'}}\xspace}
+\newcommand{\marpp}{\ensuremath{\mathbf{m''}}\xspace}
+\newcommand{\marpi}{\ensuremath{\mathbf{m'}_0}\xspace}
 \newcommand{\PT}{\ensuremath{\langle P,T\rangle}\xspace}
-\newcommand{\PTm}{\ensuremath{\langle P,T, \marqi\rangle}\xspace}
+\newcommand{\PTm}{\ensuremath{\langle P,T, \mari\rangle}\xspace}
 \newcommand{\PTP}{\ensuremath{\langle P,T,\mathbb{P}\rangle}\xspace}
-\newcommand{\PTPm}{\ensuremath{\langle P,T,\mathbb{P}, \marqi\rangle}\xspace}
-\newcommand{\NPT}{\ensuremath{\tupleN = \PT}\xspace}
-\newcommand{\NPTm}{\ensuremath{\tupleN = \PTm}\xspace}
-\newcommand{\SPTP}{\ensuremath{\tupleS = \PTP}\xspace}
-\newcommand{\SPTPm}{\ensuremath{\tupleS = \PTPm}\xspace}
+\newcommand{\PTPm}{\ensuremath{\langle P,T,\mathbb{P}, \mari\rangle}\xspace}
+\newcommand{\NPT}{\ensuremath{\PN = \PT}\xspace}
+\newcommand{\NPTm}{\ensuremath{\PN = \PTm}\xspace}
+\newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
+\newcommand{\SPTPm}{\ensuremath{\PPN = \PTPm}\xspace}
 \newcommand{\fire}[1]{\stackrel{#1}{\to}}
 \newcommand{\firev}[1]{\stackrel{#1}{\to}_v}
 \newcommand{\matI}{\mathbf{I}}
 \newcommand{\matO}{\mathbf{O}}
-\newcommand{\matIN}{\matI_\tupleN}
-\newcommand{\matON}{\matO_\tupleN}
-\newcommand{\matIS}{\matI_\tupleS}
-\newcommand{\matOS}{\matO_\tupleS}
+\newcommand{\matIN}{\matI_\PN}
+\newcommand{\matON}{\matO_\PN}
+\newcommand{\matIS}{\matI_\PPN}
+\newcommand{\matOS}{\matO_\PPN}
 \newcommand{\Ecov}{\ensuremath{\mathscr{E}\text{-cov}}\xspace}
 \newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
-\newcommand{\pleq}{\preceq}
-\newcommand{\npleq}{\npreceq}
 \newcommand{\sousrel}{\stackrel{\Sous}{\Longrightarrow}}
 \newcommand{\surrel}{\stackrel{\Sur}{\Longrightarrow}}
-%\newcommand{\npleq}{\npreccurlyeq}
-%\newcommand{\npleq}{⋨}
 \DeclareMathOperator{\Post}{Post}
 \DeclareMathOperator{\Postb}{P\overbar{ost}}
 \DeclareMathOperator{\Pre}{Pre}
 \DeclareMathOperator{\Cover}{Cover}
-\DeclareMathOperator{\Min}{Min^\pleq}
-\DeclareMathOperator{\upc}{\uparrow^\pleq}
-\DeclareMathOperator{\downc}{\downarrow^\pleq}
+\DeclareMathOperator{\Min}{Min^\preceq}
+\DeclareMathOperator{\upc}{\uparrow^\preceq}
+\DeclareMathOperator{\downc}{\downarrow^\preceq}
 \DeclareMathOperator{\KMAcc}{Acceleration}
 \DeclareMathOperator{\Accelb}{A\overline{cce}l}
 \DeclareMathOperator{\Flatten}{Flatten}
 \DeclareMathOperator{\CovSeq}{CovSeq}
 \DeclareMathOperator{\Sous}{Sous}
 \DeclareMathOperator{\Sur}{Sur}
-\DeclareMathOperator{\maxs}{Max^\sqsubseteq}
+\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
 \DeclareMathOperator{\R}{\mathcal{R}}
 \DeclareMathOperator{\Acc}{Acc}
 \DeclareMathOperator{\Effect}{Effect}
