@@ -141,6 +141,28 @@ This is a direct consequence of the \todo{someone} lemma:
 Moreover this reprenstation is effective in the sense that the set may be manipulated through it.
 \todo{cite\{someone\}} give the way to perform the operations on upward closed sets through their minimal elements.
 
+\subsection{A general backward algorithm}
+
+There exists a simple way to solve the coverability problem for all the examples of \acp{WSTS} above mentioned.
+This algorithm was introduced by Abdulla \lang{et al.} \citep{Abdulla96}.
+It is close of the one introduced earlier in \cite{Finkel90}.
+Even if we do not see how to use it in the context of \ac{PPN}, we mention it here because it helps to grasp, by comparison with the Karp and Miller algorithm presented in the following section, where does lie the difficulties of the coverability problem.
+
+Relying on the definition~\ref{defi:upclocovprblm} of the coverability problem, given an upward-closed set of markings $U$, the algorithm computes $\Pre^*(U)$ by iterating the $\Pre$ operator.
+The termination and correction of the algorithm were proven in \todo{cite\{someone\}}.
+The termination is ensured by the existence of a fixed point in the sequence of upward closed set of markings $(R_i)_{i \geq 0}$:
+\begin{gather*}
+  R_0 = U \\
+  \forall i > 0 : R_i = R_{i-1} \cup \Pre(R_{i-1})
+\end{gather*}
+When this fixed point is reached, we have $\Pre^*(U)$.
+If $\marqi \in \Pre^*(U)$, one can conclude positively.
+The result is negative otherwise.
+
+This approach is elegant and general, but often inefficient in practice.
+It is well known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \todo{citep\{someone\}}.
+We now present a forward algorithm, but whose the application is restricted to \ac{PN}.
+
 \subsection{The Karp and Miller algorithm}
 
 Although it was not originally designed for this purpose, the Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
