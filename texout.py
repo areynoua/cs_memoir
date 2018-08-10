@@ -65,6 +65,8 @@ def print_messages() :
         for line in msg.splitlines() :
             if 'Warning' in line :
                 print('[91;1m', line, '[39;0m', sep='')
+            elif 'TODO: ' in line[:7]:
+                print('[92;1m', line, '[39;0m', sep='')
             else :
                 print(line)
     elif len(stack) > 0 and last_level_printed != stack[-1] and stack[-1][0] == '.' :
