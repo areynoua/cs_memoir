@@ -14,25 +14,25 @@
 \end{defi}
 
 \begin{defi}[marking]
-  Given a set of place $P$, a marking over $P$ is a function $\marq : P \mapsto \mathbb{N}$ that associates $\marq(p)$ tokens to each place $p \in P$.
+  Given a set of place $P$, a marking of $P$ is a function $\marq : P \mapsto \mathbb{N}$ that associates $\marq(p)$ tokens to each place $p \in P$.
 \end{defi}
 
-An order on the markings is essential for the analysis of \acp{PN}. The order we will define is a well quasi order and a partial order.
+An order on the markings is essential for the analysis of \acp{PN}. The order we will define is a well quasi-order and a partial order.
 
-\begin{defi}[quasi order]
-  A quasi order on a set $\mathcal{E}$ is a binary relation $R$ that is:
+\begin{defi}[quasi-order]
+  A quasi-order on a set $\mathcal{E}$ is a binary relation $R$ that is:
   \begin{align*}
     \text{reflexive: } &&\forall x \in \mathcal{E},\ & x \mathrel{R} x \\
     \text{transitive: } &&\forall (x, y, z) \in \mathcal{E}^3,\ & (x \mathrel{R} y\land y \mathrel{R} z)\Rightarrow x \mathrel{R} z
   \end{align*}
 \end{defi}
 
-\begin{defi}[well quasi order]
-  A well quasi order $\sqsubseteq$ on a set $\mathcal{E}$ is a quasi order on $\mathcal{E}$ such that, for any infinite sequence $s = e_0, e_1, e_2, \dots$ of elements from $\mathcal{E}$, there exist indices $i < j$ with $e_i \sqsubseteq e_j$. That is, there is no infinite antichain in $\mathcal{E}$ for this relation.
+\begin{defi}[well quasi-order]
+  A well quasi-order $\sqsubseteq$ on a set $\mathcal{E}$ is a quasi-order on $\mathcal{E}$ such that, for any infinite sequence $s = e_0, e_1, e_2, \dots$ of elements from $\mathcal{E}$, there exist indices $i < j$ with $e_i \sqsubseteq e_j$. That is, there is no infinite antichain in $\mathcal{E}$ for this relation.
 \end{defi}
 
 \begin{defi}[partial order]
-  A partial order on a set $\mathcal{E}$ is a quasi order $R$ that is
+  A partial order on a set $\mathcal{E}$ is a quasi-order $R$ that is
   \begin{align*}
     \text{antisymmetric: } &&\forall (x, y) \in \mathcal{E}^2,\ & (x \mathrel{R} y\land y \mathrel{R} x)\Rightarrow x = y
   \end{align*}
@@ -46,18 +46,18 @@ An order on the markings is essential for the analysis of \acp{PN}. The order we
 
 \begin{lemm}[\cite{Dickson13}]
   \label{lemm:wqo}
-  $\pleq$ is a well quasi order.
+  $\pleq$ is a well quasi-order.
 \end{lemm}
 
 The following result will be useful in the sequel.
 
 \begin{lemm}[\cite{Brams83}]
-  The \ac{PN} model is \emph{strongly monotonic with regard to $\pleq$}. That is, for all \ac{PN} $\tupleN = \PTm$, for all transition $t \in T$ and for all markings $\marq_1, \marq_2, \marq_3$ of \tupleN such that $\marq_1 \prec \marq_2$ and $\marq_1 \fire{t} \marq_3$, there exists a marking $\marq_4$ of \tupleN such that $\marq_2 \fire{t} \marq_4$ and $\marq_3 \prec \marq_4$. 
+  The \ac{PN} model is \emph{strongly monotonic with regard to $\pleq$}. That is, for all \ac{PN} $\tupleN = \PTm$, for all transition $t \in T$ and for all markings $\marq_1, \marq_2, \marq_3$ of \tupleN such that $\marq_1 \pleq \marq_2$ and $\marq_1 \fire{t} \marq_3$, there exists a marking $\marq_4$ of \tupleN such that $\marq_2 \fire{t} \marq_4$ and $\marq_3 \pleq \marq_4$. 
 \end{lemm}
 
 In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} model, that is extended thanks to the use of parameters as input and output weights.
 
-\begin{defi}[\acl{PPN}]
+\begin{defi}[\acl{PPN} \citep{David17}]
   A \acf{PPN} \SPTP is a weighted oriented bipartite graph with a finite set $\mathbb{P}$ of parameters. The two subsets of vertices are:
   \begin{itemize}
     \item $P$: a finite set of places,
@@ -73,11 +73,11 @@ In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} mo
 As for plain \acp{PN}, this is denoted $t = \langle I_t, O_t \rangle$.
 
 \begin{defi}[parametric marking]
-  Given a set of place $P$, a parametric marking over $P$ is a function $\marq : P \mapsto \mathbb{N} \cup \mathbb{P} $ that associates $\marq(p)$ tokens to each place $p \in P$.
+  Given a set of place $P$, a parametric marking of $P$ is a function $\marq : P \mapsto \mathbb{N} \cup \mathbb{P} $ that associates $\marq(p)$ tokens to each place $p \in P$.
 \end{defi}
 
-A marking of a \ac{PN} \NPT is a marking over $P$.
-A marking of a \ac{PPN} \SPTP is a \emph{parametric} marking over $P$.
+A marking of a \ac{PN} \NPT is a marking of $P$.
+A marking of a \ac{PPN} \SPTP is a \emph{parametric} marking of $P$.
 Note that a marking \marq is a parametric marking where $\marq(p) \in \mathbb{N}$ for all $p \in P$.
 
 \begin{defi}[initialized (parametric) \ac{PN}]
@@ -134,7 +134,6 @@ This allows to use linear algebra to analyse \acp{PN}.
 
 Given a \ac{PN} \NPT and a marking \marq on \tupleN, a transition $t \in T$ is said \emph{enabled} by \marq if $\forall p \in P : \marq(p) \geq I_t(p)$. An enabled transition can be \emph{fired} to produce a new marking \marqp such that $\forall p \in P : \marqp(p) = \marq(p) - I_t(p) + O_t(p)$. This is denoted by $\marq \fire{t} \marqp$.
 It is important to note that the effect of a transition is to add or remove a constant number of tokens at each place and does not depend on the marking from which it is fired. A \ac{PN} transition is said to have a \emph{constant effect}.
-\todo{Note difference when talking about {\textomega}-Petri nets}
 
 Here are some additional notations:
 \begin{itemize}
@@ -166,7 +165,7 @@ $\Post^*((0,1,0)) = \{(i, 1, 0) \mid i \in \mathbb{N}\} \cup \{(i, 0, 1) \mid i 
 
 All of this applies to \ac{PPN} through valuations of the parameters:
 \begin{defi}[Instantiation of \acp{PPN}]
-  Let \SPTPm be a \ac{PPN} and $v : \mathbb{P} \mapsto \mathbb{N}$ be a \emph{valuation} on $\mathbb{P}$.
+  Let \SPTPm be a \ac{PPN} and $v : \mathbb{P} \mapsto \mathbb{N}$ be a \emph{$\mathbb{N}$-valuation}, or simply valuation, on $\mathbb{P}$.
   Then $v(\tupleS)$ is defined as the \ac{PN} obtained by replacing each parameter $a \in \mathbb{P}$ by $v(a)$.
   Thus, we have $v(\tupleS) = \langle P, T, \marqpi\rangle$ such that :
   \begin{itemize}
@@ -208,16 +207,22 @@ However, the verification of safety properties are more often reduced to a \emph
   A set of markings is said coverable whenever one of them is coverable.
 \end{restatable}
 
+\begin{defi}[Coverability problem]
+  Given an initialized \ac{PN} \NPTm and a set $M$ of markings of \tupleN, determine whether $\exists \marq \in M \text{ and } \marqp \in \Post^*(\marqi) \text{ such that } \marq \pleq \marqp$.
+
+  The coverability problem for a marking \marq is the coverability problem for the singleton $\{\marq\}$.
+\end{defi}
+
 The behaviour of a \ac{PPN} is defined by the behaviours of all the \acp{PN} that can be obtained by a valuation of its parameters.
 So, for an initialized \ac{PPN} \tupleS, the coverability problem may be declined in an existential and an universal form.
 The existential coverability problem (\Ecov) ask if there exists a valuation $v$ such that \marq is coverable.
 The universal coverability problem (\Ucov) ask if \marq is coverable for all valuations $v$.
 
 \begin{defi}[Universal and existential coverability problems]
-  Given a \ac{PPN} \SPTP and a non-parametric marking \marq of \tupleS
+  Given a \ac{PPN} \SPTPm and a set $M$ of non-parametric markings of \tupleS
   \begin{itemize}
-    \item the \emph{existential coverability problem} ask if there is a valuation $v$ for $\mathbb{P}$ such that \marq is coverable,
-    \item the \emph{universal   coverability problem} ask if \marq is coverable for all valuations of $\mathbb{P}$.
+    \item the \emph{existential coverability problem} ask if there is a valuation $v$ for $\mathbb{P}$ such that $M$ is coverable,
+    \item the \emph{universal   coverability problem} ask if $M$ is coverable for all valuations of $\mathbb{P}$.
   \end{itemize}
 \end{defi}
 

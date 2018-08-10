@@ -29,7 +29,7 @@ For instance, with $\marq = (1, 2, 3)$, we have that its upward-closure is $\upc
 \end{defi}
 
 Obviously, the minimal coverability set is $\downc(\Post^*(\marqi))$.
-It is called the covering set of \tupleN and is noted $\Cover(\tupleN)$.
+It is called the \emph{covering set} of \tupleN and is noted $\Cover(\tupleN)$.
 
 \begin{defi}[Covering set]
   Let $\tupleN = \PTm$ be an initialized \ac{PN}. The \emph{covering set} $S$ of \tupleN, noted $\Cover(\tupleN)$, is the set $\{c \mid \exists c' \in \Post^*(\tupleN) : c \leq c' \}$.
@@ -49,7 +49,7 @@ It is called the covering set of \tupleN and is noted $\Cover(\tupleN)$.
     \input{res/two-reach}
 
   }\qquad
-  \subfloat[The minimal coverability set]{
+  \subfloat[The cover set]{
     \label{fig:two-cover}
     \input{res/two-cover}
 
@@ -64,6 +64,7 @@ In~\ref{fig:two-cover} we see the minimal coverability set.
 
 It worth notice that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
 \begin{defi}[Coverability problem]
+  \label{defi:upclocovprblm}
   Given a \ac{PN} \tupleN and an upward-closed set $U = \upc(S)$ of markings of \tupleN, detemine whether $\Post^*(\marqi) \cap U = \emptyset$.
 \end{defi}
 
@@ -81,9 +82,9 @@ In a plain \ac{PN}, this is due to the existence of an increasing self-covering 
 \end{defi}
 
 Note that, since $\marq_i \pleq \marq_j$, $\sigma$ is firable from $\marq_j$.
-In addition, the monotonicity of \acp{PN} ensure that, with $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$, we have $\marq_j \pleq \marqp_j$.
+In addition, the monotonicity of \acp{PN} ensures that, with $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$, we have $\marq_j \pleq \marqp_j$.
 Thus, we see that it is a sufficient condition for the \emph{non-termination} of the system (the system may be able to fire transitions infinitely often).
-In fact, because $\pleq$ is a well quasi order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\marqi \fire{} \marq_1 \fire{} \dots$ two markings $\marq_i$ and $\marq_j$ such that $\marq_i \pleq \marq_j$.
+In fact, because $\pleq$ is a well quasi-order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\marqi \fire{} \marq_1 \fire{} \dots$ two markings $\marq_i$ and $\marq_j$ such that $\marq_i \pleq \marq_j$.
 Therefore, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
 
 \begin{defi}[Increasing self-covering sequence]
@@ -99,12 +100,10 @@ Therefore, any infinite sequence is self-covering, and the existence of such a s
 Let $Q \subseteq P$ be the set of places $Q = \{q \in P \mid \marq_i(q) < \marq_j(q)\}$.
 $Q \neq \emptyset$ since $\marq_i \prec \marq_j$.
 
-With a similar reasoning to the above, we see that having such a sequence ensure that one can reach a marking $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$ such that $\marq_j \prec \marqp_j$.
+With a reasoning similar to the one above, we see that having such a sequence ensures that one can reach a marking $\marqp_j$ given by $\marq_j \fire{\sigma} \marqp_j$ such that $\marq_j \prec \marqp_j$.
 Because of the constant effect of transitions, we know that $\forall q \in Q : \marq_j(q) < \marqp_j(q)$.
 The unboundedness of the places in $Q$ follows.
-\todo{A more formal proof that the existence of an increasing self-covering sequence is a necessary and sufficient condition for unboundedness on places is either to be done here or to reference.}
-
-
+\todo{A more formal proof that the existence of an increasing self-covering sequence is a necessary and sufficient condition for unboundedness on places is either to be done here or to be referenced.}
 
 An \omark is a way to represent a set of markings which have the same number of tokens in some places, and may have any number of tokens, potentially an infinity, in the other places.
 They are useful to effectively represent potentially infinite downward-closed set, like a coverability set or the sets of markings of an increasing self-covering sequence.
@@ -147,14 +146,14 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
         \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$,
-        \item for all node $n \in N \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i > 1$, and
+        \item for all node $n \in N \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i \geq 1$, and
         \item there is no cycles, that is, there is no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
       \end{itemize}
   \end{itemize}
   and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\tupleN)$.
 \end{defi}
 
-To keep $N$ finite, the Karp and Miller procedure exploits the strong monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
+To keep $N$ finite, the Karp and Miller algorithm exploits the strong monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
 This function takes a marking \marq to accelerate and a set of markings $S$ as a base \todo{?} for the acceleration and returns a marking $\marq_\omega$ such that:
 \[
   \marq_\omega(p) = 
@@ -174,8 +173,8 @@ it is removed from $F$ and, if there is no node $n'$ in $\mathscr{T}_n$ such tha
 
 The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
-The Karp and Miller tree has a lot of convenient properties, and allows to answer coverability and \todo{} problems.
-Furthermore, the Karp and Miller procedure can easily be adapted to some parametric problems \cite{David17}, as we will show in section~\todo{}.
+The Karp and Miller tree has a lot of convenient properties, and allows to answer coverability problem. \todo{as well as ...}
+Furthermore, the Karp and Miller algorithm can easily be adapted to some parametric problems \cite{David17}, as we will show in \todo{section~?}.
 
 However, this tree, although finite, is often much larger than the minimal coverability set, and cannot be constructed in reasonable time.
 As a consequence, many improvement were proposed, as well as other algorithms with different approaches.
@@ -218,16 +217,17 @@ first, for all node $n$ of the Karp and Miller tree, there exists a value $k \ge
 second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \tupleN.
 \todo{Indeed...}
 
-This two results lead us to the following lemma:
+These two results lead us to the following lemma:
 \begin{lemm}[\cite{Geeraerts07}]
   Given a marked \ac{PN} \tupleN such that $\CovSeq(\tupleN) = (V_i)_{i \geq 0}$,
   there exists $k \geq 0$ such that for all $l \in \{0, ..., k-1\}$ we have that $\downc(\Flatten(V_l)) \subset \downc(\Flatten(V_{l+1}))$
   and for all $l \geq k : \downc(\Flatten(V_l)) = \Cover(\tupleN)$.
 \end{lemm}
 
-Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc(\Flatten(V_l)) = \downc(\Flatten(V_{l-1}))$ and to return $\downc(\Flatten(V_l))$. \todo{Est-ce que $V_l = V_{l-1}$?}
+Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc(\Flatten(V_l)) = \downc(\Flatten(V_{l-1}))$ and to return $\downc(\Flatten(V_l))$.
 
-To perform it efficiently, one can use an order $\sqsubseteq$ on the pair of markings to keep only the highest pair with respect to this order.
+To perform it efficiently, one can use a well-chosen order $\sqsubseteq$ on the pair of markings to keep only the highest pairs with respect to this order.
+Intuitively, they are the pair with the more distant elements.
 Let us denote by $\ominus$ the componentwise difference between two markings and to extend it to \omarks.
 Formally, given two \omarks $\marq_1$ and $\marq_2$ on a set of places $P$, $(\marq_1 \ominus \marq_2)(p)$ is defined for all $p \in P$ as:
 \[
@@ -249,7 +249,7 @@ Given two pairs $(\marq_1, \marq_2)$ and $(\marqp_1, \marqp_2)$ of \omarks over 
   \end{cases}
 \]
 
-For a set of \omarks $S$, $\maxs(S) = \{ s \in S \mid \nexists s' \in S, s \sqsubseteq s'\}$ is the set of highest \omark of $S$ with respect to $\sqsubseteq$.
+For a set of pair of \omarks $R$, $\maxs(R) = \{ r \in R \mid \nexists r' \in R, r \sqsubseteq r'\}$ is the set of highest \omark of $R$ with respect to $\sqsubseteq$.
 
 This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
 Thus, one can compute $\Cover(\tupleN)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
@@ -260,12 +260,12 @@ Thus, one can compute $\Cover(\tupleN)$ of a \ac{PN} \NPTm by computing the sequ
 
 At the end, we have that $\downc(\Flatten(V_i)) = \Cover(\tupleN)$.
 
-The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ are presented in \citep{Geeraerts07, Ganty09}.
+The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ are presented in \cite{Geeraerts07, Ganty09}.
 
-\subsection{\ac{EEC} algorithm}
+\subsection{The \ac{EEC} algorithm}
 \label{sec:eec}
 
-\ac{EEC}, introduced in \citep{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \ac{PN}.
+\ac{EEC}, introduced in \cite{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \ac{PN}.
 We present it restricted to this context, but it may be used for a wide range of well structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strong monotonicity, of these models.
 
 The idea is to compute and refine simultaneously an over- and an under-approximation of the covering set of the \ac{PN} until one or the other allows to conclude.
@@ -298,12 +298,14 @@ We can say that they are under- and over-approximations thanks to the following 
 \end{lemm}
 
 One can prove that one of the conditions mentioned in the lemmata will eventually happen.
-This ensure the termination of the algorithm.
+This ensures the termination of the algorithm.
 
-Indeed, let $S$ be the set of marking we wants to cover and let $U$ be $\upc(S)$.
+Indeed, let $S$ be the set of markings we wants to cover and let $U$ be $\upc(S)$.
 If $U$ is reachable, we will eventually get a $C_i$ that contains all the markings of a path from $\marqi$ to $U$.
-As this path will be present in $\Sous(\tupleN, C_i)$, we will have that $\R(\Sous(\tupleN,C_i)) \cup U \neq \emptyset$.\\
-Symmetrically, if $U$ is not reachable, we know that $\downc(\R(\Sur(\tupleN,L_i))) \cap U = \emptyset$ will eventually happen because, as for a $j$ great enough, $j \geq i$, $L_j$ will contains the cover set of \tupleN, we will have that $\downc(\R(\Sur(\tupleN,L_j))) = \Cover(\tupleN)$.
+As this path will be present in $\Sous(\tupleN, C_i)$, we will have that $\R(\Sous(\tupleN,C_i)) \cap U \neq \emptyset$.\\
+Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the cover set of \tupleN.
+Such a $j$ exists and we have that $\downc(\R(\Sur(\tupleN,L_j))) = \Cover(\tupleN)$.
+Thus we know that $\downc(\R(\Sur(\tupleN,L_i))) \cap U = \emptyset$ will eventually happen for a $i \leq j$.
 
 
 \removed{A backward algorithm \citep{Finkel90, Abdulla96}}

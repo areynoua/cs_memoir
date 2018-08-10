@@ -2,15 +2,18 @@
 
 \todo{sources and examples}
 
-Today \acp{PN} are used in a wide range of areas. Most of the time they are used either to design a safe system, or to verify an existing one. This use requires that the system is complete. That is, for the design of a model, it must be entirely designed to be analyzable. On the other hand, when checking an existing system, if a desired property does not hold, the correction must be made ``by hand''.
+Today \acp{PN} are used in a wide range of areas. Most of the time they are used either to design a safe system, or to verify an existing one.
+These uses require that the system is complete.
+That is, for the design of a model, it must be entirely designed to be analyzable.
+On the other hand, when checking an existing system, if a desired property does not hold, the correction must be made ``by hand''.
 
-With the introduction of parameters some variables unknown at the design stage can be integrated into the model without having to set them arbitrarily. Moreover, if during the verification a desired property turns out not to hold, it is possible to check if the change of parameters alone can solve the problem, or if the Petri net structure must be changed too. Going further, the use of parameters in the model can allow to determine the ``safest values'' for a system, or to synthesize the values that allow to respect a given strategy.
+With the introduction of parameters some variables unknown at the design stage can be integrated into the model without having to be set arbitrarily. Moreover, if during the verification a desired property turns out not to hold, it is possible to check if the change of parameters alone can solve the problem, or if the Petri net structure must be changed too. Going further, the use of parameters in the model can allow to determine the ``safest values'' for a system, or to synthesize the values that allow to respect a given strategy.
 
 We can therefore say that parameters can simplify the \emph{design} of a system. Indeed, since it is possible to keep unknown values, modelling can be done step by step, with the possibility to check the model at each step.
 In addition, the design can be partially automated by parameter synthesis.
 This approach gives a new interest for this model in fields as varied as chemistry, construction processes, financial loans...
 
-There are also many advantages of using parameters when it comes to \emph{verification}:
+There are also many advantages of using parameters when it comes to \emph{verification}.
 For example, they allow to verify some properties simultaneously on many systems that differs only by parameters values.
 
 \subsection{Interest of the coverability problem in \acp{PPN}}
@@ -26,7 +29,7 @@ For this we make our system capable of performing $a$ jobs at the same time, kee
 This system may be modeled as shown on the figure~\ref{fig:parametric-petri-net-example} with $\marqi = (0, a, 0)$ as initial marking.
 $p_1$ represents the job queue and $p_3$ the execution unit.\\
 We can now formally verify that, whatever the parameter values, the execution unit will not receive more than $a$ jobs to perform at the same time, that is an instance of the \Ecov for the marking $(0, 0, a+1)$. Indeed, it is easy to see that $\Post^*((0, a, 0)) = \{(i, j, k) \mid i, j \text{ and } k \in \mathbb{N}, j + k = a\}$.
-\todo{maybe remove part on \textit{$a$ as low as possible}}
+\todo{maybe remove part on `$a$ as low as possible'}
 
 Before recalling the known result on \ac{PPN} and plain \ac{PN} that will be useful to our study, let us give a brief overview of some work already done on \acp{PPN}.
 
