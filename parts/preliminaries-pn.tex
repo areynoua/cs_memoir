@@ -220,8 +220,21 @@ However, this technique solve the coverability problem more efficiently in pract
 As in the Karp and Miller algorithm, an acceleration function exploits the strong monotonicity of \acp{PN} to allow termination.
 But here, the acceleration of a marking is performed with only one marking as the base (instead of a set of marking).
 
-To choose the base to use, the algorithm work on pair of \omarks.
-Thus we will need the following definitions:
+To choose the base to use, the algorithm works on pair of \omarks.
+These pairs allow to record a relationship between the markings.
+More precisely, the algorithm constructs a pair of \omarks $(\marq_1, \marq_2)$ only if $\downc(\marq_2) \subseteq \downc(\Post^*(\marq_1))$.
+This relationship is of interest because it ensures that there exists a sequence $\sigma$ of transitions such that $\marq_1 \fire\sigma \marq_2$.
+If, in addition, $\marq_1 \prec \marq_2$, we know than an acceleration may occur.
+
+To reduce the size of the set of pairs of \omarks, only the pairs where the difference (as defined below) between $\marq_1$ and $\marq_2$ is maximal are kept.
+This will be the purpose of the order $\sqsubseteq$ we will define and it is justified by the intuitive idea that two more distant markings produce larger accelerations.
+Therefore, if the algorithm builds a pair $(\marq_1, \marq_2)$, it can forget about any other ($\sqsubseteq$-comparable) pair whose the elements are closer because
+\begin{itemize}
+  \item by monotonicity, all potential successor of the elements of this pair will be covered by successor of $\marq_1$ or $\marq_2$, and
+  \item any acceleration that can be created from this pair is covered by an acceleration one can build from $(\marq_1, \marq_2)$.
+\end{itemize}
+
+To describe the algorithm more formally, we will need the following definitions:
 
 Given a pair of \omarks $(\marq_1, \marq_2)$, we define:
 \begin{itemize}
