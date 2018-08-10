@@ -128,14 +128,14 @@ Note that an \omark \marq is a parametric \omark where $\marq(p) \in \mathbb{N} 
 Similarly, a parametric marking \marq is a parametric \omark where $\marq(p) \neq \omega$ for all places $p \in P$.
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
-Having an \omark $\marq \in \Cover(\tupleN)$ denotes that for all marking $\marq_1$ such that $\marq_1(p) = \marq(p) \forall p \in \{p \mid \marq(p) \neq \omega\}$, there exists an marking $\marq_2$ in the reachability set of \tupleN such that $\marq_1 \pleq \marq_2$.
+Having an \omark $\marq \in \Cover(\tupleN)$ denotes that for all marking $\marq_1$ such that $\marq_1(p) = \marq(p) \forall p \in \{p \mid \marq(p) \neq \omega\}$, there exists a marking $\marq_2$ in the reachability set of \tupleN such that $\marq_1 \prec \marq_2$.
 Notice also that an \omark always stands for one and only one downward closed set.
-Symmetrically, any downward closed set may be represented by a finite set of \omarks. \todo{Indeed...}
+Symmetrically, any downward closed set may be represented by a finite set of \omarks. \todo{Indeed...} \todo{See ... for a complete proof}
 
 \subsection{Karp and Miller procedure}
 
 Although it was not originally designed for this purpose, the Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
-More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensure the termination.
+More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensures the termination.
 
 \begin{defi}[Coverability tree]
   Given a \ac{PN} $\tupleN = \PTm$, a coverability tree $\mathcal{T}$ of \tupleN is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
@@ -156,7 +156,7 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
 To keep $N$ finite, the Karp and Miller algorithm exploits the strong monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
 This function takes a marking \marq to accelerate and a set of markings $S$ as a base \todo{?} for the acceleration and returns a marking $\marq_\omega$ such that:
 \[
-  \marq_\omega(p) = 
+  \marq_\omega(p) =
   \begin{cases}
     \omega    &\text{if } \exists \marqp \in S : \marqp \prec \marq \text{ and } \marqp(p) < \marq(p) \\
     \marq(p)  &\text{otherwise}
@@ -182,9 +182,9 @@ As a consequence, many improvement were proposed, as well as other algorithms wi
 \subsection{An efficient computation method of the coverability set of Petri nets}
 \label{sec:eff}
 
-\citep{Geeraerts07thesis, Geeraerts07} propose another approach to the computation of the coverability set.
-It is not based on the Karp and Miller algorithm and is not an alternative to the Karp and Miller procedure in the sense that it does not allow to answer the same set of questions that the Karp and Miller tree solves.
-However, this techniques solve coverability problems more efficiently in practice.
+In \cite{Geeraerts07thesis, Geeraerts07}, Geeraerts proposes another approach to the computation of the coverability set.
+It is not based on the Karp and Miller algorithm and is not an alternative to it in the sense that it does not allow to answer the same set of questions than the Karp and Miller tree answers.
+However, this technique solve the coverability problem more efficiently in practice.
 
 As in the Karp and Miller algorithm, an acceleration function exploits the strong monotonicity of \acp{PN} to allow termination.
 But here, the acceleration of a marking is performed with only one marking as the base (instead of a set of marking).
