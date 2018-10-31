@@ -1,0 +1,14 @@
+The backward algorithm does not seem to be easy to adapt to the parametric coverability problems.
+Indeed, it works only thanks to the iteration of the $\Pre$ operator.
+
+In the case of PostT-\ac{PPN} and of the \Ecov problem, the idea would be to look for \mari from the markings to cover.
+We have seen that, with a forward approach, one can consider only high valuations, that are better because they allow to cover more markings: the search from $\mari$ may go ``too far'' without being an issue.
+Here however a high valuation may lead to a premature stop in a backward search, because it restricts ``more quickly'' the set of transitions that is enabled at each step.
+In other words, contrary to forward approach, the backward approach has the deals with the 0 bound of the transition precondition. 
+
+However, it may be the case that one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameter.
+This will be a direction of our study.
+
+The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation may lead to a result about the \Ecov problem.
+
+% vim: set spell spelllang=en :

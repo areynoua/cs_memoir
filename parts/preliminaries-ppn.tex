@@ -1,3 +1,5 @@
+\label{sec:preliminaries-ppn}
+
 By reduction from the halting problem as well as the counter boundedness problem, \cite{David17} has shown that \Ucov and \Ecov are undecidable on \ac{PPN}.
 This motivates the introduction of two natural subclasses of \acp{PPN} where parametric coverability problems are decidable.
 
@@ -9,11 +11,11 @@ We will now present this two algorithms has they contain idea used in the sequel
 
 \subsection{Karp and Miller algorithm for PostT-\ac{PPN}}
 
-The adaptation of the Karp and Miller algorithm to solve the \Ecov problem on PreT-\acp{PPN} is the result of one key observation.
+The adaptation of the Karp and Miller algorithm to solve the \Ecov problem on PostT-\acp{PPN} is the result of one key observation.
 In a PostT-\ac{PPN}, a place may contains an arbitrary large number of tokens either because of the presence of a self-covering increasing sequence, as in a plain \ac{PN}, or because of an arbitrary large valuation.
 In the latter case, the place is not necessary \emph{unbounded}, that is to say, once a valuation is given, the number of tokens the place may contains may be bounded, even if the bound is arbitrary large due to the arbitrary large values of the valuation.
 
-The adaptation of the Karp and Miller algorithm is therefore mainly the add of a way to distinguish between these two cases.
+The adaptation of the Karp and Miller algorithm is therefore mainly the addition of a way to distinguish between these two cases.
 It is done by introducing a new value allowed in the markings, noted $*$ and such that $* \notin \mathbb{N}$, $* \neq \omega$, and $\forall c \in \mathbb{N}$, we have:
 \begin{itemize}
   \item $c < * < \omega$,
@@ -24,8 +26,8 @@ It is done by introducing a new value allowed in the markings, noted $*$ and suc
 \end{itemize}
 
 $*$ being defined, the propagation of the $*$ still have to be ensured in the cases where all the input places of a transition are marked by a $*$, even if the output of the transition is not a parameter.
-This is done by adapting the Acceleration function.
-This new Acceleration function, $\Acc$, distinguishes three cases.
+This is done by adapting the acceleration function.
+This new acceleration function, $\Acc$, distinguishes three cases.
 Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration:
 \begin{itemize}
   \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp < \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\Effect(\sigma)(p) \geq 0$.\\
@@ -42,7 +44,7 @@ Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of
     \]
     This case handle the propagation of the $*$ mentioned above.
   \item Or no one of the previous cases old.
-    In this case the marking is not accelerated: $\Acc(\mar) = \mar$.
+    In this case the marking is not accelerated: $\Acc(\mar)(p) = \mar(p)$.
 \end{itemize}
 
 Intuitively, the second case formalise the idea that one can remove some tokens from a place with $*$ tokens without being an issue for the existence of a valuation that allows to cover a given marking.
@@ -52,8 +54,8 @@ Keeping in mind that we are looking for the existence of a valuation, as large a
 \subsection{Karp and Miller algorithm for PreT-\ac{PPN}}
 
 Here is a symmetrical situation.
-The parameters are used to indicate the number of tokens required for transitions to fire and we want to determine if a (set of) marking(s) is coverable for all the possible valuations of the parameters, as large as they may be.
-Therefore the adaptation of the Karp and Miller algorithm lies on considering that a transition with parametric input arcs is enabled if the corresponding places are marked by $\omega$.
+The parameters are used to indicate the number of tokens required for transitions to fire, and we want to determine if a (set of) marking(s) is coverable for all the possible valuations of the parameters, as large as they may be.
+Therefore, the adaptation of the Karp and Miller algorithm lies on considering that a transition with parametric input arcs is enabled if and only if the corresponding places are marked by $\omega$.
 This ensure that the transition is regarded as enabled only if it may actually fire whatever the valuation.
 The other direction of the implication holds too, that is to say that, if a transition has a parametric input arc whose the corresponding place is bounded, there exists a valuation that does not enable the transition.
 Indeed, recall that all simultaneous unbounded places in a \ac{PN} appear marked by $\omega$ in at least one label of the Karp and Miller tree for this \ac{PN}.

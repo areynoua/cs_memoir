@@ -1,7 +1,11 @@
-In this section we provide an adaption of \ac{EEC} to work with \acp{PPN}.
-It is inspired by the \todo{KM\textsuperscript{+}} algorithm from \cite{David17}.
+%In this section we provide an adaption of \ac{EEC} to work with \acp{PPN}.
+%It is inspired by the \todo{KM\textsuperscript{+}} algorithm from \cite{David17}.
+%
+%The algorithm is the same as the one presented in the section~\ref{sec:eec}, with the difference that the condition to add a marking to the over-approximation is more restrictive.
 
-The algorithm is the same as the one presented in the section~\ref{sec:eec}, with the difference that the condition to add a marking to the over-approximation is more restrictive.
+We plan to provide two natural adaptations of \ac{EEC} inspired by the adaptations of the Karp and Miller algorithm provided by \cite{David17} and presented in \autoref{sec:preliminaries-ppn}.
 
+\ac{EEC} seems easy to efficiently adapt for the \Ecov problem on PostT-\ac{PPN}.
+Nevertheless, when it comes to the \Ucov problem on PreT-\ac{PPN}, it seems that the trivial adaptation is less efficient because the $\Sous$ graph will not be of much help for any parametric transition.
 
 % vim: set spell spelllang=en :

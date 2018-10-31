@@ -111,55 +111,70 @@
 \newcommand{\omarks}{$\omega$-markings\xspace}
 \newcommand{\opn}{$\omega$-\ac{PN}\xspace}
 \newcommand{\opns}{$\omega$-\acp{PN}\xspace}
+\newcommand{\Ecov}{$\mathscr{E}$-cov\xspace}
+\newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
 
-\newcommand{\PN}{\ensuremath{\mathcal{N}}\xspace}
+\newcommand{\set}{\ensuremath{\mathcal{E}}\xspace}
+
+\newcommand{\N}{\ensuremath{\mathcal{N}}\xspace}
 \newcommand{\PPN}{\ensuremath{\mathcal{S}}\xspace}
-\newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}
-\newcommand{\mari}{\ensuremath{\mathbf{m}_0}\xspace}
-\newcommand{\marp}{\ensuremath{\mathbf{m'}}\xspace}
-\newcommand{\marpp}{\ensuremath{\mathbf{m''}}\xspace}
-\newcommand{\marpi}{\ensuremath{\mathbf{m'}_0}\xspace}
-\newcommand{\PT}{\ensuremath{\langle P,T\rangle}\xspace}
 \newcommand{\PTm}{\ensuremath{\langle P,T, \mari\rangle}\xspace}
+\newcommand{\PT}{\ensuremath{\langle P,T\rangle}\xspace}
+\newcommand{\NPT}{\ensuremath{\N = \PT}\xspace}
+\newcommand{\NPTm}{\ensuremath{\N = \PTm}\xspace}
 \newcommand{\PTP}{\ensuremath{\langle P,T,\mathbb{P}\rangle}\xspace}
 \newcommand{\PTPm}{\ensuremath{\langle P,T,\mathbb{P}, \mari\rangle}\xspace}
-\newcommand{\NPT}{\ensuremath{\PN = \PT}\xspace}
-\newcommand{\NPTm}{\ensuremath{\PN = \PTm}\xspace}
-\newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
 \newcommand{\SPTPm}{\ensuremath{\PPN = \PTPm}\xspace}
-\newcommand{\fire}[1]{\stackrel{#1}{\to}}
+\newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
+
 \newcommand{\firev}[1]{\stackrel{#1}{\to}_v}
-\newcommand{\matI}{\mathbf{I}}
-\newcommand{\matO}{\mathbf{O}}
-\newcommand{\matIN}{\matI_\PN}
-\newcommand{\matON}{\matO_\PN}
+\newcommand{\fire}[1]{\stackrel{#1}{\to}}
+
+\newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}
+\newcommand{\mari}{\ensuremath{\mathbf{m}_0}\xspace}
+\newcommand{\marpi}{\ensuremath{\mathbf{m'}_0}\xspace}
+\newcommand{\marpp}{\ensuremath{\mathbf{m''}}\xspace}
+\newcommand{\marp}{\ensuremath{\mathbf{m'}}\xspace}
+
+\newcommand{\matIN}{\matI_\N}
 \newcommand{\matIS}{\matI_\PPN}
+\newcommand{\matI}{\mathbf{I}}
+\newcommand{\matON}{\matO_\N}
 \newcommand{\matOS}{\matO_\PPN}
-\newcommand{\Ecov}{\ensuremath{\mathscr{E}\text{-cov}}\xspace}
-\newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
+\newcommand{\matO}{\mathbf{O}}
+
 \newcommand{\sousrel}{\stackrel{\Sous}{\Longrightarrow}}
 \newcommand{\surrel}{\stackrel{\Sur}{\Longrightarrow}}
-\DeclareMathOperator{\Post}{Post}
-\DeclareMathOperator{\Postb}{P\overbar{ost}}
-\DeclareMathOperator{\Pre}{Pre}
-\DeclareMathOperator{\Cover}{Cover}
-\DeclareMathOperator{\Min}{Min^\preceq}
-\DeclareMathOperator{\upc}{\uparrow^\preceq}
-\DeclareMathOperator{\downc}{\downarrow^\preceq}
-\DeclareMathOperator{\KMAcc}{Acceleration}
+
 \DeclareMathOperator{\Accelb}{A\overline{cce}l}
-\DeclareMathOperator{\Flatten}{Flatten}
+\DeclareMathOperator{\Acc}{Acc}
+\DeclareMathOperator{\KMAcc}{Acceleration}
 \DeclareMathOperator{\CovSeq}{CovSeq}
+\DeclareMathOperator{\Cover}{Cover}
+\DeclareMathOperator{\Effect}{Effect}
+\DeclareMathOperator{\Flatten}{Flatten}
+\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
+\DeclareMathOperator{\Min}{Min^\preceq}
+\DeclareMathOperator{\Postb}{P\overbar{ost}}
+\DeclareMathOperator{\Post}{Post}
+\DeclareMathOperator{\Pre}{Pre}
+\DeclareMathOperator{\R}{\mathcal{R}}
 \DeclareMathOperator{\Sous}{Sous}
 \DeclareMathOperator{\Sur}{Sur}
-\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
-\DeclareMathOperator{\R}{\mathcal{R}}
-\DeclareMathOperator{\Acc}{Acc}
-\DeclareMathOperator{\Effect}{Effect}
+\DeclareMathOperator{\downc}{\downarrow^\preceq}
+\DeclareMathOperator{\upc}{\uparrow^\preceq}
 
 % TMP
-\newcommand{\todo}[1]{[TODO: {\color{red} #1}]\message{TODO: #1}}
-\newcommand{\removed}[1]{[REMOVED: {\color{gray} #1}]}
+% draft
+\newcommand{\dtodo}[1]{[TODO: {\color{red} #1}]\message{TODO: #1}}
+\newcommand{\dremoved}[1]{[REMOVED: {\color{gray} #1}]}
+\newcommand{\dnote}[1]{{\em\color{gray} #1}}
+% final
+\newcommand{\ftodo}[1]{\message{TODO: #1}}
+\newcommand{\fremoved}[1]{}%\message{REMOVED: #1}}
+\newcommand{\fnote}[1]{{\em\color{gray} #1}}
+
+\input{options}
 
 \begin{document}
 
@@ -240,19 +255,28 @@
 \input{parts/similar-models}
 
 \chapter{Preliminary results}
+\input{parts/preliminaries}
 \section{Known results for coverability on plain \acp{PN}}
 \input{parts/preliminaries-pn}
 \section{Known results on \acp{PPN}}
 \input{parts/preliminaries-ppn}
 
 \chapter{Contributions}
-\section{Adapting Geeraerts efficient computation method of the coverability set of Petri nets for PostT-\acp{PPN}}
-\section{Adapting \ac{EEC} for PreT-\acp{PPN}}
+\input{parts/contributions}
+\section{Adapting the general backward algorithm}
+\input{parts/contrib-back}
+\section{Adapting \ac{EEC}}% for PreT-\acp{PPN}}
 \input{parts/eec-pret-ppn}
+\section{Adapting Geeraerts method to PostT-\acp{PPN}}
+\input{parts/contrib-eff}
+
 \vspace*{0.5cm}
+\acresetall
 \chapter*{Conclusions}
 
-The conclusions are to be written with care\index{Care}, because it will be sometimes the part that could convince a potential reader to read the whole document.
+In the first chapter we defined the context of our study: \ac{PN} and \ac{PPN} and the coverability problems on them.
+The second chapter presented the known results as a basis for our study.
+The last chapter give the direction of our study and the result we would like to include in the last version of the work.
 
 \appendix
 

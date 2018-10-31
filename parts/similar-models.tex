@@ -1,18 +1,17 @@
 Many reactive systems are naturally modeled as infinite-state systems.
 Some infinite-states models are known to allow some automatic formal verification from model-checking techniques.
-Among them are \acp{PN}, but also Lossy FIFO systems, Broadcast protocols...
-\todo{refs}
-All are \acp{WSTS} (but there exists other famous infinite-states systems, like timed-automata).
+Among them are \acp{PN}, but also Lossy FIFO systems \citep{Abdulla98}, Broadcast protocols \citep{Emerson98}...
+All are \acp{WSTS} (but there exists other famous infinite-states systems, like timed-automata \citep{Alur94}).
 \todo{check whether timed-automata are \acp{WSTS}.}
 
-\acp{WSTS} are outside of the range of this work, but we will sometimes refer to them to distinguish between techniques specific to the \ac{PN} model or usable in a wider range of contexts.
+\acp{WSTS} are outside of the range of this work, but we will sometimes refer to them to distinguish between techniques specific to the \ac{PN} model, or usable in a wider range of contexts.
 \todo{Check english writting.}
 
-In a few words, \acp{WSTS} are transitions systems whose set of states are well-quasi-ordered and whose transition relations is monotonic with respect to the well quasi-ordering.
+In a few words, \acp{WSTS} are transition systems whose set of states are well quasi-ordered and whose transition relations is monotonic with respect to the well quasi-ordering.
 
-The monotonicity property differ from the strong monotonicity defined above by the fact that the second state may be found after many steps. Formally:
+The monotonicity property differ from the strong monotonicity defined above for \acp{PN} by the fact that the second state may be found after many steps. Formally:
 \begin{defi}[Monotonicity]
   A transition system is said \emph{monotonic} whenever \todo{or `when'?} its transition relation is monotonic.
 
-  A transition relation $\rightarrow \subseteq (S \times S)$ over a $\leq$-well quasi-ordered set $S$ is monotonic if, and only if, for all $s_1$, $s_2$, and $s_3$ from $S$ such that $s_1 \leq s_2$ and $s_1 \rightarrow s_3$ there exists $s_4 \in S$ such that $s_2 \fire{*} s_4$.
+  A transition relation $\rightarrow \subseteq (\set \times \set)$ over a $\leq$-well quasi-ordered set $S$ is monotonic if, and only if, for all $s_1$, $s_2$, and $s_3$ from $\set$ such that $s_1 \leq s_2$ and $s_1 \rightarrow s_3$ there exists $s_4 \in \set$ such that $s_2 \fire{*} s_4$.
 \end{defi}

@@ -25,14 +25,14 @@ For instance, with $\mar = (1, 2, 3)$, we have that its upward-closure is $\upc(
 \end{defi}
 
 \begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
-  Given an initialized \ac{PN} $\PN = \PTm$, a \emph{coverability set} $S$ of \PN is a set of markings such that $\downc(S) = \downc(\Post^*(\mari))$.
+  Given an initialized \ac{PN} $\N = \PTm$, a \emph{coverability set} $S$ of \N is a set of markings such that $\downc(S) = \downc(\Post^*(\mari))$.
 \end{defi}
 
 Obviously, the minimal coverability set is $\downc(\Post^*(\mari))$.
-It is called the \emph{covering set} of \PN and is noted $\Cover(\PN)$.
+It is called the \emph{covering set} of \N and is noted $\Cover(\N)$.
 
 \begin{defi}[Covering set]
-  Let $\PN = \PTm$ be an initialized \ac{PN}. The \emph{covering set} $S$ of \PN, noted $\Cover(\PN)$, is the set $\{c \mid \exists c' \in \Post^*(\PN) : c \leq c' \}$.
+  Let $\N = \PTm$ be an initialized \ac{PN}. The \emph{covering set} $S$ of \N, noted $\Cover(\N)$, is the set $\{c \mid \exists c' \in \Post^*(\N) : c \leq c' \}$.
 \end{defi}
 
 \begin{figure}[htbp]
@@ -62,17 +62,17 @@ One can therefore represents the markings as points on a plane.
 The figure~\ref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
 In~\ref{fig:two-cover} we see the minimal coverability set.
 
-It worth notice that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
+It is worth noticing that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
 \begin{defi}[Coverability problem]
   \label{defi:upclocovprblm}
-  Given a \ac{PN} \PN and an upward-closed set $U = \upc(S)$ of markings of \PN, detemine whether $\Post^*(\mari) \cap U = \emptyset$.
+  Given a \ac{PN} \N and an upward-closed set $U = \upc(S)$ of markings of \N, detemine whether $\Post^*(\mari) \cap U = \emptyset$.
 \end{defi}
 
-Sometimes the number of token in a place is unbounded (\lang{c.f.} the place boundedness problem).
+Sometimes the number of tokens in a place is unbounded (\lang{c.f.} the place boundedness problem).
 Therefore, the reachability and coverability sets are infinite.
 In a plain \ac{PN}, this is due to the existence of an increasing self-covering sequence.
 \begin{defi}[Self-covering sequence]
-  Given an initialized \ac{PN} $\PN = \PTm$,
+  Given an initialized \ac{PN} $\N = \PTm$,
   a self-covering sequence is a sequence of the form:
   \[
     \mari \fire{\rho} \mar_i \fire{\sigma} \mar_j
@@ -88,7 +88,7 @@ In fact, because $\preceq$ is a well quasi-order (Lemma~\ref{lemm:wqo}), one can
 Therefore, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
 
 \begin{defi}[Increasing self-covering sequence]
-  Given an initialized \ac{PN} $\PN = \PTm$,
+  Given an initialized \ac{PN} $\N = \PTm$,
   an increasing self-covering sequence is a sequence of the form:
   \[
     \mari \fire{\rho} \mar_i \fire{\sigma} \mar_j
@@ -103,6 +103,7 @@ $Q \neq \emptyset$ since $\mar_i \prec \mar_j$.
 With a reasoning similar to the one above, we see that having such a sequence ensures that one can reach a marking $\marp_j$ given by $\mar_j \fire{\sigma} \marp_j$ such that $\mar_j \prec \marp_j$.
 Because of the constant effect of transitions, we know that $\forall q \in Q : \mar_j(q) < \marp_j(q)$.
 The unboundedness of the places in $Q$ follows.
+\cite{David17} provides a complete proof.
 \todo{A more formal proof that the existence of an increasing self-covering sequence is a necessary and sufficient condition for unboundedness on places is either to be done here or to be referenced.}
 
 An \omark is a way to represent a set of markings which have the same number of tokens in some places, and may have any number of tokens, potentially an infinity, in the other places.
@@ -128,28 +129,34 @@ Note that an \omark \mar is a parametric \omark where $\mar(p) \in \mathbb{N} \c
 Similarly, a parametric marking \mar is a parametric \omark where $\mar(p) \neq \omega$ for all places $p \in P$.
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
-Having an \omark $\mar \in \Cover(\PN)$ denotes that for all marking $\mar_1$ such that $\mar_1(p) = \mar(p) \forall p \in \{p \mid \mar(p) \neq \omega\}$, there exists a marking $\mar_2$ in the reachability set of \PN such that $\mar_1 \prec \mar_2$.
-Notice also that an \omark always stands for one and only one downward closed set.
-Symmetrically, any downward closed set may be represented by a finite set of \omarks. \todo{Indeed...} \todo{See ... for a complete proof}
-
-This allow to represent any infinite downward closed set of markings by a unique finite set of \omarks.
+Having an \omark $\mar \in \Cover(\N)$ denotes that for all marking $\mar_1$ such that $\mar_1(p) = \mar(p) \forall p \in \{p \mid \mar(p) \neq \omega\}$, there exists a marking $\mar_2$ in the reachability set of \N such that $\mar_1 \prec \mar_2$.
+Notice also that, since $\downc(\mar)$ exists and is unique for all \omark \mar, an \omark always stands for one and only one downward closed set.
+Symmetrically, it is known that any downward closed set may be represented by a finite set of \omarks \citep{Geeraerts06}. \todo{Indeed...}
 
 An upward closed set is always infinite.
-It can be effectively represented through its unique set of minimal elements whose it is the upward closure \todo{citep\{someone\}}.
-This is a direct consequence of the \todo{someone} lemma:
-\todo{Someone's lemma: every set of tuple has finitely many minimal elements.}
-Moreover this reprenstation is effective in the sense that the set may be manipulated through it.
-\todo{cite\{someone\}} give the way to perform the operations on upward closed sets through their minimal elements.
+It can be effectively represented through its unique set of minimal elements whose it is the upward closure:
+\begin{lemm}
+  For all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, its set of minimal element $\Min(U) = \{\mar \in U \mid \nexists \marp \in U : \marp \prec \mar\}$ is such that $\upc(\Min(U)) = U$.
+\end{lemm}
+
+The following lemma ensure that this set is finite:
+\begin{lemm}[Dickson's lemma]
+  For all $c \in \mathbb{N}$, every set of $c$-tuples of natural numbers have finitely many minimal elements.
+\end{lemm}
+This result may easily be extended to $c$-tuples of values from any ordered countable set.
+
+Moreover, this representation is effective in the sense that the set may be manipulated through it.
+\cite{Ganty09} gives a way to perform the operations on upward closed sets through their minimal elements.
 
 \subsection{A general backward algorithm}
 
 There exists a simple way to solve the coverability problem for all the examples of \acp{WSTS} above mentioned.
 This algorithm was introduced by Abdulla \lang{et al.} \citep{Abdulla96}.
 It is close of the one introduced earlier in \cite{Finkel90}.
-Even if we do not see how to use it in the context of \ac{PPN}, we mention it here because it helps to grasp, by comparison with the Karp and Miller algorithm presented in the following section, where does lie the difficulties of the coverability problem.
+%Even if we do not see how to use it in the context of \ac{PPN}, we mention it here because it helps to grasp, by comparison with the Karp and Miller algorithm presented in the following section, where does lie the difficulties of the coverability problem.
 
 Relying on the definition~\ref{defi:upclocovprblm} of the coverability problem, given an upward-closed set of markings $U$, the algorithm computes $\Pre^*(U)$ by iterating the $\Pre$ operator.
-The termination and correction of the algorithm were proven in \todo{cite\{someone\}}.
+\todo{The termination and correction of the algorithm were proven in cite{Abdulla96}. (check it)}
 The termination is ensured by the existence of a fixed point in the sequence of upward closed set of markings $(R_i)_{i \geq 0}$:
 \begin{gather*}
   R_0 = U \\
@@ -157,10 +164,10 @@ The termination is ensured by the existence of a fixed point in the sequence of 
 \end{gather*}
 When this fixed point is reached, we have $\Pre^*(U)$.
 If $\mari \in \Pre^*(U)$, one can conclude positively.
-The result is negative otherwise.
+Otherwise, the result is negative.
 
 This approach is elegant and general, but often inefficient in practice.
-It is well known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \todo{citep\{someone\}}.
+It is well-known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \citep{Henzinger98}.
 We now present a forward algorithm, but whose the application is restricted to \ac{PN}.
 
 \subsection{The Karp and Miller algorithm}
@@ -169,19 +176,19 @@ Although it was not originally designed for this purpose, the Karp and Miller al
 More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensures the termination.
 
 \begin{defi}[Coverability tree]
-  Given a \ac{PN} $\PN = \PTm$, a coverability tree $\mathcal{T}$ of \PN is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
+  Given a \ac{PN} $\N = \PTm$, a coverability tree $\mathcal{T}$ of \N is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
   \begin{itemize}
-    \item $N$ is the set of nodes of the tree.%, is a set of \omark of \PN such that $\downc(N) = \Cover(\PN)$.
+    \item $N$ is the set of nodes of the tree.%, is a set of \omark of \N such that $\downc(N) = \Cover(\N)$.
     \item $n_0 \in N$ is the root of the tree, \lang{i.e.} $\nexists n \in N$ such that $(n, n_0) \in B$.
-    \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node a \textomega-marking of \PN.
+    \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node a \textomega-marking of \N.
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
         \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$,
         \item for all node $n \in N \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i \geq 1$, and
-        \item there is no cycles, that is, there is no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
+        \item there are no cycles, that is, there are no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
       \end{itemize}
   \end{itemize}
-  and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\PN)$.
+  and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\N)$.
 \end{defi}
 
 To keep $N$ finite, the Karp and Miller algorithm exploits the strong monotonicity of \acp{PN} to introduce \omark{}s through an \emph{acceleration function} $\KMAcc$.
@@ -199,23 +206,30 @@ We denote by $\mathscr{T}_n$ the path in the tree from the root to $n$.
 The algorithm constructs the tree $\mathcal{T}$ as follows:
 The root $n_0$ of the tree is labelled with \mari.
 A frontier $F$ is defined to be the set of unprocessed nodes of the tree and is initialised to $\{n_0\}$.
-Then, while $F$ is non empty, a node $n$ is chosen from $F$ to be processed:
-it is removed from $F$ and, if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark in $\{\KMAcc(\mar, \mathscr{T}_n) \mid \mar \in \Post(\Lambda(n))\}$, a node labelled with $\KMAcc(\mar, \mathscr{T}_n)$ is added to the frontier and to the tree as a child of $n$.
+Then, while $F$ is non-empty, a node $n$ is chosen from $F$ to be processed:
+it is removed from $F$, and if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark in $\{\KMAcc(\mar, \mathscr{T}_n) \mid \mar \in \Post(\Lambda(n))\}$, a node labelled with $\KMAcc(\mar, \mathscr{T}_n)$ is added to the frontier and to the tree as a child of $n$.
 
 The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
-The Karp and Miller tree has a lot of convenient properties, and allows to answer coverability problem. \todo{as well as ...}
-Furthermore, the Karp and Miller algorithm can easily be adapted to some parametric problems \cite{David17}, as we will show in \todo{section~?}.
+The Karp and Miller tree has a lot of convenient properties that allow, among other, to answer the coverability problem as well as the simultaneous place unboundedness problem.
+
+\begin{defi}[Simultaneous place unboundedness]
+  Let \NPTm be a marked \ac{PN}.
+  Given a set of place $Q \subseteq P$, \N is said $Q$-simultaneous unbounded if and only if for any $c \in \mathbb{N}$ there exists \mar such that $\mari \fire* \mar$ and $\forall p \in Q : \mar(p) \geq c$.
+\end{defi}
+
+Furthermore, the Karp and Miller algorithm can easily be adapted to some parametric problems \cite{David17}, as we will show in \autoref{sec:preliminaries-ppn}.
 
 However, this tree, although finite, is often much larger than the minimal coverability set, and cannot be constructed in reasonable time.
-As a consequence, many improvement were proposed, as well as other algorithms with different approaches.
+As a consequence, many improvements were proposed, as well as other algorithms with different approaches.
 
-\subsection{An efficient computation method of the coverability set of Petri nets}
+\subsection{Geeraerts method}
 \label{sec:eff}
 
-In \cite{Geeraerts07thesis, Geeraerts07}, Geeraerts proposes another approach to the computation of the coverability set.
+This is usually called ``an efficient computation method of the coverability set of \acp{PN}''.
+It was proposed in \cite{Geeraerts07thesis, Geeraerts07} as another approach to the computation of the coverability set.
 It is not based on the Karp and Miller algorithm and is not an alternative to it in the sense that it does not allow to answer the same set of questions than the Karp and Miller tree answers.
-However, this technique solve the coverability problem more efficiently in practice.
+However, this technique solves the coverability problem more efficiently in practice.
 
 As in the Karp and Miller algorithm, an acceleration function exploits the strong monotonicity of \acp{PN} to allow termination.
 But here, the acceleration of a marking is performed with only one marking as the base (instead of a set of marking).
@@ -223,14 +237,12 @@ But here, the acceleration of a marking is performed with only one marking as th
 To choose the base to use, the algorithm works on pair of \omarks.
 These pairs allow to record a relationship between the markings.
 More precisely, the algorithm constructs a pair of \omarks $(\mar_1, \mar_2)$ only if $\downc(\mar_2) \subseteq \downc(\Post^*(\mar_1))$.
-This relationship is of interest because it ensures that there exists a sequence $\sigma$ of transitions such that $\mar_1 \fire\sigma \mar_2$.
-If, in addition, $\mar_1 \prec \mar_2$, we know than an acceleration may occur.
 
 To reduce the size of the set of pairs of \omarks, only the pairs where the difference (as defined below) between $\mar_1$ and $\mar_2$ is maximal are kept.
 This will be the purpose of the order $\sqsubseteq$ we will define and it is justified by the intuitive idea that two more distant markings produce larger accelerations.
 Therefore, if the algorithm builds a pair $(\mar_1, \mar_2)$, it can forget about any other ($\sqsubseteq$-comparable) pair whose the elements are closer because
 \begin{itemize}
-  \item by monotonicity, all potential successor of the elements of this pair will be covered by successor of $\mar_1$ or $\mar_2$, and
+  \item by monotonicity, all potential successors of the elements of this pair will be covered by successors of $\mar_1$ or $\mar_2$, and
   \item any acceleration that can be created from this pair is covered by an acceleration one can build from $(\mar_1, \mar_2)$.
 \end{itemize}
 
@@ -250,28 +262,28 @@ With $R$ a set of pair of markings, we define:
   \item $\Flatten(R) = \{\mar \mid \exists \marp : (\marp, \mar) \in R\}$
 \end{itemize}
 
-The efficient computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\PN) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\PN$ we have:
+The efficient computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\N) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\N$ we have:
 \begin{gather*}
   V_0 = \{(\mari, \mari)\} \text{ and } \\
   \forall i \geq 1 : V_i = V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1})
 \end{gather*}
 
-One can shows that,
+One can show that,
 first, for all node $n$ of the Karp and Miller tree, there exists a value $k \geq 0$ of $i$ such that $\Lambda(n) \in \Flatten(V_k)$,
-second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \PN.
+second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \N.
 \todo{Indeed...}
 
-These two results lead us to the following lemma:
+These two results lead to the following lemma:
 \begin{lemm}[\cite{Geeraerts07}]
-  Given a marked \ac{PN} \PN such that $\CovSeq(\PN) = (V_i)_{i \geq 0}$,
+  Given a marked \ac{PN} \N such that $\CovSeq(\N) = (V_i)_{i \geq 0}$,
   there exists $k \geq 0$ such that for all $l \in \{0, ..., k-1\}$ we have that $\downc(\Flatten(V_l)) \subset \downc(\Flatten(V_{l+1}))$
-  and for all $l \geq k : \downc(\Flatten(V_l)) = \Cover(\PN)$.
+  and for all $l \geq k : \downc(\Flatten(V_l)) = \Cover(\N)$.
 \end{lemm}
 
 Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc(\Flatten(V_l)) = \downc(\Flatten(V_{l-1}))$ and to return $\downc(\Flatten(V_l))$.
 
-To perform it efficiently, one can use a well-chosen order $\sqsubseteq$ on the pair of markings to keep only the highest pairs with respect to this order.
-Intuitively, they are the pair with the more distant elements.
+To perform it efficiently, one can use a well-chosen order $\sqsubseteq$ on the pair of markings.
+This order intents to sort the pairs of markings according to the distance in between, and is used to keep only ``the more distant'' pairs.
 Let us denote by $\ominus$ the componentwise difference between two markings and to extend it to \omarks.
 Formally, given two \omarks $\mar_1$ and $\mar_2$ on a set of places $P$, $(\mar_1 \ominus \mar_2)(p)$ is defined for all $p \in P$ as:
 \[
@@ -296,74 +308,74 @@ Given two pairs $(\mar_1, \mar_2)$ and $(\marp_1, \marp_2)$ of \omarks over a se
 For a set of pair of \omarks $R$, $\Maxs(R) = \{ r \in R \mid \nexists r' \in R, r \sqsubseteq r'\}$ is the set of highest \omark of $R$ with respect to $\sqsubseteq$.
 
 This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
-Thus, one can compute $\Cover(\PN)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
+Thus, one can compute $\Cover(\N)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
 \begin{gather*}
   V_0 = \{(\mari, \mari)\} \text{ and } \\
   \forall i \geq 1 : V_i = \Maxs(V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1}))
 \end{gather*}
 
-At the end, we have that $\downc(\Flatten(V_i)) = \Cover(\PN)$.
+At the end, we have that $\downc(\Flatten(V_i)) = \Cover(\N)$.
 
-The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ are presented in \cite{Geeraerts07, Ganty09}.
+The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ can be found in \cite{Geeraerts07, Ganty09}.
 
 \subsection{The \ac{EEC} algorithm}
 \label{sec:eec}
 
 \ac{EEC}, introduced in \cite{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \ac{PN}.
-We present it restricted to this context, but it may be used for a wide range of well structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strong monotonicity, of these models.
+We present it restricted to this context, but it may be used for a wide range of well-structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strong monotonicity, of these models.
 
 The idea is to compute and refine simultaneously an over- and an under-approximation of the covering set of the \ac{PN} until one or the other allows to conclude.
 
 The under-approximation is computed as follows:
-We define $(C_i)_{i \geq 0}$ to be the sequence of finite set of markings holding no more than $i$ tokens in each places (plus \mari):
+We define $(C_i)_{i \geq 0}$ to be the sequence of finite set of markings holding no more than $i$ tokens in each place (plus \mari):
 \[
   \forall i \in \mathbb{N} : C_i = \{0, ..., i\}^{|P|} \cup \{\mari\}
 \]
-At step $i$, the algorithm computes $\Sous(\PN, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \PN restricted to the markings of $C_i$, \lang{i.e.} $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
-The under-approximation sought is the set of markings reachable through $\sousrel$ from \mari and is denoted $\R(\Sous(\PN, C_i))$.
+At step $i$, the algorithm computes $\Sous(\N, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \N restricted to the markings of $C_i$, \lang{i.e.} $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
+The under-approximation sought is the set of markings reachable through $\sousrel$ from \mari and is denoted $\R(\Sous(\N, C_i))$.
 
 At step $i$, the algorithm also uses $L_i$ from the sequence $(L_i)_{i \geq 0}$ of finite set of \omarks such that $L_i = \{0, ..., i, \omega \}^{|P|} \cup \{\mari\}$.
 That is, $L_i$ contains all the markings with at most $i$ tokens in any place, or $\omega$ (plus \mari).
-This set is used to constructs the graph $\Sur(\PN, C_i)$ defined as the graph $\langle L_i, \mari, \surrel \rangle$ where $(\mar_1, \mar_2) \in \surrel$ if, and only if:
+This set is used to construct the graph $\Sur(\N, C_i)$ defined as the graph $\langle L_i, \mari, \surrel \rangle$ where $(\mar_1, \mar_2) \in \surrel$ if, and only if:
 \begin{itemize}
   \item either $\mar_1 \rightarrow \mar_2$,
   \item either $\mar_1 \rightarrow \marp_2, \marp_2 \notin L_i, \marp_2 \preceq \mar_2, \text{ and } \nexists \marpp_2 \in L_i \text{ such that } \marp_2 \prec \marpp_2 \prec \mar_2$.
 \end{itemize}
 In other words: if $\mar_2 \notin L_i$, it is replaced by the lowest marking of $L_i$ which over-approximate it.
 Note that this is an \omark which exists and is unique. \todo{Indeed...}
-The over-approximation, then, is the set of markings of $L_i$ reachable through $\surrel$ from \mari. It is denoted $\R(\Sur(\PN, L_i))$.
+Then the over-approximation is the set of markings of $L_i$ reachable through $\surrel$ from \mari. It is denoted $\R(\Sur(\N, L_i))$.
 
 We can say that they are under- and over-approximations thanks to the following lemmata:
 \begin{lemm}[Under-approximation \cite{Ganty09}]
-  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \R(\Sous(\PN,C_i)) \cap U \neq \emptyset \Rightarrow \Post^*(\mari) \cap U \neq \emptyset$.
+  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \R(\Sous(\N,C_i)) \cap U \neq \emptyset \Rightarrow \Post^*(\mari) \cap U \neq \emptyset$.
 \end{lemm}
 \begin{lemm}[Over-approximation \cite{Ganty09}]
-  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \downc(\R(\Sur(\PN,L_i))) \cap U = \emptyset \Rightarrow \Post^*(\mari) \cap U = \emptyset$.
+  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \downc(\R(\Sur(\N,L_i))) \cap U = \emptyset \Rightarrow \Post^*(\mari) \cap U = \emptyset$.
 \end{lemm}
 
 One can prove that one of the conditions mentioned in the lemmata will eventually happen.
 This ensures the termination of the algorithm.
 
-Indeed, let $S$ be the set of markings we wants to cover and let $U$ be $\upc(S)$.
+Indeed, let $S$ be the set of markings we want to cover and let $U$ be $\upc(S)$.
 If $U$ is reachable, we will eventually get a $C_i$ that contains all the markings of a path from $\mari$ to $U$.
-As this path will be present in $\Sous(\PN, C_i)$, we will have that $\R(\Sous(\PN,C_i)) \cap U \neq \emptyset$.\\
-Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the cover set of \PN.
-Such a $j$ exists and we have that $\downc(\R(\Sur(\PN,L_j))) = \Cover(\PN)$.
-Thus we know that $\downc(\R(\Sur(\PN,L_i))) \cap U = \emptyset$ will eventually happen for a $i \leq j$.
+As this path will be present in $\Sous(\N, C_i)$, we will have that $\R(\Sous(\N,C_i)) \cap U \neq \emptyset$.\\
+Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the cover set of \N.
+Such a $j$ exists, and we have that $\downc(\R(\Sur(\N,L_j))) = \Cover(\N)$.
+Thus, we know that, for a negative instance of the problem, $\downc(\R(\Sur(\N,L_i))) \cap U = \emptyset$ will eventually happen for an $i \leq j$.
 
 
 \removed{A backward algorithm \citep{Finkel90, Abdulla96}}
 %\subsection{A backward algorithm \citep{Finkel90, Abdulla96}}
 %
-%We will now present an algorithm to solve the coverability problem for a marking \mar of a \ac{PN} $\PN = \PTm$.
+%We will now present an algorithm to solve the coverability problem for a marking \mar of a \ac{PN} $\N = \PTm$.
 %
-%This algorithm was introduced by Abdulla \lang{et al.} \cite{Abdulla96} for well structured transition systems, a more general class of models which includes \acp{PN}.
+%This algorithm was introduced by Abdulla \lang{et al.} \cite{Abdulla96} for well-structured transition systems, a more general class of models which includes \acp{PN}.
 %It is close of the one introduced earlier in \cite{Finkel90}.
 %
 %Recall the definition for a marking of being coverable.
 %\coverability*
 %
-%For convenience, we will use an other equivalent definition.
+%For convenience, we will use another equivalent definition.
 %
 %\begin{defi}[Coverability]
 %  Given an initialized \ac{PN} \NPTm and an upward-closed set $U$, $U$ is said coverable if there exists a marking \marp such that $\marp \in U$ and $\mari \fire{*} \marp$.
@@ -372,7 +384,7 @@ Thus we know that $\downc(\R(\Sur(\PN,L_i))) \cap U = \emptyset$ will eventually
 %By choosing $\upc(\mar)$ as $U$, these two definitions set out the same instance of the coverability problem.
 %With a set of markings considered in the first definition, $U$ may be the union of their upward-closure in the second.
 %
-%We say it is a backward algorithm in the sense that it is based on the computation of the set $\Pre^*(\mar)$ and answer by checking whether $\mari \in \Pre^*(\mar)$; unlike a forward approach which would have calculated the reachability set and conclude by checking whether \mar was in it. In other words, it compute all the configurations that can reach $U$ in any number of steps.
+%We say it is a backward algorithm in the sense that it is based on the computation of the set $\Pre^*(\mar)$ and answer by checking whether $\mari \in \Pre^*(\mar)$; unlike a forward approach which would have calculated the reachability set and conclude by checking whether \mar was in it. In other words, it computes all the configurations that can reach $U$ in any number of steps.
 %
 %The calculation is a fixed point algorithm that compute the increasing sequence, for the inclusion relation, of sets of markings: $(R_n)_{n \in \mathbb{N}}$, with $R_0 = U$ and $R_{n+1} = \Pre(R_n) \cup R_n$.
 %Thus, $R_n$ is the set of markings from which there exists a sequence of at most $n$ transitions which may be fired and that cover $U$.
