@@ -148,7 +148,8 @@ This result may easily be extended to $c$-tuples of values from any ordered coun
 Moreover, this representation is effective in the sense that the set may be manipulated through it.
 \cite{Ganty09} gives a way to perform the operations on upward closed sets through their minimal elements.
 
-\subsection{A general backward algorithm}
+\subsection{A general backward algorithm $\back$}
+\label{sec:backward-algorithm}
 
 There exists a simple way to solve the coverability problem for all the examples of \acp{WSTS} above mentioned.
 This algorithm was introduced by Abdulla \lang{et al.} \citep{Abdulla96}.
@@ -165,6 +166,7 @@ The termination is ensured by the existence of a fixed point in the sequence of 
 When this fixed point is reached, we have $\Pre^*(U)$.
 If $\mari \in \Pre^*(U)$, one can conclude positively.
 Otherwise, the result is negative.
+We call this algorithm $\back$.
 
 This approach is elegant and general, but often inefficient in practice.
 It is well-known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \citep{Henzinger98}.

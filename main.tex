@@ -33,7 +33,7 @@
 \setmathsf{CMU Sans Serif}
 \setmathtt{CMU Typewriter Text}
 
-% Pdf pages numbers
+% Pdf pages numbers and links
 \usepackage[
   unicode,
   breaklinks,
@@ -43,6 +43,10 @@
   pdfsubject={Formal verification},
   xetex
 ]{hyperref}
+% Edit \autoref texts
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+\renewcommand\subsectionautorefname{section}
+\renewcommand\subsubsectionautorefname{section}
 
 % Typesetting
 \usepackage{xspace}
@@ -163,6 +167,10 @@
 \DeclareMathOperator{\Sur}{Sur}
 \DeclareMathOperator{\downc}{\downarrow^\preceq}
 \DeclareMathOperator{\upc}{\uparrow^\preceq}
+\DeclareMathOperator{\back}{Back}
+\DeclareMathOperator{\covOp}{cov}
+\DeclareMathOperator{\EcovOp}{\mathscr{E}cov}
+\DeclareMathOperator{\UcovOp}{\mathscr{U}cov}
 
 % TMP
 % draft

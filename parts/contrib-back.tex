@@ -11,4 +11,51 @@ This will be a direction of our study.
 
 The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation may lead to a result about the \Ecov problem.
 
+\rule{5cm}{1pt}
+
+We will now give an adaptation of the general backward algorithm to solve the \Ucov problem on PostT-\ac{PPN}.
+
+This proves the decidability of this problem for this subclass of \ac{PPN}\todo{ Chack for no others proves and make this more apparent}.
+
+Remember that $\back$ denotes the fixed-point algorithm described in \autoref{sec:backward-algorithm}.
+The new algorithm may be described as follows:
+given an initialized \ac{PPN} \SPTPm and an upward-closed set of markings $U$, compute $\back(v_0(\PPN), U)$ where $v_0 : \mathbb{P} \mapsto \mathbb{N} : a \rightarrow 0 \forall a \in \mathbb{P}$ is a valuation that maps all the parameters to 0.
+
+The termination of the algorithm follows from the termination of $\back$.
+Intuitively, the correctness comes from the fact that $v_0$ is the worst valuation for the coverability problem.
+
+\begin{proof}
+  To prove the correctness of this algorithm is to prove that:
+  \[
+    \back(v_0(\PPN), U) = \top \Leftrightarrow \UcovOp(\PPN, U) = \top
+  \]
+
+$\UcovOp(\PPN, U) \Rightarrow \back(v_0(\PPN), U)$ is trivial. So we prove the other direction. Let us first rewrite the implication by applying the definition of $\back$: $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\PPN, U)$.
+
+%We may apply the defintion of $\back$ to the left-hand side, and the definition of $\UcovOp$ with the properties of $\back$ to the right-hand side to obtain:
+%\[
+%  \mari \in \Pre_{v_0}^*(U) \Leftrightarrow \mari \in \Pre_v^*(U) \forall v \in \{\mathbb{P} \mapsto \mathbb{N}\}
+%\]
+
+%\paragraph*{We prove that $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\PPN, U)$:}
+  We know that there exists a marking of $U$ reachable from \mari in $v_0(\PPN)$.
+  Let $\marp$ be such a marking and $\sigma$ be a sequence of transitions $\sigma = (t_1, \dots, t_{n-1})$ such that $\mari \fire{\sigma}_{v_0} \marp$.
+  Now observe that for all valuation $v\in \{\mathbb{P} \mapsto \mathbb{N}\}$, for all place $p \in P$, and for all transition $t \in T$: $\matI_{v_0(\PPN)}(p,t) = \matI_{v(\PPN)}(p,t)$ and $\matO_{v_0(\PPN)}(p,t) \leq \matO_{v(\PPN)}(p,t)$. This directly implies that: \todo{introduces Effect\_v}
+  \[
+    \forall v \in \{\mathbb{P} \mapsto \mathbb{N}\}, \forall p \in P, \forall t \in T :
+  \quad
+  \Effect_{v_0}(t)(p) \leq \Effect_v(t)(p)
+  \]
+
+By recurrence on the steps, this ensures that for any valuation $v$:
+  \begin{enumerate}
+    \item the sequence $\sigma$ is enabled \todo{introduce enabled for a seq of transitions } in $\mari$: $\mari \fire{t_1}_v \mar_1 \fire{t_2}_v \dots \fire{t_{n-1}} \mar_n$,
+    \item and the reached marking $\mar_n$ is greater or equal to $\marp$ according to $\preceq$: $\marp \preceq \mar_n$.
+  \end{enumerate}
+
+  Because $U$ is upward-closed and $\marp \in U$, we know that $\mar_n \in U$ as well and so $U$ is coverable for any valuation.
+\end{proof}
+
+\todo{illustration}
+
 % vim: set spell spelllang=en :
