@@ -2,8 +2,9 @@
 *.bak
 *~
 
-*-crop.pdf
-*-draft.pdf
+*-crop*.pdf
+*-draft*.pdf
+*-part*.pdf
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
