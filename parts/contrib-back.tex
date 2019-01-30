@@ -58,4 +58,33 @@ By recurrence on the steps, this ensures that for any valuation $v$:
 
 \todo{illustration}
 
+This adaptation of $\back$ may also be used to solve the \Ecov problem in the PreT-\ac{PPN} model.
+The idea is that, in this model, $v_0$ is the valuation that enables the most transitions and where the transitions produce the most tokens.
+Thus, we hope that if there exist a valuation that allows to cover $U$, $v_0$ will also allows to cover $U$.
+
+Formally we have to prove that, for any given \ac{PPN} \SPTPm and upward-closed set of markings $U$:
+  \[
+    \back(v_0(\PPN), U) = \top \Leftrightarrow \EcovOp(\PPN, U) = \top
+  \]
+
+\begin{proof}
+  $\back(v_0(\PPN), U) \Rightarrow \EcovOp(\PPN, U)$ is trivial.
+
+  By definition of \Ecov and $\back$, to prove that $\EcovOp(\PPN, U) \Rightarrow \back(v_0(\PPN), U)$ is to prove that
+  \[
+    \exists v \mid \mari \in \Pre^*_{v}(U) \Rightarrow \mari \in \Pre^*_{v_0}(U)
+  \]
+  \todo{Maybe write with parentheses?:}$ \left( \exists v \mid \mari \in \Pre^*_{v}(U) \right) \Rightarrow \mari \in \Pre^*_{v_0}(U) $
+
+  Suppose that such a $v$ exists. We have a marking $\marp \in U$ and a sequence of transitions $\sigma = (t_1, \dots, t_{n-1})$ such that $\mari \fire{\sigma}_v \marp$.
+
+  Once again let us compare the effect of the transitions in the \acp{PN} $v(\PPN)$ and $v_0(\PPN)$. Here, for any place $p$ and transition $t$: $\matI_{v(\PPN)}(p,t) \geq \matI_{v_0(\PPN)}(p,t)$ and $\matO_{v(\PPN)}(p,t) = \matO_{v_0(\PPN)}(p,t)$, that is all transitions produce the same amount of token than with the $v_0$ valuation but consume the same amount or more. So, if a marking enables a transition in $v(\PPN)$, it enables it in $v_0(\PPN)$ too. Moreover, $\Effect_v(t)(p) \leq \Effect_{v_0}(t)(p)$, thus, by recurrence on the transitions of $\sigma$, we have that:
+  \begin{enumerate}
+    \item $\mari \fire{t_1}_{v_0} \mar_1 \fire{t_2}_{v_0} \dots \fire{t_{n-1}}_{v_0} \mar_n$: the sequence $\sigma$ is enabled in $v_0$,
+    \item $\marp \preceq \mar_n$: and the reached marking $\mar_n$ is greater or equal to $\marp$ according to $\preceq$.
+  \end{enumerate}
+
+  Because $U$ is upward-closed and $\marp \in U$, we know that $\mar_n \in U$ as well and so $U$ is coverable for any valuation.
+\end{proof}
+
 % vim: set spell spelllang=en :
