@@ -5,6 +5,7 @@ In the case of PostT-\ac{PPN} and of the \Ecov problem, the idea would be to loo
 We have seen that, with a forward approach, one can consider only high valuations, that are better because they allow to cover more markings: the search from $\mari$ may go ``too far'' without being an issue.
 Here however a high valuation may lead to a premature stop in a backward search, because it restricts ``more quickly'' the set of transitions that is enabled at each step.
 In other words, contrary to forward approach, the backward approach has the deals with the 0 bound of the transition precondition. 
+\todo{examples}
 
 However, it may be the case that one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameter.
 This will be a direction of our study.
@@ -40,20 +41,20 @@ $\UcovOp(\PPN, U) \Rightarrow \back(v_0(\PPN), U)$ is trivial. So we prove the o
 %\paragraph*{We prove that $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\PPN, U)$:}
   We know that there exists a marking of $U$ reachable from \mari in $v_0(\PPN)$.
   Let $\marp$ be such a marking and $\sigma$ be a sequence of transitions $\sigma = (t_1, \dots, t_{n-1})$ such that $\mari \fire{\sigma}_{v_0} \marp$.
-  Now observe that for all valuation $v\in \{\mathbb{P} \mapsto \mathbb{N}\}$, for all place $p \in P$, and for all transition $t \in T$: $\matI_{v_0(\PPN)}(p,t) = \matI_{v(\PPN)}(p,t)$ and $\matO_{v_0(\PPN)}(p,t) \leq \matO_{v(\PPN)}(p,t)$, that is all transitions consume the same amount of token than with the $v_0$ valuation and produce at least the same amount. This directly implies that: \todo{introduces Effect\_v}
+  Now observe that for all valuations $v$ (from $\{\mathbb{P} \mapsto \mathbb{N}\}$), for all places $p \in P$, and for all transitions $t \in T$: $\matI_{v_0(\PPN)}(p,t) = \matI_{v(\PPN)}(p,t)$ and $\matO_{v_0(\PPN)}(p,t) \leq \matO_{v(\PPN)}(p,t)$, that is all transitions consume the same amount of token than with the $v_0$ valuation and produce at least the same amount. This directly implies that: \todo{introduces Effect\_v}
   \[
     \forall v \in \{\mathbb{P} \mapsto \mathbb{N}\}, \forall p \in P, \forall t \in T :
   \quad
   \Effect_{v_0}(t)(p) \leq \Effect_v(t)(p)
   \]
 
-By recurrence on the steps, this ensures that for any valuation $v$:
+The monotonicity property ensures that for any valuation $v$:
   \begin{enumerate}
     \item $\mari \fire{t_1}_v \mar_1 \fire{t_2}_v \dots \fire{t_{n-1}}_v \mar_n$: the sequence $\sigma$ is enabled \todo{introduce enabled for a seq of transitions } in $\mari$,
     \item $\marp \preceq \mar_n$: and the reached marking $\mar_n$ is greater or equal to $\marp$ according to $\preceq$.
   \end{enumerate}
 
-  Because $U$ is upward-closed and $\marp \in U$, we know that $\mar_n \in U$ as well and so $U$ is coverable for any valuation.
+  Because $U$ is upward-closed and $\marp \in U$, we know that $\mar_n \in U$ as well and so $U$ is coverable for any parameter valuation.
 \end{proof}
 
 \todo{illustration}
