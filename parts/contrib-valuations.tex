@@ -1,0 +1,21 @@
+First, when the parameters are restricted to the output arcs, a higher valuation leads to markings that are greater and thus more permissive (\lang{i.e.} that enable more transitions).
+
+\begin{theo}
+  Given a PostT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\EcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_*(\PPN), U) = \top\] where $v_* : \mathbb{P} \mapsto \mathbb{N} : a \rightarrow * \forall a \in \mathbb{P}$ is the valuation that maps every parameter to $*$.
+\end{theo}
+
+This was stated in \cite{David17} without a formal proof.
+$\covOp(v_*(\PPN), U) \Rightarrow \EcovOp(\PPN, U)$ is trivial.
+We therefore provides a proof for the other direction.
+
+\todo{notation: v of a parameter and v of a PPN}
+
+\begin{proof}
+  Let $v$ be a valuation of $\PPN$ such that $\covOp(v(\PPN)) = \top$.
+  If $v$ is $v_*$, we are done.
+
+  If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the proptety above: with $\mar \in U$, we have $\mari \fire{\sigma}_v \mar$.
+  Since that the number of transitions is finite and that parameters are resctricted to output arcs, it is easy to see that any other valuation $v'$ that maps each paramater $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
+  In particular, this implies that $\mari \fire{\sigma}_{v_*} \mar_2$ with $\mar \preceq \mar_2$.
+  Thus, because $\mar \in U$, we have $\mar_2 \in U$.
+\end{proof}

@@ -7,12 +7,13 @@ Here however a high valuation may lead to a premature stop in a backward search,
 In other words, contrary to forward approach, the backward approach has the deals with the 0 bound of the transition precondition. 
 \todo{examples}
 
-However, it may be the case that one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameter.
-This will be a direction of our study.
+%However, it may be the case that one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameter.
+%This will be a direction of our study.
+However, one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameters, and this will be the matter of our next proof.
 
-The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation may lead to a result about the \Ecov problem.
+The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation leads to a result about the \Ecov problem.
 
-\rule{5cm}{1pt}
+\subsection{Adapting the backward algorithm for \Ucov on PostT-\ac{PPN}}
 
 We will now give an adaptation of the general backward algorithm to solve the \Ucov problem on PostT-\ac{PPN}.
 
@@ -58,6 +59,8 @@ The monotonicity property ensures that for any valuation $v$:
 \end{proof}
 
 \todo{illustration}
+
+\subsection{Adapting the backward algorithm for \Ecov on PreT-\ac{PPN}}
 
 This adaptation of $\back$ may also be used to solve the \Ecov problem in the PreT-\ac{PPN} model.
 The idea is that, in this model, $v_0$ is the valuation that enables the most transitions and where the transitions produce the most tokens.

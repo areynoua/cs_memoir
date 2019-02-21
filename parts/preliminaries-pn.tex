@@ -112,7 +112,7 @@ They are useful to effectively represent potentially infinite downward-closed se
 \begin{defi}[\omark]
   We define $\omega$ to be such that:
   $\omega \notin \mathbb{N}$
-  and for all constant $c \in \mathbb{N}$:
+  and for any constant $c \in \mathbb{N}$:
   \begin{itemize}
     \item $c \leq \omega$
     \item $\omega + c = \omega$
@@ -253,7 +253,7 @@ To describe the algorithm more formally, we will need the following definitions:
 Given a pair of \omarks $(\mar_1, \mar_2)$, we define:
 \begin{itemize}
   \item $\Postb((\mar_1, \mar_2)) = \{(\mar_1, \marp), (\mar_2, \marp) \mid \marp \in \Post(\mar_2)\}$,
-  \item with $\mar_1 \prec \mar_2$, $\Accelb(\mar_1, \mar_2) = \{(\mar_2, \KMAcc(\{\mar_1\}, \mar_2))\}$.
+  \item and, with $\mar_1 \prec \mar_2$, $\Accelb(\mar_1, \mar_2) = \{(\mar_2, \KMAcc(\{\mar_1\}, \mar_2))\}$.
     $\Accelb(\mar_1, \mar_2)$ is not defined whenever $\mar_1 \nprec \mar_2$,
 \end{itemize}
 
@@ -264,7 +264,7 @@ With $R$ a set of pair of markings, we define:
   \item $\Flatten(R) = \{\mar \mid \exists \marp : (\marp, \mar) \in R\}$
 \end{itemize}
 
-The efficient computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\N) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\N$ we have:
+The computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\N) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\N$ we have:
 \begin{gather*}
   V_0 = \{(\mari, \mari)\} \text{ and } \\
   \forall i \geq 1 : V_i = V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1})

@@ -7,9 +7,9 @@ Namely,
 PreT-PPNs are \acp{PPN} where parameters are used only in $\matI$;
 PostT-PPNs are \acp{PPN} where parameters are used only in $\matO$.
 \cite{David17} provides an adaptation of the Karp and Miller Algorithm to solve the \Ucov problem on PreT-\acp{PPN}, and another to solve the \Ecov problem on PostT-\acp{PPN}.
-We will now present this two algorithms has they contain idea used in the sequel.
+We will now present this two algorithms has they contain ideas used in the sequel.
 
-\subsection{Karp and Miller algorithm for PostT-\ac{PPN}}
+\subsection{Karp and Miller algorithm for \Ecov on PostT-\ac{PPN}}
 
 The adaptation of the Karp and Miller algorithm to solve the \Ecov problem on PostT-\acp{PPN} is the result of one key observation.
 In a PostT-\ac{PPN}, a place may contains an arbitrary large number of tokens either because of the presence of a self-covering increasing sequence, as in a plain \ac{PN}, or because of an arbitrary large valuation.
@@ -51,7 +51,7 @@ Intuitively, the second case formalise the idea that one can remove some tokens 
 
 Keeping in mind that we are looking for the existence of a valuation, as large as it may be, that allows to cover a (set of) marking(s) of the \ac{PPN} \PPN, one can now perform the Karp and Miller algorithm, with the adapted acceleration function, on the plain \ac{PN} $v(\PPN)$ where $v$ is the $*$-valuation that maps every parameter to $*$.
 
-\subsection{Karp and Miller algorithm for PreT-\ac{PPN}}
+\subsection{Karp and Miller algorithm for \Ucov on PreT-\ac{PPN}}
 
 Here is a symmetrical situation.
 The parameters are used to indicate the number of tokens required for transitions to fire, and we want to determine if a (set of) marking(s) is coverable for all the possible valuations of the parameters, as large as they may be.
