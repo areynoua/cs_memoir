@@ -47,7 +47,10 @@ def push(c) :
 
 def pop(c) :
     print_messages()
-    stack.pop()
+    try:
+        stack.pop()
+    except IndexError :
+        print("ERROR in texout script")
     return None
 
 def message(c) :
