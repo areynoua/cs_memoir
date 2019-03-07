@@ -1,21 +1,96 @@
-First, when the parameters are restricted to the output arcs, a higher valuation leads to markings that are greater and thus more permissive (\lang{i.e.} that enable more transitions).
+We present four theorem that basically come from the fact that
+higher valuations on output arcs and lower valuations on input arcs lead to greater markings and, to the contrary,
+lower valuations on output arcs and higher valuations on input arcs restrict the covering set $\Post^*(\mari)$ set.
 
+First, when the parameters are restricted to the output arcs, a higher valuation leads to markings that are greater and thus more permissive (\lang{i.e.} that enable more transitions).
+Going further, we can state the following theorem:
 \begin{theo}
-  Given a PostT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\EcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_*(\PPN), U) = \top\] where $v_* : \mathbb{P} \mapsto \mathbb{N} : a \rightarrow * \forall a \in \mathbb{P}$ is the valuation that maps every parameter to $*$.
+  \label{theo:post-star-val}
+  Given a PostT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\EcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_*(\PPN), U) = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
 \end{theo}
 
 This was stated in \cite{David17} without a formal proof.
 $\covOp(v_*(\PPN), U) \Rightarrow \EcovOp(\PPN, U)$ is trivial.
-We therefore provides a proof for the other direction.
+We therefore provide a proof for the other direction.
 
 \todo{notation: v of a parameter and v of a PPN}
 
 \begin{proof}
-  Let $v$ be a valuation of $\PPN$ such that $\covOp(v(\PPN)) = \top$.
+  Let $v$ be a *-valuation of $\PPN$ such that $\covOp(v(\PPN), U) = \top$.
   If $v$ is $v_*$, we are done.
 
-  If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the proptety above: with $\mar \in U$, we have $\mari \fire{\sigma}_v \mar$.
-  Since that the number of transitions is finite and that parameters are resctricted to output arcs, it is easy to see that any other valuation $v'$ that maps each paramater $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
+  If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the property above: with $\mar \in U$, we have $\mari \fire{\sigma}_v \mar$.
+  Since that the n'umber of transitions is finite and that parameters are restricted to output arcs, it is easy to see that any other valuation $v'$ that maps each parameter $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
   In particular, this implies that $\mari \fire{\sigma}_{v_*} \mar_2$ with $\mar \preceq \mar_2$.
   Thus, since $\mar \in U$ and $U$ is upward-closed, we have $\mar_2 \in U$.
 \end{proof}
+
+Second, on PostT-\acp{PN}, a lower valuation leads to markings that are lower and thus less permissive.
+This leads us to this theorem:
+\begin{theo}
+  \label{theo:post-zero-val}
+  Given a PostT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\UcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_0(\PPN), U) = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
+\end{theo}
+
+\(\UcovOp(\PPN, U) = \top \Rightarrow \covOp(v_0(\PPN), U) = \top\) is trivial.
+The reasoning to prove the other direction is similar to the proof given for the \autoref{theo:post-star-val}.
+
+\begin{proof}
+  Let $\sigma$ be such that $\mari \fire{\sigma}_{v_0} \mar$ with $\mar \in U$.
+  We prove that for any valuation $v$, $\mari \fire{\sigma}_v \marp$ with $\marp \in U$.
+
+  Because the parameters are bound to the output arcs and since the codomain of a valuation is $\mathbb{N}$, for any transition $t$ and any marking $\mar_1$ of $\PPN$, $\mar_1 \fire{\sigma}_{v_0} \mar_2$ implies that:
+  \begin{enumerate}
+    \item $t$ is enabled in $\mar_1$ in any valuation $v$: $\mar_1 \fire{t}_v \mar_3$ (because the firing condition is left unchanged), and
+    \item $t$ leads to a greater marking according to $\preceq$: $\mar_2 \preceq \mar_3$.
+  \end{enumerate}
+
+  By monotonicity of \acp{PN}, this apply to a sequence of transition too.
+  Thus, $\mari \fire{\sigma}_v \marp$.
+  And since $U$ is upward-closed, $\marp \in U$.
+\end{proof}
+
+On the other hand, the values of the input arcs define not only the number of tokens that are removed but also the firing condition and thus the increase in these values restricts the set of firable transitions and ultimately the covering set.
+
+\begin{theo}
+  \label{theo:pre-star-val}
+  Given a PreT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\UcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_*(\PPN), U) = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
+\end{theo}
+
+\begin{proof}
+  $\UcovOp(\PPN, U) \Rightarrow \covOp(v_*(\PPN), U)$ is trivial.
+
+  To prove that $\covOp(v_*(\PPN), U) \Rightarrow \UcovOp(\PPN, U)$, let $\sigma$ be a sequence of transitions such that $\mari \fire{\sigma}_{v_*} \mar_*$ with $\mar_* \in U$.
+  Let $t$ be the first transition of $\sigma$.
+  Since $\forall c \in \mathbb{N}, c < *$, we see that:
+  \begin{itemize}
+    \item for any valuation $v$, $t$ is enabled in $\mari$: $\mari \fire{t}_{v}$, and
+    \item for any valuation $v$, any marking $\mar', \mar'' \text{ and } \mar''_*$ and any transition $t'$ such that $\mar' \fire{t'}_{v_*} \mar''_*$ and $\mar' \fire{t'}_v \mar''$ we have: $\mar''_* \preceq \mar''$.
+  \end{itemize}
+
+  Thus, by monotonicity of \acp{PN}, $\sigma$ is enabled in \mari for any valuation $v$ and, with $\mari \fire{\sigma}_v \mar$, we have $\mar_* \preceq \mar$.
+  And since $U$ is upward-closed, $\mar \in U$.
+\end{proof}
+
+Finally, regarding values of input arcs, the smallest values are the best to reach high markings:
+
+\begin{theo}
+  \label{theo:pre-zero-val}
+  Given a PreT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\EcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_0(\PPN), U) = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
+\end{theo}
+
+\begin{proof}
+  $\covOp(v_0(\PPN), U) \Rightarrow \EcovOp(\PPN, U)$ is trivial.
+
+  To prove that $\EcovOp(\PPN, U) \Rightarrow \covOp(v_0(\PPN), U)$, let $v$ be a valuation that allows to cover $U$ and $\sigma$ be a sequence of transitions such that $\mari \fire{\sigma}_v \mar$ with $\mar \in U$.
+  Note that:
+  \begin{itemize}
+    \item all transition of \PPN enabled in a marking under any valuation are enabled in this marking under the valuation $v_0$, and
+    \item for any valuation $v'$, any marking $\mar', \mar'' \text{ and } \mar''_{v_0}$ and any transition $t'$ such that $\mar' \fire{t'}_{v_0} \mar''_{v_0}$ and $\mar' \fire{t'}_{v'} \mar''$ we have: $\mar'' \preceq \mar''_{v_0}$.
+  \end{itemize}
+
+  Thus, using these observations on $\sigma$, and by monotonicity of \acp{PN}, we see that $\sigma$ is enabled in \mari under $v_0$ and, with $\mari \fire{\sigma}_{v_0} \mar_{v_0}$, we have $\mar \preceq \mar_{v_0}$.
+  Since $U$ is upward-closed, $\mar \in U$.
+\end{proof}
+
+These different results in hand, it will be easier to give the following adaptations of known algorithms to the parametric coverability problems.
