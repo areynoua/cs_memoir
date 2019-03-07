@@ -16,4 +16,7 @@
 :inoremap algos<space> algorithms<space>
 :inoremap ITE \begin{itemize}o\end{itemize}O\item<space>
 :inoremap ENU \begin{enumerate}o\end{enumerate}O\item<space>
+:inoremap THEO \begin{theo}o\end{theo}O\label{}itheo:
 :inoremap -<space><space> \item<space>
+
+:set spell spelllang=en

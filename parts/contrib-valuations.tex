@@ -17,5 +17,5 @@ We therefore provides a proof for the other direction.
   If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the proptety above: with $\mar \in U$, we have $\mari \fire{\sigma}_v \mar$.
   Since that the number of transitions is finite and that parameters are resctricted to output arcs, it is easy to see that any other valuation $v'$ that maps each paramater $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
   In particular, this implies that $\mari \fire{\sigma}_{v_*} \mar_2$ with $\mar \preceq \mar_2$.
-  Thus, because $\mar \in U$, we have $\mar_2 \in U$.
+  Thus, since $\mar \in U$ and $U$ is upward-closed, we have $\mar_2 \in U$.
 \end{proof}
