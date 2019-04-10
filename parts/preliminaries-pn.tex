@@ -1,40 +1,19 @@
-We now present the results related to the coverability problem on the plain \acp{PN} which seem to us the most interesting.
-
+%% Intro
+We now present the results related to the coverability problem on the plain \acp{PN} that we think are the most interesting.
 To introduce these results, we need some additional definitions.
 They will be given for plain \acp{PN}, but most of them are naturally extended to \acp{PPN}.
 
-A \emph{coverability set} of an initialized \ac{PN} is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
-In order to define it formally, we need to know about the upward and downward closure of a (set of) marking(s).
+%% Covering set informal
+Given an initialized \ac{PN} \N, the \emph{covering set} of \N is the set of markings covered by at least one reachable marking of \N.
+It is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
 
-\begin{defi}[Upward- and downward-closure on markings]
-  Let $S \subseteq \mathbb{N}^{|P|}$ be a set of markings on the places $P$:
-  \begin{itemize}
-    \item The \emph{upward-closure} of $S$, noted $\upc(S)$, is the set
-      $\{\mar \in \mathbb{N}^{|P|} \mid \exists \marp \in S : \marp \preceq \mar\}$,
-    \item The \emph{downward-closure} of $S$, noted $\downc(S)$, is the set
-      $\{\mar \in \mathbb{N}^{|P|} \mid \exists \marp \in S : \mar \preceq \marp\}$.
-  \end{itemize}
-  The closure of a marking \mar is the closure of the singleton $\{\mar\}$.
-\end{defi}
-
-For instance, with $\mar = (1, 2, 3)$, we have that its upward-closure is $\upc(\mar) = \{(i, j, k) \mid i \geq 1, j \geq 2, k \geq 3\}$.
-
-\begin{defi}[Upward- and downward-closed set of markings]
-  A set $S$ of markings is said \emph{upward-closed} if $S = \upc(S)$.
-  It is said \emph{downward-closed} if $S = \downc(S)$.
-\end{defi}
-
-\begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
-  Given an initialized \ac{PN} $\N = \PTm$, a \emph{coverability set} $S$ of \N is a set of markings such that $\downc(S) = \downc(\Post^*(\mari))$.
-\end{defi}
-
-Obviously, the minimal coverability set is $\downc(\Post^*(\mari))$.
-It is called the \emph{covering set} of \N and is noted $\Cover(\N)$.
-
+%% Covering set formal
 \begin{defi}[Covering set]
-  Let $\N = \PTm$ be an initialized \ac{PN}. The \emph{covering set} $S$ of \N, noted $\Cover(\N)$, is the set $\{c \mid \exists c' \in \Post^*(\N) : c \leq c' \}$.
+  Let $\N = \PTm$ be an initialized \ac{PN}.
+  The \emph{covering set} $S$ of \N, noted $\Cover(\N)$, is the set $\{c \mid \exists c' \in \Post^*(\N) : c \preceq c' \}$.
 \end{defi}
 
+%% Covering set picture
 \begin{figure}[htbp]
   \label{fig:reach-and-cover-example}
   \centering
@@ -49,34 +28,28 @@ It is called the \emph{covering set} of \N and is noted $\Cover(\N)$.
     \input{res/two-reach}
 
   }\qquad
-  \subfloat[The cover set]{
+  \subfloat[The covering set]{
     \label{fig:two-cover}
     \input{res/two-cover}
 
   }
-  \caption{Reachability and minimal coverability sets}
+  \caption{Reachability and covering sets}
 \end{figure}
 
 The figure~\ref{fig:two-net} shows a marked \ac{PN} with two places.
 One can therefore represents the markings as points on a plane.
 The figure~\ref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
-In~\ref{fig:two-cover} we see the minimal coverability set.
+In~\ref{fig:two-cover} we see the covering set.
 
-It is worth noticing that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
-\begin{defi}[Coverability problem]
-  \label{defi:upclocovprblm}
-  Given a \ac{PN} \N and an upward-closed set $U = \upc(S)$ of markings of \N, detemine whether $\Post^*(\mari) \cap U = \emptyset$.
-\end{defi}
-
+%% Unbounded places informal and self-covering sequence formal
 Sometimes the number of tokens in a place is unbounded (\lang{c.f.} the place boundedness problem).
-Therefore, the reachability and coverability sets are infinite.
 In a plain \ac{PN}, this is due to the existence of an increasing self-covering sequence.
 \begin{defi}[Self-covering sequence]
   Given an initialized \ac{PN} $\N = \PTm$,
   a self-covering sequence is a sequence of the form:
-  \[
+  \(
     \mari \fire{\rho} \mar_i \fire{\sigma} \mar_j
-  \]
+  \),
   with $\rho$ and $\sigma$ two sequences of transitions of $T$
   and with $\mar_i \preceq \mar_j$.
 \end{defi}
@@ -84,15 +57,16 @@ In a plain \ac{PN}, this is due to the existence of an increasing self-covering 
 Note that, since $\mar_i \preceq \mar_j$, $\sigma$ is firable from $\mar_j$.
 In addition, the monotonicity of \acp{PN} ensures that, with $\marp_j$ given by $\mar_j \fire{\sigma} \marp_j$, we have $\mar_j \preceq \marp_j$.
 Thus, we see that it is a sufficient condition for the \emph{non-termination} of the system (the system may be able to fire transitions infinitely often).
-In fact, because $\preceq$ is a well quasi-order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\mari \fire{} \mar_1 \fire{} \dots$ two markings $\mar_i$ and $\mar_j$ such that $\mar_i \preceq \mar_j$.
+In fact, because $\preceq$ is a well quasi-order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\mari \fire{} \mar_1 \fire{} \dots$ two markings $\mar_i$ and $\mar_j$ such that $\mar_i \preceq \mar_j$. \todo{take proof from mini-memoir.}
 Therefore, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
 
+%% Increasing self-covering sequence formal
 \begin{defi}[Increasing self-covering sequence]
   Given an initialized \ac{PN} $\N = \PTm$,
   an increasing self-covering sequence is a sequence of the form:
-  \[
+  \(
     \mari \fire{\rho} \mar_i \fire{\sigma} \mar_j
-  \]
+  \),
   with $\rho$ and $\sigma$ two sequences of transitions of $T$
   and with $\mar_i \prec \mar_j$.
 \end{defi}
@@ -106,9 +80,10 @@ The unboundedness of the places in $Q$ follows.
 \cite{David17} provides a complete proof.
 \todo{A more formal proof that the existence of an increasing self-covering sequence is a necessary and sufficient condition for unboundedness on places is either to be done here or to be referenced.}
 
+%% omark informal
 An \omark is a way to represent a set of markings which have the same number of tokens in some places, and may have any number of tokens, potentially an infinity, in the other places.
-They are useful to effectively represent potentially infinite downward-closed set, like a coverability set or the sets of markings of an increasing self-covering sequence.
 
+%% omark formal
 \begin{defi}[\omark]
   We define $\omega$ to be such that:
   $\omega \notin \mathbb{N}$
@@ -129,9 +104,75 @@ Note that an \omark \mar is a parametric \omark where $\mar(p) \in \mathbb{N} \c
 Similarly, a parametric marking \mar is a parametric \omark where $\mar(p) \neq \omega$ for all places $p \in P$.
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
-Having an \omark $\mar \in \Cover(\N)$ denotes that for all marking $\mar_1$ such that $\mar_1(p) = \mar(p) \forall p \in \{p \mid \mar(p) \neq \omega\}$, there exists a marking $\mar_2$ in the reachability set of \N such that $\mar_1 \prec \mar_2$.
-Notice also that, since $\downc(\mar)$ exists and is unique for all \omark \mar, an \omark always stands for one and only one downward closed set.
+%% Coverability set informal
+\acp{PN} with unbounded places have an infinite reachability set.
+So the covering set is also infinite.
+\emph{Coverability sets} are useful to give a finite representation of the covering set thanks to \omark.
+%%
+In order to define them formally, we need to know about the maximal markings and the upward and downward closure of a set of markings.
+
+%% Max markings informal
+The maximal elements of a set are the markings that are not covered by any other marking of the set.
+%% Max markings formal
+\begin{defi}[Maximal markings]
+  Given a set of markings $S$, the set of maximal elements of $S$ is
+  $\Max(S) = \{ \mar \in S \mid \nexists \marp \in S \text{ s.t. } \mar \prec \marp \}$.
+\end{defi}
+
+%% Closure formal
+\begin{defi}[Upward- and downward-closure on markings]
+  Let $S \subseteq \mathbb{N}^{|P|}$ be a set of markings on the places $P$:
+  \begin{itemize}
+    \item The \emph{upward-closure} of $S$, noted $\upc(S)$, is the set
+      $\{\mar \in \mathbb{N}^{|P|} \mid \exists \marp \in S : \marp \preceq \mar\}$,
+    \item The \emph{downward-closure} of $S$, noted $\downc(S)$, is the set
+      $\{\mar \in \mathbb{N}^{|P|} \mid \exists \marp \in S : \mar \preceq \marp\}$.
+  \end{itemize}
+  The closure of a marking \mar is the closure of the singleton $\{\mar\}$.
+\end{defi}
+
+%% Up closure example
+For instance, with $\mar = (1, 2, 3)$, we have that its upward-closure is $\upc(\mar) = \{(i, j, k) \mid i \geq 1, j \geq 2, k \geq 3\}$.
+
+%% Closed set formal
+\begin{defi}[Upward- and downward-closed set of markings]
+  A set $S$ of markings is said \emph{upward-closed} if $S = \upc(S)$.
+  It is said \emph{downward-closed} if $S = \downc(S)$.
+\end{defi}
+
+%% Coverability set formal
+\begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
+  Given an initialized \ac{PN} $\N = \PTm$, a \emph{coverability set} $S$ of \N is a set of markings such that $\downc(S) = \downc(\Post^*(\mari))$.
+\end{defi}
+
+%% Usefulness of coverability sets and omarks
+Notice that, since $\downc(\mar)$ exists and is unique for all \omark \mar, an \omark may always stands for one and only one downward closed set.
 Symmetrically, it is known that any downward closed set may be represented by a finite set of \omarks \citep{Geeraerts06}. \todo{Indeed...}
+
+In particular, finite coverability sets may effectively represent, thanks to \omarks, any covering set:
+Having an \omark \mar in a coverability set $S$ of $\N$ denotes that for all marking $\mar_1$ such that $\mar_1(p) = \mar(p) \forall p \in \{p \mid \mar(p) \neq \omega\}$, there exists a marking $\mar_2$ in the reachability set of \N such that $\mar_1 \prec \mar_2$.
+\todo{We prove it by giving a minimal coverability set for any covering set.}
+
+%% Max markings and minimal coverability set informal.
+Indeed, the set of maximal reachable markings of \N exists, is finite and forms a minimal coverability set.
+
+%% Max markings and minimal coverability set formal.
+\[\downc(\Max(\Post^*(\mari))) = \downc(\Post^*(\mari))\]
+\[\forall S \text{ such that } \downc(S) = \downc(\Post^*(\mari))\text{, we have } |S| \geq |\Max(\Post^*(\mari))|\]
+
+Moreover, for any set of markings $S$ over a finite set of places $P$, the set of maximal markings of $S$ exists, is finite and is such that $\downc(\Max(S)) = \downc(S)$.
+
+\todo{Lemme: For any downward-closed set S of markings, the downward-closure of the set of maximal markings of S is S}
+
+\todo{Proof: the existence of a finite set of maximal elements}
+It is straightforward to extend the proof to any downward-closed set.
+
+%% coverability problem 2 formal
+It is worth noticing that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
+\begin{defi}[Coverability problem]
+  \label{defi:upclocovprblm}
+  Given a \ac{PN} \N and an upward-closed set $U = \upc(S)$ of markings of \N, determine whether $\Post^*(\mari) \cap U = \emptyset$.
+\end{defi}
 
 An upward closed set is always infinite.
 It can be effectively represented through its unique set of minimal elements whose it is the upward closure:
@@ -361,7 +402,7 @@ This ensures the termination of the algorithm.
 Indeed, let $S$ be the set of markings we want to cover and let $U$ be $\upc(S)$.
 If $U$ is reachable, we will eventually get a $C_i$ that contains all the markings of a path from $\mari$ to $U$.
 As this path will be present in $\Sous(\N, C_i)$, we will have that $\R(\Sous(\N,C_i)) \cap U \neq \emptyset$.\\
-Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the cover set of \N.
+Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the covering set of \N.
 Such a $j$ exists, and we have that $\downc(\R(\Sur(\N,L_j))) = \Cover(\N)$.
 Thus, we know that, for a negative instance of the problem, $\downc(\R(\Sur(\N,L_i))) \cap U = \emptyset$ will eventually happen for an $i \leq j$.
 
