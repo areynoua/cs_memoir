@@ -1,11 +1,11 @@
-We present four theorem that basically come from the fact that
+We present four theorems that basically come from the fact that
 higher valuations on output arcs and lower valuations on input arcs lead to greater markings and, to the contrary,
 lower valuations on output arcs and higher valuations on input arcs restrict the covering set $\Post^*(\mari)$ set.
 
 First, when the parameters are restricted to the output arcs, a higher valuation leads to markings that are greater and thus more permissive (\lang{i.e.} that enable more transitions).
 Going further, we can state the following theorem:
 \begin{theo}
-  \label{theo:post-star-val}
+  \label{theo:post-e-star-val}
   Given a PostT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\EcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_*(\PPN), U) = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
 \end{theo}
 
@@ -20,7 +20,7 @@ We therefore provide a proof for the other direction.
   If $v$ is $v_*$, we are done.
 
   If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the property above: with $\mar \in U$, we have $\mari \fire{\sigma}_v \mar$.
-  Since that the n'umber of transitions is finite and that parameters are restricted to output arcs, it is easy to see that any other valuation $v'$ that maps each parameter $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
+  Since that the number of transitions is finite and that parameters are restricted to output arcs, it is easy to see that any other valuation $v'$ that maps each parameter $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
   In particular, this implies that $\mari \fire{\sigma}_{v_*} \mar_2$ with $\mar \preceq \mar_2$.
   Thus, since $\mar \in U$ and $U$ is upward-closed, we have $\mar_2 \in U$.
 \end{proof}
@@ -28,7 +28,7 @@ We therefore provide a proof for the other direction.
 Second, on PostT-\acp{PN}, a lower valuation leads to markings that are lower and thus less permissive.
 This leads us to this theorem:
 \begin{theo}
-  \label{theo:post-zero-val}
+  \label{theo:post-u-zero-val}
   Given a PostT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\UcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_0(\PPN), U) = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
 \end{theo}
 
@@ -53,7 +53,7 @@ The reasoning to prove the other direction is similar to the proof given for the
 On the other hand, the values of the input arcs define not only the number of tokens that are removed but also the firing condition and thus the increase in these values restricts the set of firable transitions and ultimately the covering set.
 
 \begin{theo}
-  \label{theo:pre-star-val}
+  \label{theo:pre-u-star-val}
   Given a PreT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\UcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_*(\PPN), U) = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
 \end{theo}
 
@@ -75,7 +75,7 @@ On the other hand, the values of the input arcs define not only the number of to
 Finally, regarding values of input arcs, the smallest values are the best to reach high markings:
 
 \begin{theo}
-  \label{theo:pre-zero-val}
+  \label{theo:pre-e-zero-val}
   Given a PreT-\ac{PPN} \SPTPm and an upward-closed set $U$ of markings of \PPN, \[\EcovOp(\PPN, U) = \top \Leftrightarrow \covOp(v_0(\PPN), U) = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
 \end{theo}
 
