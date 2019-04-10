@@ -40,6 +40,8 @@ An order on the markings is essential for the analysis of \acp{PN}. The order we
 
 \begin{defi}[partial order \(\preceq\) on the markings]
   Given a set of places $P$, the partial order \(\preceq \subseteq \mathbb{N}^{|P|} \times \mathbb{N}^{|P|}\) is such that for all pair of markings \((\mar_1, \mar_2) \in \mathbb{N}^{|P|} \times \mathbb{N}^{|P|}\) we have that \(\mar_1 \preceq \mar_2\) if and only if for all place \(p \in P : \mar_1(p) \leq \mar_2(p)\).
+
+  $\mar_2$ is said to cover $\mar_1$.
 \end{defi}
 
 \(\mar \prec \marp\) denotes that \(\mar \preceq \marp \text{ and } \marp \npreceq \mar\).

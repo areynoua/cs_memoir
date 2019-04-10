@@ -48,6 +48,7 @@
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 \renewcommand\subsectionautorefname{section}
 \renewcommand\subsubsectionautorefname{section}
+\renewcommand\theoremautorefname{theorem} % TODO
 
 % Typesetting
 \usepackage{xspace}
@@ -134,6 +135,9 @@
 
 \newcommand{\firev}[1]{\stackrel{#1}{\to}_v}
 \newcommand{\fire}[1]{\stackrel{#1}{\to}}
+\newcommand{\treepath}[1]{\mathscr{T}_{#1}}
+\newcommand{\treepathn}[1]{\mathscr{T}^N_{#1}}
+\newcommand{\treepathe}[1]{\mathscr{T}^B_{#1}}
 
 \newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}
 \newcommand{\mari}{\ensuremath{\mathbf{m}_0}\xspace}
@@ -158,6 +162,7 @@
 \DeclareMathOperator{\Cover}{Cover}
 \DeclareMathOperator{\Effect}{Effect}
 \DeclareMathOperator{\Flatten}{Flatten}
+\DeclareMathOperator{\Max}{Max^\preceq}
 \DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
 \DeclareMathOperator{\Min}{Min^\preceq}
 \DeclareMathOperator{\Postb}{P\overbar{ost}}
