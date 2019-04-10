@@ -257,6 +257,36 @@ Then, while $F$ is non-empty, a node $n$ is chosen from $F$ to be processed:
 
 The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
+%%%%%%%%%%%%%%
+
+To prove that the Karp and Miller Tree $\mathcal{T}$ is a coverability tree of \N, we show
+\begin{enumerate}
+  \item how to construct a sequence from \mari to any marking \mar “covered by the tree” given a node $n$ such that $\mar \in \downc(\Lambda(n))$, and
+  \item that any marking $\mar \in \Post^*(\mari)$ is “covered by at least one node of the tree”.
+\end{enumerate}
+
+Finally, we prove that $\mathcal{T}$ is finite and that the algorithm terminates.
+
+Although very different in form, the proofs are based on those stated in \cite{Karp69}.
+
+\begin{lemm}
+  Given an initialized \ac{PN} $\N = \PTm$ and a node $n$ of its Karp and Miller tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$,
+  for any marking $\mar \in \downc(\Lambda(n))$ there exists a sequence of transitions $\sigma \in T^*$ and a marking $\marp$ such that $\mar \preceq \marp$ and $\mari \fire{\sigma} \marp$.
+\end{lemm}
+\begin{proof}
+  We define a function $\Sigma : N \mapsto T^* : n \rightarrow \sigma$.
+
+  For this purpose, we attach to the Karp and Miller tree $\mathcal{T}$ the mapping $\lambda : B \mapsto T$ that gives for all edge of the tree the transition used to create the new node at step \todo{STOP HERE}.
+
+  If $n$ is the root of the Karp and Miller tree, $\Sigma(n)$ is the empty sequence.
+  \[ \Sigma(n) = () \text{ whenever } n = n_0 \]
+
+  If $\Lambda(n)$ does not map any place to $\omega$, then none of $\left\{\Lambda(n') \mid n' \in \treepathn{n}\right\}$ do.
+
+\end{proof}
+
+%%%%%%%%%%%%%%
+
 The Karp and Miller tree has a lot of convenient properties that allow, among other, to answer the coverability problem as well as the simultaneous place unboundedness problem.
 
 \begin{defi}[Simultaneous place unboundedness]
