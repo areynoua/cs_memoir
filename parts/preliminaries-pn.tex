@@ -223,7 +223,7 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
   \begin{itemize}
     \item $N$ is the set of nodes of the tree.%, is a set of \omark of \N such that $\downc(N) = \Cover(\N)$.
     \item $n_0 \in N$ is the root of the tree, \lang{i.e.} $\nexists n \in N$ such that $(n, n_0) \in B$.
-    \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node a \textomega-marking of \N.
+    \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node an \omark of \N.
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
         \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$,
@@ -244,13 +244,16 @@ This function takes a marking \mar to accelerate and a set of markings $S$ as a 
   \end{cases}
 \]
 
-We denote by $\mathscr{T}_n$ the path in the tree from the root to $n$.
+The acceleration function is said to accelerate a marking if the first case holds for one or more place.
+
+We denote by $\treepath{n}$ the path in the tree from the root to $n$.
+$\treepathn{n}$ is the sequence of nodes from the path, $\treepathe{n}$ is the sequence of edges.
 
 The algorithm constructs the tree $\mathcal{T}$ as follows:
 The root $n_0$ of the tree is labelled with \mari.
 A frontier $F$ is defined to be the set of unprocessed nodes of the tree and is initialised to $\{n_0\}$.
 Then, while $F$ is non-empty, a node $n$ is chosen from $F$ to be processed:
-it is removed from $F$, and if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark in $\{\KMAcc(\mar, \mathscr{T}_n) \mid \mar \in \Post(\Lambda(n))\}$, a node labelled with $\KMAcc(\mar, \mathscr{T}_n)$ is added to the frontier and to the tree as a child of $n$.
+(1) it is removed from $F$, and (2) if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark $\mar \in \Post(\Lambda(n))$, (2.1) a node labelled with $\KMAcc(\mar, \mathscr{T}_n)$ is added to the frontier and (2.2) to the tree as a child of $n$.
 
 The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
