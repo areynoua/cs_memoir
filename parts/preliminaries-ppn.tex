@@ -6,8 +6,8 @@ This motivates the introduction of two natural subclasses of \acp{PPN} where par
 Namely,
 PreT-PPNs are \acp{PPN} where parameters are used only in $\matI$;
 PostT-PPNs are \acp{PPN} where parameters are used only in $\matO$.
-\cite{David17} provides an adaptation of the Karp and Miller Algorithm to solve the \Ucov problem on PreT-\acp{PPN}, and another to solve the \Ecov problem on PostT-\acp{PPN}.
-We will now present this two algorithms has they contain ideas used in the sequel.
+\cite{David17} provides an adaptation of the Karp and Miller Algorithm to solve the \Ucov problem on PreT-\acp{PPN}, and another to solve the \Ecov problem on PostT-\acp{PPN}, as well as the complexity of these problems.
+We will now present this two algorithms as they contain ideas used in the sequel.
 
 \subsection{Karp and Miller algorithm for \Ecov on PostT-\ac{PPN}}
 
@@ -25,26 +25,41 @@ It is done by introducing a new value allowed in the markings, noted $*$ and suc
   \item $\omega + * = \omega$.
 \end{itemize}
 
+For our purpose, we add: \todo{or not?}
+\begin{itemize}
+  \item $* + * = *$, and
+  \item $\omega + \omega = \omega$.
+\end{itemize}
+
 $*$ being defined, the propagation of the $*$ still have to be ensured in the cases where all the input places of a transition are marked by a $*$, even if the output of the transition is not a parameter.
 This is done by adapting the acceleration function.
 This new acceleration function, $\Acc$, distinguishes three cases.
-Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration:
+Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration
+the values of the different places of the accelerated marking are determined as follows:
+\[
+  \Acc(\mar, S)(p) =
+  \begin{cases}
+    \omega & \text{if } \exists \marp \in S : \marp \prec \mar \text{ and } \marp(p) < \mar(p)
+    ...
+  \end{cases}
+\]
 \begin{itemize}
-  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp < \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\Effect(\sigma)(p) \geq 0$.\\
+  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\Effect(\sigma)(p) \geq 0$.\\
     This case corresponds to the classic acceleration and
-    the accelerated marking is given by:
+    if $\marp(p) < \mar(p)$
+    we have:
     \[
-      \Acc(\mar)(p) = \begin{cases} \omega &\text{if } \marp(p) < \mar(p) \\ \mar(p) &\text{otherwise} \end{cases}
+      \Acc(\mar, S)(p) = \omega
     \]
-  \item Or these first conditions does not hold but there exists a marking $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp < \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\Effect(\sigma)(p) \geq 0$.\\
-    In this case
-    the accelerated marking is given by:
+  \item Or these first conditions does not hold but there exists a marking $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\Effect(\sigma)(p) \geq 0$.\\
+    This case handle the propagation of the $*$ mentioned above and
+    if $\marp(p) < \mar(p)$
+    we have:
     \[
-      \Acc(\mar)(p) = \begin{cases} * &\text{if } \marp(p) < \mar(p) \\ \mar(p) &\text{otherwise} \end{cases}
+      \Acc(\mar, S)(p) = *
     \]
-    This case handle the propagation of the $*$ mentioned above.
-  \item Or no one of the previous cases old.
-    In this case the marking is not accelerated: $\Acc(\mar)(p) = \mar(p)$.
+  \item Or no one of the previous cases hold.
+    In this case $\Acc(\mar, S)(p) = \mar(p)$.
 \end{itemize}
 
 Intuitively, the second case formalise the idea that one can remove some tokens from a place with $*$ tokens without being an issue for the existence of a valuation that allows to cover a given marking.
