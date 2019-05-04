@@ -258,7 +258,7 @@ The algorithm constructs the tree $\mathcal{T}$ as follows:
 The root $n_0$ of the tree is labelled with \mari.
 A frontier $F$ is defined to be the set of unprocessed nodes of the tree and is initialised to $\{n_0\}$.
 Then, while $F$ is non-empty, a node $n$ is chosen from $F$ to be processed:
-(1) it is removed from $F$, and (2) if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, for all \omark $\mar \in \Post(\Lambda(n))$, (2.1) a node labelled with $\KMAcc(\mar, \mathscr{T}_n)$ is added to the frontier and (2.2) to the tree as a child of $n$.
+(1) it is removed from $F$, and (2) if there is no node $n'$ in $\mathscr{T}_n$ such that $\Lambda(n) = \Lambda(n')$, then for all \omark $\mar \in \Post(\Lambda(n))$, (2.1) a node labelled with $\KMAcc(\mar, \mathscr{T}_n)$ is added to the frontier and (2.2) to the tree as a child of $n$.
 
 The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
