@@ -115,6 +115,9 @@
 \newcommand{\overbar}[1]{\overline{#1\mkern-1.5mu}\mkern 1.5mu}
 \newcommand{\omark}{$\omega$-marking\xspace}
 \newcommand{\omarks}{$\omega$-markings\xspace}
+\newcommand{\oplace}{$\omega$-place\xspace}
+\newcommand{\oplaces}{$\omega$-places\xspace}
+\newcommand{\noplaces}{non-$\omega$-places\xspace}
 \newcommand{\opn}{$\omega$-\ac{PN}\xspace}
 \newcommand{\opns}{$\omega$-\acp{PN}\xspace}
 \newcommand{\Ecov}{$\mathscr{E}$-cov\xspace}
@@ -133,8 +136,9 @@
 \newcommand{\SPTPm}{\ensuremath{\PPN = \PTPm}\xspace}
 \newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
 
-\newcommand{\firev}[1]{\stackrel{#1}{\to}_v}
-\newcommand{\fire}[1]{\stackrel{#1}{\to}}
+%\newcommand{\fire}[1]{\stackrel{#1}{\to}}
+\newcommand{\fire}[1]{\xrightarrow{#1}}
+\newcommand{\firev}[1]{\fire{#1}_v}
 \newcommand{\treepath}[1]{\mathscr{T}_{#1}}
 \newcommand{\treepathn}[1]{\mathscr{T}^N_{#1}}
 \newcommand{\treepathe}[1]{\mathscr{T}^B_{#1}}
