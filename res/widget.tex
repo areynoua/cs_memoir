@@ -1,0 +1,59 @@
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth,
+  silentp/.style={draw=blue,fill=blue!20},
+  silentt/.style={draw=blue,fill=blue},
+  silente/.style={draw=blue},
+  parame/.style={},
+  otherp/.style={draw=black!50,fill=black!10},
+  othert/.style={draw=black!50,fill=black!50},
+  othere/.style={draw=black!50},
+  addede/.style={draw=red}
+  ]
+  \node [place,fill=blue!50!red!33,draw=blue!50!red] (l) [label=195:\texttt{lock},tokens=1]   at (1,3) {};
+  \node [place,silentp] (f) [label=0:\texttt{firing}$_{t_1}$] at (3,3) {};
+  \node [place,silentp] (t2) [label=270:\texttt{tank2}$_{t_1,p_1}$]  at (2,0.5) {};
+  \node [place,silentp] (t1) [label=270:\texttt{tank1}$_{t_1,p_1}$]  at (2,1.5) {$a$};
+  \node [place] (p1) [label=315:$p_1$]      at (4,1.5) {};
+  \node [place,otherp] (p1p) [label=45:$p'_1$] at (3.5,4) {};
+  \node [place,otherp] (p2)  [label=135:$p_2$] at (-1,4) {};
+
+  \node [transition] (T1) [label=${t_1}$] at (2,4) {}
+    edge [pre,  bend right, silente] (l)
+    edge [post, bend left,  silente] (f)
+    edge [post, othere]              (p1p);
+  \node [transition,silentt] (D) [label=\texttt{done}$_{t_1}$] at (2,3) {}
+    edge [pre,  silente]             (f)
+    edge [post, silente]             (l);
+  \node [transition,silentt] (R) [label=225:\texttt{reload}$_{t_1,p_1}$] at (1,1.5) {}
+    edge [pre,  bend right, silente] (t2)
+    edge [pre,  bend left,  silente] (l)
+    edge [post, silente]             (t1)
+    edge [post, bend right, silente] (l);
+  \node [transition,silentt] (F) [label=315:\texttt{fire}$_{t_1,p_1}$] at (3,1.5) {}
+    edge [pre,  bend left,  silente] (f)
+    edge [pre,  silente]             (t1)
+    edge [post, silente]             (p1)
+    edge [post, bend right, silente] (f)
+    edge [post, bend left,  silente] (t2);
+  \node [transition,othert] (T2) [label=${t_2}$] at (0,4) {}
+    edge [pre,  bend left,  addede] (l)
+    edge [post, bend right, addede] (l)
+    edge [post, othere] (p2);
+
+  \begin{scope}[shift={(0,0.25)}]
+    \node [place, label=45:$p'_1$, otherp] (pp1p) at (-3,1.9) {};
+    \node [place, label=315:$p_1$]         (pp1)  at (-3,1.1) {};
+    \node [place, label=45:$p_2$,  otherp] (pp2)  at (-3,3) {};
+
+    \node [transition, label=$t_1$] at (-3.8,1.5) {}
+      edge [post, othere] (pp1p)
+      edge [post, parame] node[below] {$a$} (pp1);
+
+    \node [transition, label=$t_2$, othert] at (-3.8,3) {}
+      edge [post, othere] (pp2);
+    
+    \draw [decorate,decoration={brace,mirror}] (-2.4,0.4) -- (-2.4,3.7);
+    \draw [->,decorate,decoration={coil,aspect=0}] (-2.3,2) -- (-1.7,2);
+  \end{scope}
+  \draw [decorate,decoration={brace}] (-1.6,-0.2) -- (-1.6,4.7);
+
+\end{tikzpicture}
