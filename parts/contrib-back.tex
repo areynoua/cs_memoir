@@ -1,31 +1,31 @@
-The backward algorithm does not seem to be easy to adapt to the parametric coverability problems.
-Indeed, it works only thanks to the iteration of the $\Pre$ operator.
+%At first glance, the backward algorithm does not seem to be easy to adapt to the parametric coverability problems.
+%Indeed, it works only thanks to the iteration of the $\Pre$ operator.
+%
+%In the case of PostT-\ac{PPN} and of the \Ecov problem, the idea would be to look for \mari from the markings to cover.
+%We have seen that, with a forward approach, one can consider only high valuations, that are better because they allow to cover more markings: the search from $\mari$ may go ``too far'' without being an issue.
+%Here however a high valuation may lead to a premature stop in a backward search, because it restricts ``more quickly'' the set of transitions that is enabled at each step.
+%In other words, contrary to forward approach, the backward approach has the deals with the 0 bound of the transition precondition. 
+%\todo{examples}
+%
+%%However, it may be the case that one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameter.
+%%This will be a direction of our study.
+%However, one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameters, and this will be the matter of our next proof.
+%
+%The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation leads to a result about the \Ecov problem.
 
-In the case of PostT-\ac{PPN} and of the \Ecov problem, the idea would be to look for \mari from the markings to cover.
-We have seen that, with a forward approach, one can consider only high valuations, that are better because they allow to cover more markings: the search from $\mari$ may go ``too far'' without being an issue.
-Here however a high valuation may lead to a premature stop in a backward search, because it restricts ``more quickly'' the set of transitions that is enabled at each step.
-In other words, contrary to forward approach, the backward approach has the deals with the 0 bound of the transition precondition. 
-\todo{examples}
-
-%However, it may be the case that one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameter.
-%This will be a direction of our study.
-However, one can answer the \Ucov problem by applying the backward algorithm on the plain \ac{PN} obtained by the 0-valuation of all its parameters, and this will be the matter of our next proof.
-
-The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation leads to a result about the \Ecov problem.
+Since this the backward algorithm relies only on the iteration of the $\Pre$ operator, the four theorems stated above provide us with four adaptations of the algorithm.
 
 \subsection{Adapting the backward algorithm for \Ucov on PostT-\ac{PPN}}
 
 We will now give an adaptation of the general backward algorithm to solve the \Ucov problem on PostT-\ac{PPN}.
 
-This proves the decidability of this problem for this subclass of \ac{PPN}\todo{ Check for no others proves and make this more apparent}.
-
-Remember that $\back$ denotes the fixed-point algorithm described in \autoref{sec:backward-algorithm}.
+Remember that $\back$ denotes the fixed-point algorithm described in the \autoref{sec:backward-algorithm}.
 With $v_0 : \mathbb{P} \mapsto \mathbb{N} : a \rightarrow 0 \forall a \in \mathbb{P}$ the valuation that maps all the parameters to 0, the new algorithm may be described as follows:
 given an initialized \ac{PPN} \SPTPm and an upward-closed set of markings $U$, compute $\back(v_0(\PPN), U)$.
 
-The termination of the algorithm follows from the termination of $\back$.
+The termination of the algorithm follows from the termination of $\back$, and its correctness follows from the \autoref{theo:post-u-zero-val}:
 Intuitively, the correctness comes from the fact that $v_0$ is the worst valuation for the coverability problem.
-
+To help the reader to grasp the mechanisms of the adaptation, we provide a proof that does not relies on the \fullref{theo:post-u-zero-val}.
 \begin{proof}
   To prove the correctness of this algorithm is to prove that:
   \[
@@ -63,9 +63,11 @@ The monotonicity property ensures that for any valuation $v$:
 \subsection{Adapting the backward algorithm for \Ecov on PreT-\ac{PPN}}
 
 This adaptation of $\back$ may also be used to solve the \Ecov problem in the PreT-\ac{PPN} model.
-The idea is that, in this model, $v_0$ is the valuation that enables the most transitions and where the transitions produce the most tokens.
-Thus, we hope that if there exist a valuation that allows to cover $U$, $v_0$ will also allows to cover $U$.
+This follows the \autoref{theo:pre-e-zero-val}:
+the idea is that, in this model, $v_0$ is the valuation that enables the most transitions and where the transitions produce the most tokens.
+%Thus, we hope that if there exist a valuation that allows to cover $U$, $v_0$ will also allows to cover $U$.
 
+Again, let us prove the correctness without referring to the theorem mentioned above.
 Formally we have to prove that, for any given \ac{PPN} \SPTPm and upward-closed set of markings $U$:
   \[
     \back(v_0(\PPN), U) = \top \Leftrightarrow \EcovOp(\PPN, U) = \top
@@ -90,5 +92,9 @@ Formally we have to prove that, for any given \ac{PPN} \SPTPm and upward-closed 
 
   Because $U$ is upward-closed and $\marp \in U$, we know that $\mar_n \in U$ as well and so $U$ is coverable for any valuation.
 \end{proof}
+
+\subsection{Adapting the backward algorithm for \Ecov on PostT-\ac{PPN}}
+
+For the two last cases, the adaptation needs a little bit more attention due to the use of the value $*$ to instantiate the \ac{PN} on which $\back$ will work.
 
 % vim: set spell spelllang=en :
