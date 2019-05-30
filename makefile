@@ -7,7 +7,7 @@ main.pdf main-draft.pdf: main.tex $(wildcard parts/*.tex) $(wildcard res/*.tex) 
 	$(eval TARGET := $(basename $@))
 	@echo -e "\n\n\n------------ COMPILE $(TARGET) ------------\n\n"
 	@mkdir -p /tmp/memo/ ; touch $(TARGET).aux ; cat $(TARGET).aux > /tmp/memo/aux.old
-	@if [[ "$@" == *draft* ]] ; then sed -i -e '4,6s/^/%/' -e '1,3s/^%*//' options.tex ; else sed -i -e '1,3s/^/%/' -e '4,6s/^%*//' options.tex ; fi
+	@if [[ "$@" == *draft* ]] ; then sed -i -e '4,6s/^%*/%/' -e '1,3s/^%*//' options.tex ; else sed -i -e '1,3s/^%*/%/' -e '4,6s/^%*//' options.tex ; fi
 	xelatex -halt-on-error -jobname="$(TARGET)" main.tex | ./texout.py ; [ $${PIPESTATUS[0]} -eq 0 ] || ( rm -f $(TARGET).pdf && cp /tmp/memo/aux.old $(TARGET).aux && false )
 	@if grep 'There were undefined citations.' $(TARGET).log ; then echo "------ UPDATE bbl -----" ; bibtex $(TARGET).aux ; fi
 	cat $(TARGET).aux > /tmp/memo/aux.new

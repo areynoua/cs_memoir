@@ -4,6 +4,9 @@ from sys import stdin
 
 letters = 'abcdefghijklmnopqrstuvwxyz'
 
+#def print(*w, **kw):
+#    pass
+
 def read() :
     return stdin.read(1)
 
@@ -66,7 +69,7 @@ def print_messages() :
             print('[94;1m', last_level_printed, '[39;0m:', sep='')
         msg = msg.replace('\n\n\n','\n\n').replace('\n.\n','.\n')
         for line in msg.splitlines() :
-            if 'Warning' in line :
+            if 'Warning' in line and not 'Package hyperref Warning: Token not allowed in a PDF string (Unicode):' in line :
                 print('[91;1m', line, '[39;0m', sep='')
             elif 'TODO: ' in line[:7]:
                 print('[92;1m', line, '[39;0m', sep='')
