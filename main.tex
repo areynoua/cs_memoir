@@ -87,7 +87,7 @@
 
 % PGF/TikZ
 \usepackage{tikz}
-\usetikzlibrary{arrows,decorations,backgrounds,positioning,fit,petri}
+\usetikzlibrary{arrows,decorations,backgrounds,positioning,fit,petri,decorations.pathmorphing,decorations.pathreplacing}
 \tikzset{
 	x=0.16\linewidth,
 	y=0.16\linewidth,
@@ -127,14 +127,21 @@
 
 \newcommand{\N}{\ensuremath{\mathcal{N}}\xspace}
 \newcommand{\PPN}{\ensuremath{\mathcal{S}}\xspace}
+\newcommand{\PPNi}{\ensuremath{\mathcal{S}_1}\xspace}
+\newcommand{\PPNii}{\ensuremath{\mathcal{S}_2}\xspace}
 \newcommand{\PTm}{\ensuremath{\langle P,T, \mari\rangle}\xspace}
 \newcommand{\PT}{\ensuremath{\langle P,T\rangle}\xspace}
 \newcommand{\NPT}{\ensuremath{\N = \PT}\xspace}
 \newcommand{\NPTm}{\ensuremath{\N = \PTm}\xspace}
 \newcommand{\PTP}{\ensuremath{\langle P,T,\mathbb{P}\rangle}\xspace}
 \newcommand{\PTPm}{\ensuremath{\langle P,T,\mathbb{P}, \mari\rangle}\xspace}
+\newcommand{\PTPmi}{\ensuremath{\langle P_1,T_1,\mathbb{P}_1, \mar_{0,1}\rangle}\xspace}
+\newcommand{\PTPmii}{\ensuremath{\langle P_2,T_2,\mathbb{P}_2, \mar_{0,2}\rangle}\xspace}
 \newcommand{\SPTPm}{\ensuremath{\PPN = \PTPm}\xspace}
+\newcommand{\SPTPmi}{\ensuremath{\PPNi = \PTPmi}\xspace}
+\newcommand{\SPTPmii}{\ensuremath{\PPNii = \PTPmii}\xspace}
 \newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
+\newcommand{\rela}{\mathcal{R}}
 
 %\newcommand{\fire}[1]{\stackrel{#1}{\to}}
 \newcommand{\fire}[1]{\xrightarrow{#1}}
