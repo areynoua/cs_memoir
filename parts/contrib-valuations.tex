@@ -19,9 +19,9 @@ We therefore provide a proof for the other direction.
   Let $v$ be a *-valuation of $\PPN$ such that $\covOp(v(\PPN), U) = \top$.
   If $v$ is $v_*$, we are done.
 
-  If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the property above: with $\mar \in U$, we have $\mari \fire{\sigma}_v \mar$.
+  If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the property above: with $\mar \in U$, we have $\mari \fire[\val]{\sigma} \mar$.
   Since that the number of transitions is finite and that parameters are restricted to output arcs, it is easy to see that any other valuation $v'$ that maps each parameter $p$ to a value greater or equal to $v(p)$ allows $\sigma$ to lead to a marking $\mar_1$ greater than $\mar$ according to $\preceq$.
-  In particular, this implies that $\mari \fire{\sigma}_{v_*} \mar_2$ with $\mar \preceq \mar_2$.
+  In particular, this implies that $\mari \fire[\val_*]{\sigma} \mar_2$ with $\mar \preceq \mar_2$.
   Thus, since $\mar \in U$ and $U$ is upward-closed, we have $\mar_2 \in U$.
 \end{proof}
 
@@ -36,17 +36,17 @@ This leads us to this theorem:
 The reasoning to prove the other direction is similar to the proof given for the \autoref{theo:post-star-val}.
 
 \begin{proof}
-  Let $\sigma$ be such that $\mari \fire{\sigma}_{v_0} \mar$ with $\mar \in U$.
-  We prove that for any valuation $v$, $\mari \fire{\sigma}_v \marp$ with $\marp \in U$.
+  Let $\sigma$ be such that $\mari \fire[\val_0]{\sigma} \mar$ with $\mar \in U$.
+  We prove that for any valuation $v$, $\mari \fire[v]{\sigma} \marp$ with $\marp \in U$.
 
-  Because the parameters are bound to the output arcs and since the codomain of a valuation is $\mathbb{N}$, for any transition $t$ and any marking $\mar_1$ of $\PPN$, $\mar_1 \fire{\sigma}_{v_0} \mar_2$ implies that:
+  Because the parameters are bound to the output arcs and since the codomain of a valuation is $\mathbb{N}$, for any transition $t$ and any marking $\mar_1$ of $\PPN$, $\mar_1 \fire[v_0]{\sigma} \mar_2$ implies that:
   \begin{enumerate}
-    \item $t$ is enabled in $\mar_1$ in any valuation $v$: $\mar_1 \fire{t}_v \mar_3$ (because the firing condition is left unchanged), and
+    \item $t$ is enabled in $\mar_1$ in any valuation $v$: $\mar_1 \fire[v]{t} \mar_3$ (because the firing condition is left unchanged), and
     \item $t$ leads to a greater marking according to $\preceq$: $\mar_2 \preceq \mar_3$.
   \end{enumerate}
 
   By monotonicity of \acp{PN}, this apply to a sequence of transition too.
-  Thus, $\mari \fire{\sigma}_v \marp$.
+  Thus, $\mari \fire[v]{\sigma} \marp$.
   And since $U$ is upward-closed, $\marp \in U$.
 \end{proof}
 
@@ -60,15 +60,15 @@ On the other hand, the values of the input arcs define not only the number of to
 \begin{proof}
   $\UcovOp(\PPN, U) \Rightarrow \covOp(v_*(\PPN), U)$ is trivial.
 
-  To prove that $\covOp(v_*(\PPN), U) \Rightarrow \UcovOp(\PPN, U)$, let $\sigma$ be a sequence of transitions such that $\mari \fire{\sigma}_{v_*} \mar_*$ with $\mar_* \in U$.
+  To prove that $\covOp(v_*(\PPN), U) \Rightarrow \UcovOp(\PPN, U)$, let $\sigma$ be a sequence of transitions such that $\mari \fire[v_*]{\sigma} \mar_*$ with $\mar_* \in U$.
   Let $t$ be the first transition of $\sigma$.
   Since $\forall c \in \mathbb{N}, c < *$, we see that:
   \begin{itemize}
-    \item for any valuation $v$, $t$ is enabled in $\mari$: $\mari \fire{t}_{v}$, and
-    \item for any valuation $v$, any marking $\mar', \mar'' \text{ and } \mar''_*$ and any transition $t'$ such that $\mar' \fire{t'}_{v_*} \mar''_*$ and $\mar' \fire{t'}_v \mar''$ we have: $\mar''_* \preceq \mar''$.
+    \item for any valuation $v$, $t$ is enabled in $\mari$: $\mari \fire[v]{t}$, and
+    \item for any valuation $v$, any marking $\mar', \mar'' \text{ and } \mar''_*$ and any transition $t'$ such that $\mar' \fire[v_*]{t'} \mar''_*$ and $\mar' \fire[v]{t'} \mar''$ we have: $\mar''_* \preceq \mar''$.
   \end{itemize}
 
-  Thus, by monotonicity of \acp{PN}, $\sigma$ is enabled in \mari for any valuation $v$ and, with $\mari \fire{\sigma}_v \mar$, we have $\mar_* \preceq \mar$.
+  Thus, by monotonicity of \acp{PN}, $\sigma$ is enabled in \mari for any valuation $v$ and, with $\mari \fire[v]{\sigma} \mar$, we have $\mar_* \preceq \mar$.
   And since $U$ is upward-closed, $\mar \in U$.
 \end{proof}
 
@@ -82,14 +82,14 @@ Finally, regarding values of input arcs, the smallest values are the best to rea
 \begin{proof}
   $\covOp(v_0(\PPN), U) \Rightarrow \EcovOp(\PPN, U)$ is trivial.
 
-  To prove that $\EcovOp(\PPN, U) \Rightarrow \covOp(v_0(\PPN), U)$, let $v$ be a valuation that allows to cover $U$ and $\sigma$ be a sequence of transitions such that $\mari \fire{\sigma}_v \mar$ with $\mar \in U$.
+  To prove that $\EcovOp(\PPN, U) \Rightarrow \covOp(v_0(\PPN), U)$, let $v$ be a valuation that allows to cover $U$ and $\sigma$ be a sequence of transitions such that $\mari \fire[v]{\sigma} \mar$ with $\mar \in U$.
   Note that:
   \begin{itemize}
     \item all transition of \PPN enabled in a marking under any valuation are enabled in this marking under the valuation $v_0$, and
-    \item for any valuation $v'$, any marking $\mar', \mar'' \text{ and } \mar''_{v_0}$ and any transition $t'$ such that $\mar' \fire{t'}_{v_0} \mar''_{v_0}$ and $\mar' \fire{t'}_{v'} \mar''$ we have: $\mar'' \preceq \mar''_{v_0}$.
+    \item for any valuation $v'$, any marking $\mar', \mar'' \text{ and } \mar''_{v_0}$ and any transition $t'$ such that $\mar' \fire[{v_0}]{t'} \mar''_{v_0}$ and $\mar' \fire[{v'}]{t'} \mar''$ we have: $\mar'' \preceq \mar''_{v_0}$.
   \end{itemize}
 
-  Thus, using these observations on $\sigma$, and by monotonicity of \acp{PN}, we see that $\sigma$ is enabled in \mari under $v_0$ and, with $\mari \fire{\sigma}_{v_0} \mar_{v_0}$, we have $\mar \preceq \mar_{v_0}$.
+  Thus, using these observations on $\sigma$, and by monotonicity of \acp{PN}, we see that $\sigma$ is enabled in \mari under $v_0$ and, with $\mari \fire[{v_0}]{\sigma} \mar_{v_0}$, we have $\mar \preceq \mar_{v_0}$.
   Since $U$ is upward-closed, $\mar \in U$.
 \end{proof}
 

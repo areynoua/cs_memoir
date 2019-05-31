@@ -141,7 +141,7 @@ Actually, \PPNi also simulates \PPNii.
 \end{lemm}
 
 \begin{proof}
-  For all $\mar_{0,2} \fire{t}_{v(\PPNii)} \mar_{1,2}$, there exists $\mar_{1,1}$ such that $\mar_{0,1} \fire{t}_{v(\PPNi)} \mar_{1,1}$.
+  For all $\mar_{0,2} \fire[\val(\PPNii)]{t} \mar_{1,2}$, there exists $\mar_{1,1}$ such that $\mar_{0,1} \fire[v(\PPNi)]{t} \mar_{1,1}$.
   After firing this first transition, either the transition was a non-parametrized one and we can repeat the operation, or it was parametrized and the lock disables the observable transitions until $\mathtt{done}_t$ has been fired.
   In the latter case, any firable sequence ending with $\mathtt{done}_t$ is silent and produces a marking $\mar'_{1,2}$ covered by $\mar_{1,1}$.
   Thus, by monotonicity and thanks to the lock, we know that once $\mathtt{done}_t$ has been fired, all the transitions enabled in $\mar'_{1,2}$ in \PPNii are enabled in $\mar_{1,1}$ in \PPNi, except for some \texttt{reload} ones whose the effect is restricted to the \texttt{tank} places.

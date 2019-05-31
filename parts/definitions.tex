@@ -1,47 +1,48 @@
 \begin{defi}[\acl{PN}]
-  A \acf{PN} \N is a weighted oriented bipartite graph, whose the two subsets of vertices define a tuple \PT where:
+  A \acf{PN} \namePN is a weighted oriented bipartite graph, whose the two subsets of vertices define a tuple $\tuple{\places, \transitions}$ where:
   \begin{itemize}
-    \item $P$ is a finite set of places,
-    \item $T$ is a finite set of transitions.
+    \item $\places$ is a finite set of places,
+    \item $\transitions$ is a finite set of transitions.
   \end{itemize}
-  For each transition $t \in T$ are defined (exactly) these two functions:
+  For each transition $t \in \transitions$ are defined (exactly) these two functions:
   \begin{itemize}
-    \item $I_t : P \mapsto \mathbb{N}$ associates to each place the weight of the edge to $t$ \emph{(input weight)},
-    \item $O_t : P \mapsto \mathbb{N}$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
+    \item $\inw[t] : \places \mapsto \naturals$ associates to each place the weight of the edge to $t$ \emph{(input weight)},
+    \item $\outw[t] : \places \mapsto \naturals$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
   \end{itemize}
-  It is denoted by $t = \langle I_t, O_t \rangle$.
-  Because these functions define the edges of the graph, a \ac{PN} is completely defined by the tuple \PT and so is denoted by \NPT.
+  It is denoted by $t = \tuple{\inw[t], \outw[t]}$.
+  Because these functions define the edges of the graph, a \ac{PN} is completely defined by the tuple $\tuple{\places, \transitions}$ and so is denoted by $\defNonMarkedPN$.
 \end{defi}
 
 \begin{defi}[marking]
-  Given a set of place $P$, a marking of $P$ is a function $\mar : P \mapsto \mathbb{N}$ that associates $\mar(p)$ tokens to each place $p \in P$.
+  Given a set of places $\places$, a marking of $\places$ is a function $\mar : \places \mapsto \naturals$ that associates $\mar(p)$ tokens to each place $p \in \places$.
 \end{defi}
 
-An order on the markings is essential for the analysis of \acp{PN}. The order we will define is a well quasi-order and a partial order.
+An order on the markings is essential for the analysis of \acp{PN}.
+The order we will define is a well quasi-order and a partial order.
 
 \begin{defi}[quasi-order]
-  A quasi-order on a set $\set$ is a binary relation $R$ that is:
+  A quasi-order on a set $\set$ is a binary relation $\rela$ that is:
   \begin{align*}
-    \text{reflexive: } &&\forall x \in \set,\ & x \mathrel{R} x \\
-    \text{transitive: } &&\forall (x, y, z) \in \set^3,\ & (x \mathrel{R} y\land y \mathrel{R} z)\Rightarrow x \mathrel{R} z
+    \text{reflexive: }  &&\forall x \in \set,\ & x \rela x \\
+    \text{transitive: } &&\forall (x, y, z) \in \set^3,\ & (x \rela y\land y \rela z)\Rightarrow x \rela z
   \end{align*}
 \end{defi}
 
 \begin{defi}[well quasi-order]
-  A well quasi-order on a set $\set$ is a quasi-order $R$ on $\set$ such that, for any infinite sequence $s = e_0, e_1, e_2, \dots$ of elements from $\set$, there exist indices $i < j$ with $e_i R e_j$. That is, there is no infinite antichain in $\set$ for this relation.
+  A well quasi-order on a set $\set$ is a quasi-order $\rela$ on $\set$ such that, for any infinite sequence $\defInfSeq$ of elements from $\set$, there exist indices $i < j$ with $\sit_i \rela \sit_j$. That is, there is no infinite antichain in $\set$ for this relation.
 \end{defi}
 
 \begin{defi}[partial order]
-  A partial order on a set $\set$ is a quasi-order $R$ that is
+  A partial order on a set $\set$ is a quasi-order $\rela$ that is
   \begin{align*}
-    \text{antisymmetric: } &&\forall (x, y) \in \set^2,\ & (x \mathrel{R} y\land y \mathrel{R} x)\Rightarrow x = y
+    \text{antisymmetric: } &&\forall (x, y) \in \set^2,\ & (x \rela y\land y \rela x)\Rightarrow x = y
   \end{align*}
 \end{defi}
 
 \begin{defi}[partial order \(\preceq\) on the markings]
-  Given a set of places $P$, the partial order \(\preceq \subseteq \mathbb{N}^{|P|} \times \mathbb{N}^{|P|}\) is such that for all pair of markings \((\mar_1, \mar_2) \in \mathbb{N}^{|P|} \times \mathbb{N}^{|P|}\) we have that \(\mar_1 \preceq \mar_2\) if and only if for all place \(p \in P : \mar_1(p) \leq \mar_2(p)\).
+  Given a set of places $\places$, the partial order \(\preceq \subseteq \naturals^{\card{\places}} \times \naturals^{\card{P}}\) is such that for all pair of markings \((\mar_1, \mar_2) \in \naturals^{\card{\places}} \times \naturals^{\card{\places}}\) we have that \(\mar_1 \preceq \mar_2\) if and only if for all place \(p \in \places : \mar_1(p) \leq \mar_2(p)\).
 
-  $\mar_2$ is said to cover $\mar_1$.
+  $\mar_2$ is said to \emph{cover} $\mar_1$.
 \end{defi}
 
 \(\mar \prec \marp\) denotes that \(\mar \preceq \marp \text{ and } \marp \npreceq \mar\).
@@ -51,51 +52,49 @@ An order on the markings is essential for the analysis of \acp{PN}. The order we
   $\preceq$ is a well quasi-order.
 \end{lemm}
 
-The following result will be useful in the sequel.
-
-\begin{lemm}[\todo{cite{Brams83}}]
-	\todo{check source}
-  The \ac{PN} model is \emph{strongly monotonic with regard to $\preceq$}. That is, for all \ac{PN} $\N = \PTm$, for all transition $t \in T$ and for all markings $\mar_1, \mar_2, \mar_3$ of \N such that $\mar_1 \preceq \mar_2$ and $\mar_1 \fire{t} \mar_3$, there exists a marking $\mar_4$ of \N such that $\mar_2 \fire{t} \mar_4$ and $\mar_3 \preceq \mar_4$.
-\end{lemm}
-
-In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} model, that is extended thanks to the use of parameters as input and output weights.
+In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} model, that is extended thanks to the use of parameters as input and output weights or as number of tokens in some places of the initial marking.
 
 \begin{defi}[\acl{PPN} \citep{David17}]
-  A \acf{PPN} \SPTP is a weighted oriented bipartite graph with a finite set $\mathbb{P}$ of parameters. The two subsets of vertices are:
+  A \acf{PPN} $\defNonMarkedPPN$ is a weighted oriented bipartite graph with a finite set $\parameters$ of parameters. The two subsets of vertices are:
   \begin{itemize}
-    \item $P$: a finite set of places,
-    \item $T$: a finite set of transitions,
+    \item $\places$: a finite set of places,
+    \item $\transitions$: a finite set of transitions,
   \end{itemize}
-  For each transition $t \in T$ are defined the following functions:
+  For each transition $t \in \transitions$ are defined the following functions:
   \begin{itemize}
-    \item $I_t : P \mapsto \mathbb{N} \cup \mathbb{P}$ associates to each place the weight of the edge to $t$ \emph{(input weight)},
-    \item $O_t : P \mapsto \mathbb{N} \cup \mathbb{P}$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
+    \item $\inw[t] : P \mapsto \naturals \cup \parameters$ associates to each place the weight of the edge to $t$ \emph{(input weight)},
+    \item $\outw[t] : P \mapsto \naturals \cup \parameters$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
   \end{itemize}
 \end{defi}
 
-As for plain \acp{PN}, this is denoted $t = \langle I_t, O_t \rangle$.
+As for plain \acp{PN}, this is denoted $t = \tuple{\inw[t], \outw[t]}$.
 
 \begin{defi}[parametric marking]
-  Given a set of place $P$, a parametric marking of $P$ is a function $\mar : P \mapsto \mathbb{N} \cup \mathbb{P} $ that associates $\mar(p)$ tokens to each place $p \in P$.
+  Given a set of place $\places$, a parametric marking of $\places$ is a function $\mar : \places \mapsto \naturals \cup \parameters$ that associates $\mar(p)$ tokens to each place $p \in \places$.
 \end{defi}
 
-A marking of a \ac{PN} \NPT is a marking of $P$.
-A marking of a \ac{PPN} \SPTP is a \emph{parametric} marking of $P$.
-Note that a marking \mar is a parametric marking where $\mar(p) \in \mathbb{N}$ for all $p \in P$.
+A marking of a \ac{PN} $\defNonMarkedPN$ is a marking of $\places$.
+A marking of a \ac{PPN} $\defNonMarkedPPN$ is a \emph{parametric} marking of $\places$.
+Note that a (plain) marking \mar is a parametric marking where $\mar(p) \in \naturals$ for all $p \in \places$.
 
 More generally, we adopt the following convention:
-a marking is a function whose the domain is $P$ and the codomain is a super set of $\mathbb{N}$.
-Let \set be a set. An \set-marking $\mar : P \mapsto \mathbb{N} \cup \set$ is a marking over $\mathbb{N} \cup \set$.
-With an element $x$, an $x$-marking $\mar : P \mapsto \mathbb{N} \cup \{x\}$ is a marking over $\mathbb{N} \cup \{x\}$.
+a marking is a function whose the domain is $\places$ and the codomain is a super set of $\naturals$.
+Let \set be a set. An \set-marking $\mar : \places \mapsto \naturals \cup \set$ is a marking over $\naturals \cup \set$.
+With an element $x$, an $x$-marking $\mar : \places \mapsto \naturals \cup \{x\}$ is a marking over $\naturals \cup \{x\}$.
 
 \begin{defi}[initialized (parametric) \ac{PN}]
-  An initialized \ac{PN} \NPTm (resp. \ac{PPN} \SPTPm) is a \ac{PN} (resp. \ac{PPN}) with an initial marking \mari.
+  An initialized \ac{PN} $\defPN$ (resp. \ac{PPN} $\defPPN$) is a \ac{PN} (resp. \ac{PPN}) with an initial marking \mari.
 \end{defi}
 
 This is sometimes called a \emph{marked (parametric) \ac{PN}}.
 We will often refer to an initialized (parametric) \ac{PN} loosely as a (parametric) \ac{PN}.
 
-The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\mathbb{P} = \{a, b\}$ and with an initial marking \mari such that $\mari(p_1) = 1$, $\mari(p_2) = a$ and $\mari(p_3) = 0$. The circles represent the places, the rectangles are the transitions, and the dots are the tokens. If the number of tokens at a given place is parametric (\lang{i.e.} depends on a parameter of $\mathbb{P}$), it is written inside the circle. An arrow from a place $p$ and to a transition $t$ denotes that $I_t(p) = 1$. The absence of an arrow from $p$ to $t$ indicates that $I_t(p) = 0$. If $I_t(p) \notin \{0, 1\}$, a label with the value of $I_t(p)$ is added to the arrow.
+The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\parameters = \{\param[1], \param[2]\}$ and with an initial marking \mari such that $\mari(p_1) = 1$, $\mari(p_2) = \param[1]$ and $\mari(p_3) = 0$.
+The circles represent the places, the rectangles are the transitions, and the dots are the tokens.
+If the number of tokens at a given place is parametric (\lang{i.e.} depends on a parameter of $\parameters$), it is written inside the circle.
+An arrow from a place $p$ and to a transition $t$ denotes that $\inw[t](p) = 1$.
+The absence of an arrow from $p$ to $t$ indicates that $\inw[t](p) = 0$.
+If $\inw[t](p) \notin \{0, 1\}$, a label with the value of $\inw[t](p)$ is added to the arrow.
 Symmetrically, the arrows from the transitions to the places indicate the output weights.
 
 \begin{figure}[htbp]
@@ -107,101 +106,137 @@ Symmetrically, the arrows from the transitions to the places indicate the output
 \end{figure}
 
 We usually set an order on the places.
-This allows to view the markings as vectors (here, \mari is the column vector $(1, a, 0)^T$, where $\cdot^T$ is the transpose operator) as well as the $I$ and $O$ functions.
+This allows to view the markings as vectors
+(here, \mari is the column vector $\transpose{(1, \param[1], 0)}$, where $\transpose{\cdot}$ is the transpose operator)
+as well as the $\inw[t]$ and $\outw[t]$ functions ($t \in \transitions$).
 Likewise, we define an order on the transitions.
-Therefore, $I_t$ and $O_t$ denote respectively the $I$ and $O$ functions defined for the $t$\textsuperscript{th} transition (here, $I_1 = (0, 0, 0)^T$ and $O_1 = (b, 0, 0)^T$).
-Given a \ac{PPN} \SPTP, the backward and forward incidence matrices $\matIS \in (\mathbb{N} \cup \mathbb{P})^{|P|\times|T|}$ and $\matOS \in (\mathbb{N} \cup \mathbb{P})^{|P|\times|T|}$ are naturally defined by $\matIS(p, t) = I_t(p)$ and $\matOS(p, t) = O_t(p)$.
-($\PPN$ is omitted when it is obvious from the context.)
+Therefore, with $t \in \naturals$, $\inw[t]$ and $\outw[t]$ denote respectively the $\inw$ and $\outw$ functions defined for the $t$\textsuperscript{th} transition
+(here, $\inw[1] = \transpose{(0, 0, 0)}$ and $\outw[1] = \transpose{(\param[2], 0, 0)}$).
+Given a \ac{PPN} $\defNonMarkedPPN$, the backward and forward incidence matrices
+$\inm[\namePPN] \in (\naturals \cup \parameters)^{\card{\places} \times \card{\transitions}}$
+and
+$\outm[\namePPN] \in (\naturals \cup \parameters)^{\card{\places} \times \card{\transitions}}$
+are naturally defined by $\inm[\namePPN][p, t] = \inw[t][p]$
+and $\outm[\namePPN][p, t] = \outw[t][p]$.
+($\namePPN$ is omitted when it is obvious from the context.)
 %In addition, it makes the equivalence between \acp{PN} and \emph{vector addition systems} introduced in \cite{Karp69} more explicit and
-This allows to use linear algebra to analyse \acp{PN}.
+This allows to use linear algebra for the analysis of \acp{PN}.
 
 \begin{figure}[htbp]
 	\[
-		\matI = \bordermatrix[{[]}]{%
+		\inm = \bordermatrix[{[]}]{%
 					& t_1 & t_2 & t_3 \cr
 			p_1 & 0   & 1   & 0   \cr
 			p_2 & 0   & 1   & 0   \cr
 			p_3 & 0   & 0   & 1   }
 		\mspace{56mu}
-		\matO = \bordermatrix[{[]}]{%
-					& t_1 & t_2 & t_3 \cr
-			p_1 & b   & 0   & 0   \cr
-			p_2 & 0   & 0   & 1   \cr
-			p_3 & 0   & 1   & 0   }
+		\outm = \bordermatrix[{[]}]{%
+					& t_1       & t_2 & t_3 \cr
+      p_1 & \param[2] & 0   & 0   \cr
+			p_2 & 0         & 0   & 1   \cr
+			p_3 & 0         & 1   & 0   }
 	\]
-  \caption{The incidence matrices of the \ac{PN} from figure \ref{fig:parametric-petri-net-example}}
+  \caption{The incidence matrices of the \ac{PPN} from figure \ref{fig:parametric-petri-net-example}}
   \label{fig:incidence-matrices-example}
 \end{figure}
 
 %\begin{defi}[Vector addition system]
-%  A vector addition system of dimension $n$ is a pair $\langle d, W\rangle$ where $d \in \mathbb{N}^n$ is called the \emph{start vector} and $W$ is a finite set of vector $\mathbb{Z}^n$.
+%  A vector addition system of dimension $n$ is a pair $\langle d, W\rangle$ where $d \in \naturals^n$ is called the \emph{start vector} and $W$ is a finite set of vector $\mathbb{Z}^n$.
 %\end{defi}
 %This corresponds to the definition of an initialized \ac{PN} and \todo{we will see that the semantic corresponds too}.
 
 \subsection{Operational semantic of \acp{PN}}
 
-Given a \ac{PN} \NPT and a marking \mar on \N, a transition $t \in T$ is said \emph{enabled} by \mar if $\forall p \in P : \mar(p) \geq I_t(p)$. An enabled transition can be \emph{fired} to produce a new marking \marp such that $\forall p \in P : \marp(p) = \mar(p) - I_t(p) + O_t(p)$. This is denoted by $\mar \fire{t} \marp$.
+Given a \ac{PN} $\defNonMarkedPN$ and a marking \mar on \namePN, a transition $t \in \transitions$ is said \emph{enabled} by \mar if $\forall p \in \places : \mar(p) \geq \inw[t][p]$.
+An enabled transition can be \emph{fired} to produce a new marking \marp such that $\forall p \in \places : \marp(p) = \mar(p) - \inw[t][p] + \outw[t][p]$.
+This is denoted by $\mar \fire{t} \marp$.
 
 Here are some additional notations:
 \begin{itemize}
-  \item $\mar \rightarrow \marp$ denotes that there exists $t \in T$ such that $\mar \fire{t} \marp$.
-  \item $\mar \fire{\sigma} \marp$ where $\sigma$ is a sequence of transitions $\sigma = (t_1, \dots, t_{n-1}), t_i \in T, i \in \{1, \dots, n-1\}$ denotes that there exists a sequence of markings $\mar_1, \dots, \mar_n$ such that : $\mar = \mar_1 \fire{t_1} \cdots \fire{t_{n-1}} \mar_n = \marp$.
-  \item $\mar \fire{*} \marp$ denotes that there exists a sequence of transition $\sigma$ such that $\mar \fire{\sigma} \marp$.
-    Note that the $\fire{*}$ relation is the reflexive and transitive closure of the relation $\rightarrow$.
+  \item $\mar \fire{} \marp$ denotes that there exists $t \in \transitions$ such that $\mar \fire{t} \marp$.
+  \item $\mar \fire{\seqt} \marp$ where $\seqt$ is a sequence of transitions $\defSeqt{1}{n-1}, t_i \in \transitions, i \in \range{1}{n-1}$ denotes that there exists a sequence of markings $\bodySeqm{1}{n}$ such that : $\mar = \mar_1 \fire{t_1} \cdots \fire{t_{n-1}} \mar_n = \marp$.
+  \item $\mar \fire{*} \marp$ denotes that there exists a sequence of transition $\seqt$ such that $\mar \fire{\seqt} \marp$.
+    Note that the $\fire{*}$ relation is the reflexive and transitive closure of the relation $\fire{}$.
 \end{itemize}
 
 It is important to note that the effect of a transition is to add or remove a constant number of tokens at each place and does not depend on the marking from which it is fired.
 A \ac{PN} transition is said to have a \emph{constant effect}.
-Thus, the effect of a transition in a \ac{PN} is a function $\Effect(t)$ that maps each place $p$ to $-I_t(p) + O_t(p)$.
-This definition is extended to any sequence of transitions $\sigma$ as $\Effect(\sigma)(p) = \sum_{t \in \sigma} -I_t(p) + O_t(p)$.
+Thus, the effect of a transition in a \ac{PN} is a function $\effect{t}$ that maps each place $p$ to $- \inw[t][p] + \outw[t][p]$.
+This definition is extended to any sequence of transitions $\seqt$ as $\effect{\seqt}[p] = \sum_{t \in \seqt} -\inw[t][p] + \outw[t][p]$.
+
+The following result will be useful in the sequel.
+
+\begin{lemm}[\todo{cite{Brams83}}]
+	\todo{check source}
+  The \ac{PN} model is \emph{strongly monotonic with regard to $\preceq$}. That is, for all \ac{PN} $\defPN$, for all transition $t \in \transitions$ and for all markings $\mar_1, \mar_2, \mar_3$ of \namePN such that $\mar_1 \preceq \mar_2$ and $\mar_1 \fire{t} \mar_3$, there exists a marking $\mar_4$ of \namePN such that $\mar_2 \fire{t} \mar_4$ and $\mar_3 \preceq \mar_4$.
+\end{lemm}
 
 \begin{defi}
-  Given an \ac{PN} \NPT and a marking \mar of \N:
+  Given an \ac{PN} $\defNonMarkedPN$ and a marking \mar of \namePN:
   \begin{itemize}
-    \item $\Post(\mar) = \{\marp \mid \mar \rightarrow \marp\}$ is the set of one-step successors of \mar,
-    \item $\Pre(\mar) = \{\marp \mid \marp \rightarrow \mar\}$ is the set of one-step predecessors of \mar,
-    \item $\Post^*(\mar) = \{\marp \mid \mar \fire{*} \marp\}$ is the set of successors of \mar, in any number of step.
-      With $\mari$ the initial marking of \N, $\Post^*(\mari)$ is the \emph{reachability set} of \N.
-    \item $\Pre^*(\mar) = \{\marp \mid \marp \fire{*} \mar\}$ is the set of predecessors of \mar, in any number of step.
+    \item $\post{\mar} = \setComp{\mar'}{\mar \fire{} \mar'}$ is the set of one-step successors of \mar,
+    \item $\pre{\mar} = \setComp{\mar'}{\mar' \fire{} \mar}$ is the set of one-step predecessors of \mar,
+    \item $\posts{\mar} = \setComp{\marp}{\mar \fire{*} \marp}$ is the set of successors of \mar, in any number of step.
+      With $\mari$ the initial marking of \namePN, $\posts{\mari}$ is the \emph{reachability set} of \namePN.%, denoted \reach{\nameNP}.
+    \item $\pres{\mar} = \setComp{\marp}{\marp \fire{*} \mar}$ is the set of predecessors of \mar, in any number of step.
   \end{itemize}
 \end{defi}
 
 These operators are naturally extended to sets of markings as the union of the sets obtained by applying the operator on each marking of the sets.
-That is, with $M$ a set of markings of \N,
-$\Post(M) = \{\marp \mid \exists \mar \in M : \mar \rightarrow \marp\}$.
+That is, with $\markings$ a set of markings of \namePN,
+$\post{\markings} = \setComp{\marp}{\exists \mar \in \markings : \mar \fire{} \marp}$.
 
 For example, regarding the \ac{PPN} shown on figure \ref{fig:parametric-petri-net-example},
-$\Post((0,1,0)) = \{(b, 1, 0)\}$
+$\post{\vect{0,1,0}} = \{\vect{b, 1, 0}\}$
 and
-$\Post^*((0,1,0)) = \{(i, 1, 0) \mid i \in \mathbb{N}\} \cup \{(i, 0, 1) \mid i \in \mathbb{N}\}$.
+$\posts{\vect{0,1,0}} = \setComp{\vect{i, 1, 0}}{i \in \naturals} \cup \setComp{\vect{i, 0, 1}}{i \in \naturals}$.
 
 All of this applies to \ac{PPN} through valuations of the parameters:
 \begin{defi}[Instantiation of \acp{PPN}]
-  Let \SPTPm be a \ac{PPN} and $v : \mathbb{P} \mapsto \mathbb{N}$ be a \emph{$\mathbb{N}$-valuation}, or simply valuation, on $\mathbb{P}$.
-  Then $v(\PPN)$ is defined as the \ac{PN} obtained by replacing each parameter $a \in \mathbb{P}$ by $v(a)$.
-  Thus, we have $v(\PPN) = \langle P, T, \marpi\rangle$ such that:
+  Let $\defPPN$ be a \ac{PPN} and $\val : \parameters \mapsto \naturals$ be a \emph{$\naturals$-valuation}, or simply valuation, on $\parameters$.
+  Then $\val[\namePPN]$ is defined as the \ac{PN} obtained by replacing each parameter $\param \in \parameters$ by $\val[\param]$.
+  Thus, we have $\val[\namePPN] = \tuple{\places, \transitions, \mari'}$ such that:
   \begin{itemize}
-    \item $\matI_{v(\PPN)}(p, t) =
+    \item $\inm[\val(\namePPN)][p, t] =
       \begin{cases}
-        \phantom{v(}\matIS(p, t) & \text{if } \matIS(p, t) \in \mathbb{N} \\
-                 v(\matIS(p, t)) & \text{if } \matIS(p, t) \in \mathbb{P}
+        \phantom{\val(}\inm[\namePPN][p, t]  & \text{if } \inm[\namePPN][p, t] \in \naturals \\
+                 \val( \inm[\namePPN][p, t]) & \text{if } \inm[\namePPN][p, t] \in \parameters
       \end{cases}$
-    \item $\matO_{v(\PPN)}(p, t) =
+    \item $\outm[\val(\namePPN)][p, t] =
       \begin{cases}
-        \phantom{v(}\matOS(p, t) & \text{if } \matOS(p, t) \in \mathbb{N} \\
-                 v(\matOS(p, t)) & \text{if } \matOS(p, t) \in \mathbb{P}
+        \phantom{\val(}\outm[\namePPN][p, t]  & \text{if } \outm[\namePPN][p, t] \in \naturals \\
+                 \val( \outm[\namePPN][p, t]) & \text{if } \outm[\namePPN][p, t] \in \parameters
       \end{cases}$
-    \item $\marpi(p) =
+    \item $\mari'(p) =
       \begin{cases}
-        \phantom{v(}\mari(p) & \text{if } \mari(p) \in \mathbb{N} \\
-                 v(\mari(p)) & \text{if } \mari(p) \in \mathbb{P}
+        \phantom{\val(}\mari(p)  & \text{if } \mari(p) \in \naturals \\
+                 \val( \mari(p)) & \text{if } \mari(p) \in \parameters
       \end{cases}$
   \end{itemize}
 \end{defi}
 
-Given \PPN a \ac{PPN} and a valuation $v$, one can therefore instantiate a \ac{PN} $v(\PPN)$ from \PPN and apply the semantic described above.  When the \ac{PPN} under consideration is clear from the context, $\matI_v$ is used to denote $\matI_{v(\PPN)}$ and $\matO_v$ to denote $\matO_{v(\PPN)}$. We write $\firev{t}$, $\rightarrow_v$, $\firev{\sigma}$, $\firev{*}$, $\Post_v$, $\Pre_v$, $\Post^*_v$ and $\Pre^*_v$ to denote $\fire{t}$, $\rightarrow$, $\fire{\sigma}$, $\fire{*}$, $\Post$, $\Pre$, $\Post^*$ and $\Pre^*$ on the plain \ac{PN} $v(\PPN)$.
+Given $\namePPN$ a \ac{PPN} and a valuation $\val$, one can therefore instantiate a \ac{PN} $\val[\namePPN]$ from $\namePPN$ and apply the semantic described above.
+When the \ac{PPN} under consideration is clear from the context, $\inm[\val]$ is used to denote $\inm[\val(\namePPN)]$ and $\outm[\val]$ to denote $\outm[\val(\namePPN)]$.
+We write $\fire[\val]{t}$,
+         $\fire[\val]{}$,
+         $\fire[\val]{\sigma}$,
+         $\fire[\val]{*}$,
+         $\Post_v$,
+         $\Pre_v$,
+         $\Post^*_v$
+     and $\Pre^*_v$
+to denote $\fire{t}$,
+          $\fire{}$,
+          $\fire{\sigma}$,
+          $\fire{*}$,
+          $\Post$,
+          $\Pre$,
+          $\Post^*$
+      and $\Pre^*$
+on the plain \ac{PN} $\val(\namePPN)$.
 
-This makes it possible to formally represent a system and interactions between its components. We will now define some properties that the model may have and that are usually of interest to show that the modelled system meets some requirements.
+This makes it possible to formally represent a system and interactions between its components.
+We will now define some properties that the model may have and that are usually of interest to show that the modelled system meets some requirements.
 
 \subsection{Behavioural properties of \acp{PN}}
 
@@ -210,36 +245,36 @@ Knowing if an initialized \ac{PN} may reach a given marking, that represents for
 This is the \emph{reachability problem}.
 
 \begin{defi}[Reachability]
-  Given an initialized \ac{PN} \NPTm and a marking \mar of \N, \mar is said reachable if $\mari \fire{*} \mar$.
+  Given an initialized \ac{PN} $\defPN$ and a marking \mar of \namePN, \mar is said reachable if $\mari \fire{*} \mar$.
 \end{defi}
 
 However, the verification of safety properties are more often reduced to a \emph{coverability problem}, that is essentially asking if an initialized \ac{PN} can reach or exceed a given marking.
 
 \begin{restatable}[Coverability]{defi}{coverability}
-  Given an initialized \ac{PN} \NPTm and a marking \mar of \N, \mar is said coverable if there exists a marking \marp such that $\mar \preceq \marp$ and $\mari \fire{*} \marp$.
+  Given an initialized \ac{PN} $\defPN$ and a marking \mar of \namePN, \mar is said coverable if there exists a marking \marp such that $\mar \preceq \marp$ and $\mari \fire{*} \marp$.
 
   A set of markings is said coverable whenever one of its markings is coverable.
 \end{restatable}
 
 \begin{defi}[Coverability problem]
-  Given an initialized \ac{PN} \NPTm and a set $M$ of markings of \N, determine whether $\exists \mar \in M \text{ and } \marp \in \Post^*(\mari) \text{ such that } \mar \preceq \marp$.
+  Given an initialized \ac{PN} $\defPN$ and a set $\markings$ of markings of \namePN, determine whether $\exists \mar \in \markings \text{ and } \marp \in \posts{\mari} \text{ such that } \mar \preceq \marp$.
 
   The coverability problem for a marking \mar is the coverability problem for the singleton $\{\mar\}$.
 \end{defi}
 
 The behaviour of a \ac{PPN} is defined by the behaviours of all the \acp{PN} that can be obtained by a valuation of its parameters.
-So, for an initialized \ac{PPN} \PPN, the coverability problem may be declined in an existential and an universal form.
-The existential coverability problem (\Ecov) ask if there exists a valuation $v$ such that \mar is coverable.
-The universal coverability problem (\Ucov) ask if \mar is coverable for all valuations $v$.
+So, for an initialized \ac{PPN} $\namePPN$, the coverability problem may be declined in an existential and an universal form.
+The existential coverability problem (\Ecov) ask if there exists a valuation $\val$ such that \mar is coverable.
+The universal coverability problem (\Ucov) ask if \mar is coverable for all valuations $\val$.
 
 \begin{defi}[Universal and existential coverability problems]
-  Given a \ac{PPN} \SPTPm and a set $M$ of non-parametric markings of \PPN
+  Given a \ac{PPN} $\defPPN$ and a set $\markings$ of non-parametric markings of $\namePPN$
   \begin{itemize}
-    \item the \emph{existential coverability problem} ask if there is a valuation $v$ for $\mathbb{P}$ such that $M$ is coverable,
-    \item the \emph{universal   coverability problem} ask if $M$ is coverable for all valuations of $\mathbb{P}$.
+    \item the \emph{existential coverability problem} ask if there is a valuation $\val$ for $\parameters$ such that $\markings$ is coverable,
+    \item the \emph{universal   coverability problem} ask if $\markings$ is coverable for all valuations of $\parameters$.
   \end{itemize}
 \end{defi}
 
-For the sake of simplicity, we will denote that the instance of the coverability problem on the \ac{PN} \N for the set $U$ of markings of \N is positive by: $\covOp(\N, U) = \top$, and is negative by $\covOp(\N, U) = \bot$. The same apply to \Ecov and \Ucov through the operators $\EcovOp$ and $\UcovOp$ respectively.
+For the sake of simplicity, we will denote that the instance of the coverability problem on the \ac{PN} \namePN for the set $\setm$ of markings of \namePN is positive by: $\covOp(\namePN, \setm) = \top$, and is negative by $\covOp(\namePN, \setm) = \bot$. The same apply to \Ecov and \Ucov through the operators $\EcovOp$ and $\UcovOp$ respectively.
 
 % vim: spell spelllang=en :
