@@ -112,18 +112,145 @@
 
 \newcommand{\lang}[1]{{\em{}#1}}
 
-\newcommand{\overbar}[1]{\overline{#1\mkern-1.5mu}\mkern 1.5mu}
+\newcommand{\Ecov}{$\mathscr{E}$-cov\xspace}
+\newcommand{\Ucov}{$\mathscr{U}$-cov\xspace}
+
+% new commands
+\usepackage{xparse}
+\usepackage{ifthen}
+
+% conventions
+% fixed: transition = t
+% fixed: place = p
+% fixed: set = {}
+% fixed: vector = ()
+% command name prefixes: name, def, body
+
+% PNs
+\newcommand{\opn}{$\omega$-\ac{PN}\xspace}
+\newcommand{\opns}{$\omega$-\acp{PN}\xspace}
 \newcommand{\omark}{$\omega$-marking\xspace}
 \newcommand{\omarks}{$\omega$-markings\xspace}
+% names
+\newcommand{\namePN} {\ensuremath{\mathcal{N}}\xspace}
+\newcommand{\namePPN}{\ensuremath{\mathcal{S}}\xspace}
+% bodies
+\newcommand{\bodyPN} {\tuple{\places, \transitions, \mari}}
+\newcommand{\bodyPPN}{\tuple{\places, \transitions, \parameters, \mari}}
+\newcommand{\bodyNonMarkedPN} {\tuple{\places, \transitions}}
+\newcommand{\bodyNonMarkedPPN}{\tuple{\places, \transitions, \parameters}}
+% defs
+\newcommand{\defPN} {\namePN  = \bodyPN}
+\newcommand{\defPPN}{\namePPN = \bodyPPN}
+\newcommand{\defNonMarkedPN} {\namePN  = \bodyNonMarkedPN}
+\newcommand{\defNonMarkedPPN}{\namePPN = \bodyNonMarkedPPN}
+
+% object
+\newcommand{\tuple}[1]{\left\langle#1\right\rangle}
+\newcommand{\setComp}[2]{\left\{#1 \mid #2\right\}}
+
+% functions
+\newcommand{\fire}[2][]{\xrightarrow{#2}_{#1}}
+\newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\transpose}[1]{#1^T}
+\newcommand{\post}[2][]{\Post_{#1}(#2)}
+\newcommand{\pre}[2][]{\Pre_{#1}(#2)}
+\newcommand{\posts}[2][]{\Post^*_{#1}(#2)}
+\newcommand{\pres}[2][]{\Pre^*_{#1}(#2)}
+\newcommand{\cover}[1]{\Cover(#1)}
+\newcommand{\op}[1]{\Oplaces(#1)}
+\newcommand{\upc}[1]{\Upc(#1)}
+\newcommand{\downc}[1]{\Upc(#1)}
+\newcommand{\maxp}[1]{\Max(#1)}
+\newcommand{\maxs}[1]{\Maxs(#1)}
+
+\newcommand{\val}[1][]{v\ifthenelse{\equal{\detokenize{#1}}{}}{}{(#1)}}
+
+\NewDocumentCommand{\inw}{ O{} O{} }{I_{#1}% %input weight
+  \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
+  {(#2)}}
+
+\NewDocumentCommand{\outw}{ O{} O{} }{O_{#1}% %output weight
+  \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
+  {(#2)}}
+
+\NewDocumentCommand{\effect}{ m O{} }{\Effect(#1)%
+  \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
+  {(#2)}}
+
+% matrices
+\NewDocumentCommand{\inm}{ O{} O{} }{\mathbf{I}_{#1}%
+  \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
+  {(#2)}}
+\NewDocumentCommand{\outm}{ O{} O{} }{\mathbf{O}_{#1}%
+  \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
+  {(#2)}}
+
+
+% sets
+\newcommand{\set}{\ensuremath{\mathcal{E}}\xspace}
+\newcommand{\places}{P}
+\newcommand{\transitions}{T}
+\newcommand{\markings}{\mathcal{M}}
+\newcommand{\setm}{\markings}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\parameters}{\mathbb{P}}
+\newcommand{\range}[2]{\{#1, \dots, #2\}}
+\newcommand{\ucs}{\mathcal{U}} %upward closed set
+\newcommand{\setp}{\mathcal{Q}} %set of places
+
+% sequence
+\newcommand{\seq}{s}
+\newcommand{\seqt}[1][1]{%sequence of transitions
+  \ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}{\sigma}{\rho}}
+\NewDocumentCommand{\bodySeq}{ O{\sit} m m }{(#1_{#2}, \dots, #1_{#3})}
+\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{0} O{1} }{(#1_{#2}, #1_{#3}, \dots)}
+\newcommand{\bodySeqt}[2]{\bodySeq[\transition]{#1}{#2}}
+\newcommand{\bodySeqm}[2]{\bodySeq[\mar]{#1}{#2}}
+\NewDocumentCommand{\defInfSeq}{ O{\seq} O{\sit} O{0} O{1} }{#1 = \bodyInfSeq[#2][#3][#4]}
+\NewDocumentCommand{\defSeqt}{ O{\seqt} m m }{#1 = \bodySeqt{#2}{#3}}
+
+
+% units
+\newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}
+\newcommand{\mari}{\ensuremath{\mar_0}\xspace}
+\newcommand{\marp}{\ensuremath{\mathbf{m'}}\xspace} % deprecated
+\newcommand{\transition}{t} % fixed
+\newcommand{\place}{p} % fixed
+\newcommand{\sit}{e} %sequence item
+\newcommand{\param}[1][1]{
+  \ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}
+  {a}{%
+    \ifthenelse{\equal{\detokenize{#1}}{\detokenize{2}}}
+    {b}{%
+      \ifthenelse{\equal{\detokenize{#1}}{\detokenize{3}}}
+      {c}{%
+        \ifthenelse{\equal{\detokenize{#1}}{\detokenize{4}}}
+        {c}{!!!\errmessage{unknown param number}}}}}}
+
+
+% relations
+\newcommand{\rela}{\mathrel{R}}
+
+% operators
+\DeclareMathOperator{\Effect}{Effect}
+\DeclareMathOperator{\Post}{Post}
+\DeclareMathOperator{\Pre}{Pre}
+\DeclareMathOperator{\Cover}{Cover}
+\DeclareMathOperator{\Oplaces}{\Omega}
+\DeclareMathOperator{\Max}{Max^\preceq}
+\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
+\DeclareMathOperator{\Upc}{\uparrow^\preceq}
+\DeclareMathOperator{\Downc}{\downarrow^\preceq}
+
+
+
+\newcommand{\overbar}[1]{\overline{#1\mkern-1.5mu}\mkern 1.5mu}
 \newcommand{\oplace}{$\omega$-place\xspace}
 \newcommand{\oplaces}{$\omega$-places\xspace}
 \newcommand{\noplaces}{non-$\omega$-places\xspace}
-\newcommand{\opn}{$\omega$-\ac{PN}\xspace}
-\newcommand{\opns}{$\omega$-\acp{PN}\xspace}
-\newcommand{\Ecov}{$\mathscr{E}$-cov\xspace}
-\newcommand{\Ucov}{\ensuremath{\mathscr{U}\text{-cov}}\xspace}
 
-\newcommand{\set}{\ensuremath{\mathcal{E}}\xspace}
+
 
 \newcommand{\N}{\ensuremath{\mathcal{N}}\xspace}
 \newcommand{\PPN}{\ensuremath{\mathcal{S}}\xspace}
@@ -141,20 +268,13 @@
 \newcommand{\SPTPmi}{\ensuremath{\PPNi = \PTPmi}\xspace}
 \newcommand{\SPTPmii}{\ensuremath{\PPNii = \PTPmii}\xspace}
 \newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
-\newcommand{\rela}{\mathcal{R}}
 
-%\newcommand{\fire}[1]{\stackrel{#1}{\to}}
-\newcommand{\fire}[1]{\xrightarrow{#1}}
-\newcommand{\firev}[1]{\fire{#1}_v}
 \newcommand{\treepath}[1]{\mathscr{T}_{#1}}
 \newcommand{\parent}[1]{#1^{-1}}
 \newcommand{\child}[1]{#1^{+1}}
 
-\newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}
-\newcommand{\mari}{\ensuremath{\mathbf{m}_0}\xspace}
 \newcommand{\marpi}{\ensuremath{\mathbf{m'}_0}\xspace}
 \newcommand{\marpp}{\ensuremath{\mathbf{m''}}\xspace}
-\newcommand{\marp}{\ensuremath{\mathbf{m'}}\xspace}
 
 \newcommand{\matIN}{\matI_\N}
 \newcommand{\matIS}{\matI_\PPN}
@@ -166,24 +286,18 @@
 \newcommand{\sousrel}{\stackrel{\Sous}{\Longrightarrow}}
 \newcommand{\surrel}{\stackrel{\Sur}{\Longrightarrow}}
 
+\newcommand{\vect}[1]{\left(#1\right)}
+
 \DeclareMathOperator{\Accelb}{A\overline{cce}l}
 \DeclareMathOperator{\Acc}{Acc}
 \DeclareMathOperator{\KMAcc}{Acceleration}
 \DeclareMathOperator{\CovSeq}{CovSeq}
-\DeclareMathOperator{\Cover}{Cover}
-\DeclareMathOperator{\Effect}{Effect}
 \DeclareMathOperator{\Flatten}{Flatten}
-\DeclareMathOperator{\Max}{Max^\preceq}
-\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
 \DeclareMathOperator{\Min}{Min^\preceq}
 \DeclareMathOperator{\Postb}{P\overbar{ost}}
-\DeclareMathOperator{\Post}{Post}
-\DeclareMathOperator{\Pre}{Pre}
 \DeclareMathOperator{\R}{\mathcal{R}}
 \DeclareMathOperator{\Sous}{Sous}
 \DeclareMathOperator{\Sur}{Sur}
-\DeclareMathOperator{\downc}{\downarrow^\preceq}
-\DeclareMathOperator{\upc}{\uparrow^\preceq}
 \DeclareMathOperator{\back}{Back}
 \DeclareMathOperator{\covOp}{cov}
 \DeclareMathOperator{\EcovOp}{\mathscr{E}cov}
