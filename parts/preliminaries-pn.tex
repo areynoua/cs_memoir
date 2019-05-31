@@ -4,20 +4,21 @@ To introduce these results, we need some additional definitions.
 They will be given for plain \acp{PN}, but most of them are naturally extended to \acp{PPN}.
 
 %% Covering set informal
-Given an initialized \ac{PN} \N, the \emph{covering set} of \N is the set of markings covered by at least one reachable marking of \N.
+Given an initialized \ac{PN} \namePN, the \emph{covering set} of \namePN is the set of markings covered by at least one reachable marking of \namePN.
 It is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
 
 %% Covering set formal
 \begin{defi}[Covering set]
-  Let $\N = \PTm$ be an initialized \ac{PN}.
-  The \emph{covering set} $S$ of \N, noted $\Cover(\N)$, is the set $\{c \mid \exists c' \in \Post^*(\N) : c \preceq c' \}$.
+  Let $\defPN$ be an initialized \ac{PN}.
+  The \emph{covering set} $\set$ of \namePN, noted $\cover{\namePN}$, is the set $\setComp{c}{\exists c' \in \posts{\mari} : c \preceq c' }$.
 \end{defi}
+
 
 %% Covering set picture
 \begin{figure}[htbp]
   \label{fig:reach-and-cover-example}
   \centering
-  \subfloat[A \ac{PN} ($|P| = 2$)]{
+  \subfloat[A \ac{PN} ($\card{\places} = 2$)]{
     \label{fig:two-net}
     \input{res/two-net}
 
@@ -45,38 +46,40 @@ In~\ref{fig:two-cover} we see the covering set.
 Sometimes the number of tokens in a place is unbounded (\lang{c.f.} the place boundedness problem).
 In a plain \ac{PN}, this is due to the existence of an increasing self-covering sequence.
 \begin{defi}[Self-covering sequence]
-  Given an initialized \ac{PN} $\N = \PTm$,
-  a self-covering sequence is a sequence of the form:
+  Given an initialized \ac{PN} $\defPN$,
+  a self-covering sequence $\seqt$ is a sequence of transitions from $\transitions$ such that 
   \(
-    \mari \fire{\rho} \mar_i \fire{\sigma} \mar_j
+    \mar_i \fire{\seqt} \mar_j
   \),
-  with $\rho$ and $\sigma$ two sequences of transitions of $T$
-  and with $\mar_i \preceq \mar_j$.
+  with $\mari \fire{*} \mar_i$ %and $\seqt$ two sequences of transitions of $T$
+  and $\mar_i \preceq \mar_j$.
 \end{defi}
 
-Note that, since $\mar_i \preceq \mar_j$, $\sigma$ is firable from $\mar_j$.
-In addition, the monotonicity of \acp{PN} ensures that, with $\marp_j$ given by $\mar_j \fire{\sigma} \marp_j$, we have $\mar_j \preceq \marp_j$.
+Note that, since $\mar_i \preceq \mar_j$, $\seqt$ is enabled in $\mar_j$.
+In addition, the monotonicity of \acp{PN} ensures that, with $\mar'_j$ given by $\mar_j \fire{\seqt} \mar'_j$, we have $\mar_j \preceq \mar'_j$.
 Thus, we see that it is a sufficient condition for the \emph{non-termination} of the system (the system may be able to fire transitions infinitely often).
-In fact, because $\preceq$ is a well quasi-order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\mari \fire{} \mar_1 \fire{} \dots$ two markings $\mar_i$ and $\mar_j$ such that $\mar_i \preceq \mar_j$. \todo{take proof from mini-memoir.}
+Actually, since $\preceq$ is a well quasi-order (Lemma~\ref{lemm:wqo}), one can find in any infinite sequence $\mari \fire{} \mar_1 \fire{} \dots$ two markings $\mar_i$ and $\mar_j$ such that $\mar_i \preceq \mar_j$. \todo{take proof from mini-memoir.}
 Therefore, any infinite sequence is self-covering, and the existence of such a sequence is also necessary for the non-termination of the system.
 
 %% Increasing self-covering sequence formal
 \begin{defi}[Increasing self-covering sequence]
-  Given an initialized \ac{PN} $\N = \PTm$,
-  an increasing self-covering sequence is a sequence of the form:
+  Given an initialized \ac{PN} $\defPN$,
+  an increasing self-covering sequence $\seqt$ is a sequence of transitions from $\transitions$ such that
   \(
-    \mari \fire{\rho} \mar_i \fire{\sigma} \mar_j
+    \mar_i \fire{\seqt} \mar_j
   \),
-  with $\rho$ and $\sigma$ two sequences of transitions of $T$
-  and with $\mar_i \prec \mar_j$.
+  with $\mari \fire{*} \mar_i$
+  and $\mar_i \prec \mar_j$.
 \end{defi}
 
-Let $Q \subseteq P$ be the set of places $Q = \{q \in P \mid \mar_i(q) < \mar_j(q)\}$.
-$Q \neq \emptyset$ since $\mar_i \prec \mar_j$.
+\todo{introduce next paragraph}
 
-With a reasoning similar to the one above, we see that having such a sequence ensures that one can reach a marking $\marp_j$ given by $\mar_j \fire{\sigma} \marp_j$ such that $\mar_j \prec \marp_j$.
-Because of the constant effect of transitions, we know that $\forall q \in Q : \mar_j(q) < \marp_j(q)$.
-The unboundedness of the places in $Q$ follows.
+Let $\setp \subseteq \places$ be the set of places $\setp = \setComp{p \in \places}{ \mar_i(p) < \mar_j(p)}$.
+$\setp \neq \emptyset$ since $\mar_i \prec \mar_j$.
+
+With a reasoning similar to the one above, we see that having such a sequence ensures that one can reach a marking $\mar'_j$ given by $\mar_j \fire{\seqt} \mar'_j$ such that $\mar_j \prec \mar'_j$.
+Because of the constant effect of transitions, we know that $\forall p \in \setp : \mar_j(p) < \mar'_j(p)$.
+The unboundedness of the places in $\setp$ follows.
 \cite{David17} provides a complete proof.
 \todo{A more formal proof that the existence of an increasing self-covering sequence is a necessary and sufficient condition for unboundedness on places is either to be done here or to be referenced.}
 
@@ -86,83 +89,87 @@ An \omark is a way to represent a set of markings which have the same number of 
 %% omark formal
 \begin{defi}[\omark]
   We define $\omega$ to be such that:
-  $\omega \notin \mathbb{N}$
-  and for any constant $c \in \mathbb{N}$:
+  $\omega \notin \naturals$
+  and for any constant $c \in \naturals$:
   \begin{itemize}
     \item $c \leq \omega$
     \item $\omega + c = \omega$
     \item $\omega - c = \omega$
   \end{itemize}
 
-  \emph{An \omark} \mar over a set of places $P$ is a function $\mar : P \mapsto \mathbb{N} \cup \{\omega\}$ that associates $\mar(p)$ tokens to each place $p \in P$.
+  \emph{An \omark} \mar over a set of places $\places$ is a function $\mar : \places \mapsto \naturals \cup \{\omega\}$ that associates $\mar(p)$ tokens to each place $p \in \places$.
 
-  With $\mathbb{P}$ a set of parameters, $\omega \notin \mathbb{P}$,
-  \emph{a parametric \omark} \mar over a set of places $P$ is a function $\mar : P \mapsto \mathbb{N} \cup \mathbb{P} \cup \{\omega\}$ that associates $\mar(p)$ tokens to each place $p \in P$.
+  With $\parameters$ a set of parameters, $\omega \notin \parameters$,
+  \emph{a parametric \omark} \mar over a set of places $\places$ is a function $\mar : \places \mapsto \naturals \cup \parameters \cup \{\omega\}$ that associates $\mar(p)$ tokens to each place $p \in \places$.
 \end{defi}
 
-Note that an \omark \mar is a parametric \omark where $\mar(p) \in \mathbb{N} \cup \{\omega\}$ for all places $p \in P$.
-Similarly, a parametric marking \mar is a parametric \omark where $\mar(p) \neq \omega$ for all places $p \in P$.
+Note that an \omark \mar is a parametric \omark where $\mar(p) \in \naturals \cup \{\omega\}$ for all places $p \in \places$.
+Similarly, a parametric marking \mar is a parametric \omark where $\mar(p) \neq \omega$ for all places $p \in \places$.
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
-Given an \omark \mar, $\Omega(\mar) \subseteq P$ is the set of place $p$ such that $\mar(p) = \omega$, sometimes referred as \emph{\oplaces of \mar}. $P \setminus \Omega(\mar)$ is the set of \emph{\noplaces of \mar}.
+Given an \omark \mar, $\op{\mar} \subseteq \places$ is the set of place $p$ such that $\mar(p) = \omega$, sometimes referred as \emph{\oplaces of \mar}. $\places \setminus \op{\mar}$ is the set of \emph{\noplaces of \mar}.
 
 %% Coverability set informal
 \acp{PN} with unbounded places have an infinite reachability set.
 So the covering set is also infinite.
-\emph{Coverability sets} are useful to give a finite representation of the covering set thanks to \omark.
+\emph{Coverability sets} are useful to give a finite representation of the covering set thanks to \omarks.
 %%
 In order to define them formally, we need to know about the maximal markings and the upward and downward closure of a set of markings.
 
 %% Max markings informal
-The maximal elements of a set are the markings that are not covered by any other marking of the set.
+The maximal markings of a set are those which are not covered by any other marking of the set.
 %% Max markings formal
 \begin{defi}[Maximal markings]
-  Given a set of markings $S$, the set of maximal elements of $S$ is
-  $\Max(S) = \{ \mar \in S \mid \nexists \marp \in S \text{ s.t. } \mar \prec \marp \}$.
+  Given a set of markings $\setm$, the set of maximal elements of $\setm$ is
+  $\Max(\setm) = \setComp{ \mar \in \setm}{\nexists \mar' \in S \text{ s.t. } \mar \prec \mar' }$.
 \end{defi}
+
+
+%% STOP HERE
+
 
 %% Closure formal
 \begin{defi}[Upward- and downward-closure on markings]
-  Let $S \subseteq \mathbb{N}^{|P|}$ be a set of markings on the places $P$:
+  Let $\setm \subseteq \naturals^{\card{\places}}$ be a set of markings on the places $\places$:
   \begin{itemize}
-    \item The \emph{upward-closure} of $S$, noted $\upc(S)$, is the set
-      $\{\mar \in \mathbb{N}^{|P|} \mid \exists \marp \in S : \marp \preceq \mar\}$,
-    \item The \emph{downward-closure} of $S$, noted $\downc(S)$, is the set
-      $\{\mar \in \mathbb{N}^{|P|} \mid \exists \marp \in S : \mar \preceq \marp\}$.
+    \item The \emph{upward-closure} of $\setm$, noted $\upc{\setm}$, is the set
+      $\setComp{\mar \in \naturals^{\card{\places}}}{\exists \mar' \in \setm : \mar' \preceq \mar}$,
+    \item The \emph{downward-closure} of $\setm$, noted $\downc{\setm}$, is the set
+      $\setComp{\mar \in \naturals^{\card{\places}}}{\exists \mar' \in \setm : \mar \preceq \mar'}$.
   \end{itemize}
   The closure of a marking \mar is the closure of the singleton $\{\mar\}$.
 \end{defi}
 
 %% Up closure example
-For instance, with $\mar = (1, 2, 3)$, we have that its upward-closure is $\upc(\mar) = \{(i, j, k) \mid i \geq 1, j \geq 2, k \geq 3\}$.
+For instance, the upward-closure of $\mar = (1, 2, 3)$ is $\upc(\mar) = \setComp{(i, j, k)}{i \geq 1, j \geq 2, k \geq 3}$.
 
 %% Closed set formal
 \begin{defi}[Upward- and downward-closed set of markings]
-  A set $S$ of markings is said \emph{upward-closed} if $S = \upc(S)$.
-  It is said \emph{downward-closed} if $S = \downc(S)$.
+  A set $\setm$ of markings is said \emph{upward-closed} if $\setm = \upc{\setm}$.
+  It is said \emph{downward-closed} if $\setm = \downc{\setm}$.
 \end{defi}
 
 %% Coverability set formal
 \begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
-  Given an initialized \ac{PN} $\N = \PTm$, a \emph{coverability set} $S$ of \N is a set of markings such that $\downc(S) = \downc(\Post^*(\mari))$.
+  Given an initialized \ac{PN} $\defPN$, a \emph{coverability set} $\setm$ of \namePN is a set of markings such that $\downc{\setm} = \downc{\posts{\mari}}$.
 \end{defi}
 
 %% Usefulness of coverability sets and omarks
-Notice that, since $\downc(\mar)$ exists and is unique for all \omark \mar, an \omark may always stands for one and only one downward closed set.
+Notice that, since $\downc{\mar}$ exists and is unique for all \omark \mar, an \omark may always stands for one and only one downward closed set.
 Symmetrically, it is known that any downward closed set may be represented by a finite set of \omarks \citep{Geeraerts06}. \todo{Indeed...}
 
 In particular, finite coverability sets may effectively represent, thanks to \omarks, any covering set:
-Having an \omark \mar in a coverability set $S$ of $\N$ denotes that for all marking $\mar_1$ such that $\mar_1(p) = \mar(p) \forall p \in \{p \mid \mar(p) \neq \omega\}$, there exists a marking $\mar_2$ in the reachability set of \N such that $\mar_1 \prec \mar_2$.
+Having an \omark \mar in a coverability set $S$ of $\namePN$ denotes that for all marking $\mar_1$ such that $\mar_1(p) = \mar(p) \forall p \in \{p \mid \mar(p) \neq \omega\}$, there exists a marking $\mar_2$ in the reachability set of \namePN such that $\mar_1 \prec \mar_2$.
 \todo{We prove it by giving a minimal coverability set for any covering set.}
 
 %% Max markings and minimal coverability set informal.
-Indeed, the set of maximal reachable markings of \N exists, is finite and forms a minimal coverability set.
+Indeed, the set of maximal reachable markings of \namePN exists, is finite and forms a minimal coverability set.
 
 %% Max markings and minimal coverability set formal.
-\[\downc(\Max(\Post^*(\mari))) = \downc(\Post^*(\mari))\]
-\[\forall S \text{ such that } \downc(S) = \downc(\Post^*(\mari))\text{, we have } |S| \geq |\Max(\Post^*(\mari))|\]
+\[\downc{\Max(\Post^*(\mari))} = \downc(\Post^*(\mari))\]
+\[\forall S \text{ such that } \downc(S) = \downc(\Post^*(\mari))\text{, we have } \card{S} \geq \card{\Max(\Post^*(\mari))}\]
 
-Moreover, for any set of markings $S$ over a finite set of places $P$, the set of maximal markings of $S$ exists, is finite and is such that $\downc(\Max(S)) = \downc(S)$.
+Moreover, for any set of markings $S$ over a finite set of places $\places$, the set of maximal markings of $S$ exists, is finite and is such that $\downc(\Max(S)) = \downc(S)$.
 
 \todo{Lemme: For any downward-closed set S of markings, the downward-closure of the set of maximal markings of S is S}
 
@@ -173,18 +180,18 @@ It is straightforward to extend the proof to any downward-closed set.
 It is worth noticing that, in the context of \acp{PN}, the coverability problem for a set of markings $S$ may be defined as follows:
 \begin{defi}[Coverability problem]
   \label{defi:upclocovprblm}
-  Given a \ac{PN} \N and an upward-closed set $U = \upc(S)$ of markings of \N, determine whether $\Post^*(\mari) \cap U = \emptyset$.
+  Given a \ac{PN} \namePN and an upward-closed set $U = \upc(S)$ of markings of \namePN, determine whether $\Post^*(\mari) \cap U = \emptyset$.
 \end{defi}
 
 An upward closed set is always infinite.
 It can be effectively represented through its unique set of minimal elements whose it is the upward closure:
 \begin{lemm}
-  For all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, its set of minimal element $\Min(U) = \{\mar \in U \mid \nexists \marp \in U : \marp \prec \mar\}$ is such that $\upc(\Min(U)) = U$.
+  For all upward-closed set $U \subseteq \naturals^{\card{\places}}$, its set of minimal element $\Min(U) = \{\mar \in U \mid \nexists \mar' \in U : \mar' \prec \mar\}$ is such that $\upc(\Min(U)) = U$.
 \end{lemm}
 
 The following lemma ensure that this set is finite:
 \begin{lemm}[Dickson's lemma]
-  For all $c \in \mathbb{N}$, every set of $c$-tuples of natural numbers have finitely many minimal elements.
+  For all $c \in \naturals$, every set of $c$-tuples of natural numbers have finitely many minimal elements.
 \end{lemm}
 This result may easily be extended to $c$-tuples of values from any ordered countable set.
 
@@ -221,19 +228,19 @@ Although it was not originally designed for this purpose, the Karp and Miller al
 More precisely, it constructs a coverability tree and uses an acceleration function to systematically detect self-covering sequences, and thus ensures the termination.
 
 \begin{defi}[Coverability tree]
-  Given a \ac{PN} $\N = \PTm$, a coverability tree $\mathcal{T}$ of \N is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
+  Given a \ac{PN} $\namePN = \PTm$, a coverability tree $\mathcal{T}$ of \namePN is a labelled tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$ where:
   \begin{itemize}
-    \item $N$ is the set of nodes of the tree.%, is a set of \omark of \N such that $\downc(N) = \Cover(\N)$.
+    \item $N$ is the set of nodes of the tree.%, is a set of \omark of \namePN such that $\downc(N) = \Cover(\namePN)$.
     \item $n_0 \in N$ is the root of the tree, \lang{i.e.} $\nexists n \in N$ such that $(n, n_0) \in B$.
-    \item $\Lambda : N \mapsto (\mathbb{N} \cup \{\omega\})^{|P|}$ is a labelling function that associate to each node an \omark of \N.
+    \item $\Lambda : N \mapsto (\naturals \cup \{\omega\})^{\card{\places}}$ is a labelling function that associate to each node an \omark of \namePN.
     \item $B \subseteq N \times N$, the set of edges, is such that:
       \begin{itemize}
-        \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\sigma$ of transitions of $T$ such that $\Lambda(n_1) \fire{\sigma} \Lambda(n_2)$,
+        \item with $(n_1, n_2) \in N^2$, if there exists an edge $(n_1, n_2) \in B$ then there exists a sequence $\seqt$ of transitions of $T$ such that $\Lambda(n_1) \fire{\seqt} \Lambda(n_2)$,
         \item for all node $n \in N \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $B$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i \geq 1$, and
         \item there are no cycles, that is, there are no sequences of edges of $B$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
       \end{itemize}
   \end{itemize}
-  and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\N)$.
+  and such that $\downc(\{\Lambda(n) \mid n \in N\}) = \Cover(\namePN)$.
 \end{defi}
 
 We denote by $\treepath{n}$ the path in the tree from the root to $n$, that is the sequence of nodes from $n_0$ to $n$.
@@ -247,7 +254,7 @@ This function takes a marking \mar to accelerate and a set of markings $S$ as a 
 \[
   \mar_\omega(p) =
   \begin{cases}
-    \omega    &\text{if } \exists \marp \in S : \marp \prec \mar \text{ and } \marp(p) < \mar(p) \\
+    \omega    &\text{if } \exists \mar' \in S : \mar' \prec \mar \text{ and } \mar'(p) < \mar(p) \\
     \mar(p)  &\text{otherwise}
   \end{cases}
 \]
@@ -264,7 +271,7 @@ Then, while $F$ is non-empty, a node $n$ is chosen from $F$ to be processed:
 
 The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
 
-To prove that the Karp and Miller Tree $\mathcal T$ is a coverability tree of \N, we show:
+To prove that the Karp and Miller Tree $\mathcal T$ is a coverability tree of \namePN, we show:
 \begin{enumerate}
   \item \todo{} that one can construct a sequence from \mari to any marking \mar “covered by the tree”, given a node $n$ such that $\mar \in \downc(\Lambda(n))$, and
   \item \todo{} that any marking $\mar \in \Post^*(\mari)$ is “covered by at least one node of the tree”.
@@ -275,12 +282,12 @@ To prove that the Karp and Miller Tree $\mathcal T$ is a coverability tree of \N
 Although very different in form, the proofs are based on those stated in \cite{Karp69}.
 
 \begin{lemm}
-  Given an initialized \ac{PN} $\N = \PTm$ and a node $n$ of its Karp and Miller tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$,
-  for any marking $\mar \in \downc(\Lambda(n))$ there exists a sequence of transitions $\sigma \in T^*$ and a marking $\marp$ such that $\mari \fire{\sigma} \marp$ and $\mar \preceq \marp$.
+  Given an initialized \ac{PN} $\namePN = \PTm$ and a node $n$ of its Karp and Miller tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$,
+  for any marking $\mar \in \downc(\Lambda(n))$ there exists a sequence of transitions $\seqt \in T^*$ and a marking $\mar'$ such that $\mari \fire{\seqt} \mar'$ and $\mar \preceq \mar'$.
 \end{lemm}
 
 \begin{proof}
-  We show that there exists a function $\Sigma : \mathbb{N}^{|P|} \times N \mapsto T^* : \mar, n \rightarrow \sigma$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc(\Lambda(n))$, gives such a sequence $\sigma$.
+  We show that there exists a function $\Sigma : \naturals^{\card{\places}} \times N \mapsto T^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc(\Lambda(n))$, gives such a sequence $\seqt$.
 
   For this purpose, we introduce some notations:
   \begin{itemize}
@@ -297,7 +304,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 
   Before we look at $\Sigma$, here is one key observation on the Karp and Miller tree:
   since the Karp and Miller algorithm never remove $\omega$s, we have
-  $\Omega(\Lambda(\parent{n})) \subseteq \Omega(\Lambda(n))$.
+  $\op(\Lambda(\parent{n})) \subseteq \op(\Lambda(n))$.
 
   Without loss of generality, we assume that $\mari$ does not map any place to $\omega$, and thus $\Sigma(\mar, n_0) = ()$.
 
@@ -311,7 +318,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
         \item $n^\omega_i$ denotes the first node of $\treepath{n}$ such that $\Lambda(n_i) = \omega$, and
         \item $n_i$ denotes the node used by $\KMAcc$ to accelerate $p_i$ in $\Lambda(n^\omega_i)$, \lang{i.e.}, \todo{the last} node of $\treepath{n^\omega_i}$ such that $\Lambda(n_i) \preceq \Lambda(n^\omega_i)$.
       \end{itemize}
-    \item with $i$ and $j \in \{1, …, |P|\}$, we have:
+    \item with $i$ and $j \in \{1, …, \card{\places}\}$, we have:
       \begin{itemize}
         \item $i < j$ whenever $p_i \in \Omega(\Lambda(n)) \wedge p_j \notin \Omega(\Lambda(n))$:
           the \oplaces are before the \noplaces,
@@ -325,31 +332,31 @@ Although very different in form, the proofs are based on those stated in \cite{K
     \item $\alpha(n) = \{I+1, ..., J\}$ is the possibly empty set of the indices of the places accelerated ``at'' $n$: $j \in \alpha(n)$ iff $p_j \in \Omega(\Lambda(n))$ and $p_j \notin \Omega(\Lambda(\parent{n}))$.
   \end{itemize}
 
-  The idea of the construction of $\Sigma(\mar, n)$ is that for any \oplace $p_i$ of $\Lambda(n)$, one can extract from $\treepath{n}$ a self-covering sequence $\sigma_i$ strictly increasing in $p_i$:
-  $\Effect(\sigma_i)(p_i) > 0$ and $\Effect(\sigma_i)(p) \geq 0$ for all $p \in P$.
+  The idea of the construction of $\Sigma(\mar, n)$ is that for any \oplace $p_i$ of $\Lambda(n)$, one can extract from $\treepath{n}$ a self-covering sequence $\seqt_i$ strictly increasing in $p_i$:
+  $\Effect(\seqt_i)(p_i) > 0$ and $\Effect(\seqt_i)(p) \geq 0$ for all $p \in \places$.
 
   As base case, consider that $\zeta(n) = \emptyset$.
   If $\alpha(n) = \emptyset$, there was no acceleration on $\treepath{n}$ and by construction of $\mathcal{T}$, $\mari \fire{\lambda(\treepath{n})} \Lambda(n)$.
   So we define $\Sigma(\mar, n)$ to be $\lambda(\treepath{n})$ whenever $\zeta(n) = \emptyset$ and $\alpha(n) = \emptyset$.\\
   Actually this is a special case of the one where $\alpha(n)$ may be not empty.
-  In that case, \marpp given by $\mari \fire{\lambda(\treepath{n})} \marpp$ agrees with $\Lambda(n)$ in its \noplaces.
-  To reach \marp that covers \mar in all its places, we explicitly repeat the increasing self-covering sequences implicitly detected by the Karp and Miller algorithm.
-  By construction of $\mathcal{T}$ we know that for all $j \in \alpha(n) = \{1, ..., J\}$, $\Lambda(n_j) \prec \marpp$.
+  In that case, \mar'' given by $\mari \fire{\lambda(\treepath{n})} \mar''$ agrees with $\Lambda(n)$ in its \noplaces.
+  To reach \mar' that covers \mar in all its places, we explicitly repeat the increasing self-covering sequences implicitly detected by the Karp and Miller algorithm.
+  By construction of $\mathcal{T}$ we know that for all $j \in \alpha(n) = \{1, ..., J\}$, $\Lambda(n_j) \prec \mar''$.
   Therefore:
   \begin{itemize}
-    \item $\lambda(\treepath{n_j,n^\omega_j})$ is enabled in \marpp,
-    \item $\Effect(\lambda(\treepath{n_j,n^\omega_j}))(p) \geq 0$ for all $p \in P$, and
+    \item $\lambda(\treepath{n_j,n^\omega_j})$ is enabled in \mar'',
+    \item $\Effect(\lambda(\treepath{n_j,n^\omega_j}))(p) \geq 0$ for all $p \in \places$, and
     \item $\Effect(\lambda(\treepath{n_j,n^\omega_j}))(p_j) > 0$ for all $j \in \alpha(n)$.
   \end{itemize}
   Note that $n^\omega_j = n$.
   Thus, for all such $j$, $\treepath{n_j,n^\omega_j}$ is the increasing self-covering sequence we were looking for.
   Moreover, % whenever $\zeta(n) = \emptyset$,
-  $\sigma_j = \lambda(\treepath{n_j,n})$ for all $j \in \alpha(n)$
+  $\seqt_j = \lambda(\treepath{n_j,n})$ for all $j \in \alpha(n)$
   and
   there exists some naturals $k_j$ such that we can define $\Sigma(\mar, n)$ to be
-  \[ \lambda(\treepath{n}) + k_1 \cdot \sigma_1 + \dots + k_J \cdot \sigma_J \] 
+  \[ \lambda(\treepath{n}) + k_1 \cdot \seqt_1 + \dots + k_J \cdot \seqt_J \] 
   Actually, one can easily compute such $k_j$ to obtain the shortest sequence of this form.
-  With $s_j = \lambda(\treepath{n}) + k_1 \cdot \sigma_1 + … + k_j \cdot \sigma_j$, we have:
+  With $s_j = \lambda(\treepath{n}) + k_1 \cdot \seqt_1 + … + k_j \cdot \seqt_j$, we have:
   \[
     k_j =
     \begin{cases}
@@ -369,15 +376,15 @@ Although very different in form, the proofs are based on those stated in \cite{K
     \end{cases}
   \]
 
-  The chosen order ensure that with $j_1 \leq j_2$ we have $|\sigma_{j_1}| \geq |\sigma_{j_2}|$ and so any other order would give a sequence longer or as long as the one computed here.
+  The chosen order ensure that with $j_1 \leq j_2$ we have $\card{\seqt_{j_1}} \geq \card{\seqt_{j_2}}$ and so any other order would give a sequence longer or as long as the one computed here.
 
 
   The induction step considers the case where $\zeta(n) \neq \emptyset$.
   By definition, a node in this case have at least one ancestor lying in the base case.
   Once again, let us focus first on the simpler case where $\alpha(n) = \emptyset$.
-  Here one can easily compute the $\preceq$-lowest marking \marpp of $\downc(\Lambda(\parent{n}))$ such that $\marpp \fire{\lambda(n)} \marp$ (with $\mar \preceq \marp$) and that agrees with $\Lambda(\parent{n})$ for its \noplaces. It is given by:
+  Here one can easily compute the $\preceq$-lowest marking \mar'' of $\downc(\Lambda(\parent{n}))$ such that $\mar'' \fire{\lambda(n)} \mar'$ (with $\mar \preceq \mar'$) and that agrees with $\Lambda(\parent{n})$ for its \noplaces. It is given by:
   \[
-    \marpp(p) = \begin{cases}
+    \mar''(p) = \begin{cases}
       \Lambda(\parent{n})(p)
         &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
       \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(n)}(p))
@@ -386,24 +393,24 @@ Although very different in form, the proofs are based on those stated in \cite{K
   \]
 
   Indeed, %(1)
-  $\lambda(n)$ is enabled in $\marpp$:
-  for the \noplaces $p$ of $\Lambda(\parent{n})$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \marpp(p)$;
+  $\lambda(n)$ is enabled in $\mar''$:
+  for the \noplaces $p$ of $\Lambda(\parent{n})$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \mar''(p)$;
   and for the \oplaces $p$ of $\Lambda(\parent{n})$, the chosen value is at least $I_{\lambda(t)}(p)$.\\
   Moreover, %(2)
-  $\mar \preceq \marp$:
-  for the \noplaces $p$ of $\Lambda(\parent{n})$, we have $\marp(p) = \marpp(p) + \Effect(\lambda(n))(p) = \Lambda(n)(p) \geq \mar(p)$ by choice of $n$ and \mar;
-  and for the \oplaces $p$ of $\Lambda(\parent{n})$, we have $\marp(p) = \marpp(p) + \Effect(\lambda(n))(p) \geq \mar(p)$ by construction of $\marpp$.\\
+  $\mar \preceq \mar'$:
+  for the \noplaces $p$ of $\Lambda(\parent{n})$, we have $\mar'(p) = \mar''(p) + \Effect(\lambda(n))(p) = \Lambda(n)(p) \geq \mar(p)$ by choice of $n$ and \mar;
+  and for the \oplaces $p$ of $\Lambda(\parent{n})$, we have $\mar'(p) = \mar''(p) + \Effect(\lambda(n))(p) \geq \mar(p)$ by construction of $\mar''$.\\
   Thus, we define
-  $\Sigma(n, \mar)$ to be $\Sigma(\parent{n}, \marpp) + \lambda(n)$
+  $\Sigma(n, \mar)$ to be $\Sigma(\parent{n}, \mar'') + \lambda(n)$
   whenever
   $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$.
 
   In the general case, $\alpha(n)$ may be not empty.
   There a difficulty arises from the fact that $\lambda(\treepath{n_j,n^\omega_j}), j \in \alpha(n)$ may not be a self-covering sequence since its effect may be negative for some places $p_i$ (with $i \in \zeta(n)$).
-  This difficulty is solved by integrating enough repetitions of $\sigma_i$ along with $\lambda(\treepath{n_j,n^\omega_j})$ in $\sigma_j$ to counterbalance it.
+  This difficulty is solved by integrating enough repetitions of $\seqt_i$ along with $\lambda(\treepath{n_j,n^\omega_j})$ in $\seqt_j$ to counterbalance it.
 
   Here are two ways to shows that it can be done.
-  First, it may be easier to convince oneself of this by noting that, for all such $i$, there is a marking \marpp such that $\Sigma(\marpp, n^\omega_i)$ has enough tokens in $p_i$ to undo the negative effect of $\lambda(\treepath{n_j,n^\omega_j})$ in this place. But the calculation of \marpp is a little technical.\\
+  First, it may be easier to convince oneself of this by noting that, for all such $i$, there is a marking \mar'' such that $\Sigma(\mar'', n^\omega_i)$ has enough tokens in $p_i$ to undo the negative effect of $\lambda(\treepath{n_j,n^\omega_j})$ in this place. But the calculation of \mar'' is a little technical.\\
    However, the computation of an actual self-covering sequence increasing in $p_j$, to use instead of $\treepath{n_j, n^\omega_j}$, is easy. With only one $i$, it is given by:
    \[
      s_{j,i} = \lambda\left(\treepath{n_j,n_i} + l_{j,i} \cdot \treepath{n_i,n^\omega_i} + \treepath{n^\omega_i,n^\omega_j}\right)
@@ -440,8 +447,8 @@ Although very different in form, the proofs are based on those stated in \cite{K
 
 
   Formally, for all $i \in \zeta(n)$ and $j \in \alpha(n), i < j$, there exists some naturals $l_{j,i}$ such that the sequence
-  $\sigma_j = $\todo{See notes "rep3" pour les détails}
-  %$\sigma_j = l_{j,1} \cdot \sigma_1 + … + l_{j,I} \cdot \sigma_I + \lambda(\treepath{n^\omega_I,n})$
+  $\seqt_j = $\todo{See notes "rep3" pour les détails}
+  %$\seqt_j = l_{j,1} \cdot \seqt_1 + … + l_{j,I} \cdot \seqt_I + \lambda(\treepath{n^\omega_I,n})$
   is self-covering and strictly increasing in $p_j$.
  
   \todo{Note: dans ce cas, choisir un ordre différent peut donner une séquence plus courte.}
@@ -453,7 +460,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %
 %
-%  Let $i$ and $j \in \{1, …, |P|\}$ be such that:
+%  Let $i$ and $j \in \{1, …, \card{\places}\}$ be such that:
 %  Let 
 %  \begin{itemize}
 %    \item $i < j$ whenever $\Lambda(n)$
@@ -463,9 +470,9 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %
 %
-%  Thus we have for any node $n \in N$ three disjoint sets of places whose the union is $P$:
+%  Thus we have for any node $n \in N$ three disjoint sets of places whose the union is $\places$:
 %  \begin{itemize}
-%    \item $\eta(n) = P \setminus \Omega(\Lambda(n))$ are the \noplaces of $\Lambda(n)$,
+%    \item $\eta(n) = \places \setminus \Omega(\Lambda(n))$ are the \noplaces of $\Lambda(n)$,
 %    \item $\zeta(n) = \Omega(\Lambda(\parent{n}))$ are the \oplaces that were already accelerated in $\Lambda(\parent{n})$, and
 %    \item $\alpha(n) = \Omega(\Lambda(n)) \setminus \Omega(\Lambda(\parent{n}))$ are the newly accelerated places.
 %  \end{itemize}
@@ -476,7 +483,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  \( \Sigma(n, \mar) = () \text{ whenever } n = n_0 \).
 %  This is the base case.
 %
-%  If $n \neq n_0$, we have $\Sigma(n, \mar) = \Sigma(\parent{n}, \marpp) + \lambda(n) + \lambda(s_I)$ for well chosen marking $\marpp \in \downc(\Lambda(\parent{n}))$ and sequence of nodes $s_I$.
+%  If $n \neq n_0$, we have $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n) + \lambda(s_I)$ for well chosen marking $\mar'' \in \downc(\Lambda(\parent{n}))$ and sequence of nodes $s_I$.
 %
 %
 %
@@ -500,29 +507,29 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  \( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \Omega(\Lambda(n)) = \emptyset \).
 %  %Note that the previous case is a special case of this one.
 %  In a recursive way, this can be expressed as follows: $\Sigma(n, \mar) = \Sigma(\parent{n}, \Lambda(\parent{n})) + \lambda(n) \text{ whenever } \Omega(\Lambda(n)) = \emptyset$.
-%  %\( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in P \text{ s.t. } \Lambda(n)(p) = \omega \)
-%  %\[ \Sigma(n, \mar) = \Sigma\big(P(n),\Lambda(P(n))\big) + (\lambda(n)) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in P \text{ s.t. } \Lambda(n)(p) = \omega \]
+%  %\( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \Lambda(n)(p) = \omega \)
+%  %\[ \Sigma(n, \mar) = \Sigma\big(\places(n),\Lambda(\places(n))\big) + (\lambda(n)) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \Lambda(n)(p) = \omega \]
 %
 %  If $n$ is the first node of the branch labelled with a marking with places mapped to $\omega$,
 %  that is $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$,
-%  we construct $\Sigma(n, \mar) = \sigma$ as follows.
+%  we construct $\Sigma(n, \mar) = \seqt$ as follows.
 %  (Here are the ideas, we express them more precisely and in a recursive way right after.)\\
 %  First, consider the case where there exists exactly one \oplace $p$ in $\Lambda(n)$.
 %  This $\omega$ was introduced by $\KMAcc$ thanks to a node $n' \in \treepath{n}, \Lambda(n') \prec \Lambda(n)$.
 %  Thus $\lambda(\treepath{n',n})$ is an increasing self covering sequence
 %  and
-%  there exists some $k \in \mathbb{N}$ and $\marp \in \mathbb{N}^{|P|}$, $\mar \preceq \marp$
+%  there exists some $k \in \naturals$ and $\mar' \in \naturals^{\card{\places}}$, $\mar \preceq \mar'$
 %  such that
-%  $\sigma = \lambda(\treepath{n'}) + k \cdot \lambda(\treepath{n',n})$ and $\mari \fire{\sigma} \marp$. % with $\mar \preceq \marp$.
+%  $\seqt = \lambda(\treepath{n'}) + k \cdot \lambda(\treepath{n',n})$ and $\mari \fire{\seqt} \mar'$. % with $\mar \preceq \mar'$.
 %  More precisely, one can choose any $k$ that verifies $k \geq \left\lceil\frac{\mar(p) - \Lambda(n')(p)}{\Effect(\lambda(\treepath{n',n}))}\right\rceil$. %, but lower $k$ may also exists \todo{see notes +1+}.
 %  Note that $k > 0$.\\
-%  Second, if there exists many \oplaces $p_i$ in $\Lambda(n)$, one can compute $\sigma$ by considering the different $p_i$ one by one:
-%  We obtain for $p_1$ the sequence $\sigma_1 = \lambda(\treepath{n_1'}) + k_1 \cdot \lambda(\treepath{n_1',n})$ as above.
-%  Let $s_i$ be the sequence of nodes used to obtain $\sigma_i$, that is $s_1 = \treepath{n_1'} + k_1 \cdot \treepath{n_1',n}$.
+%  Second, if there exists many \oplaces $p_i$ in $\Lambda(n)$, one can compute $\seqt$ by considering the different $p_i$ one by one:
+%  We obtain for $p_1$ the sequence $\seqt_1 = \lambda(\treepath{n_1'}) + k_1 \cdot \lambda(\treepath{n_1',n})$ as above.
+%  Let $s_i$ be the sequence of nodes used to obtain $\seqt_i$, that is $s_1 = \treepath{n_1'} + k_1 \cdot \treepath{n_1',n}$.
 %  Now observe that
 %  the second $\omega$ was introduced thanks to a node $n_2$ that may appear many times in $s_1$ (it does whenever $n_2 \in \treepath{n_1',n}$ and $k_1 > 1$).
 %  This recursively extends to any $i \geq 2$.
-%  So, the construction of $\sigma_i$ is the same that for $\sigma_1$ except that we use $s_{i-1}$ instead of $\treepath{n}$ and that if $n_i'$ appears many times in $s_{i-1}$, we consider one of its occurrence. Note that the last one should produce the shortest sequence.%whenever there is many $n_i'$ in $\sigma_{i-1}$ we consider the last one of $\sigma_i$.
+%  So, the construction of $\seqt_i$ is the same that for $\seqt_1$ except that we use $s_{i-1}$ instead of $\treepath{n}$ and that if $n_i'$ appears many times in $s_{i-1}$, we consider one of its occurrence. Note that the last one should produce the shortest sequence.%whenever there is many $n_i'$ in $\seqt_{i-1}$ we consider the last one of $\seqt_i$.
 %  \todo{illustration}
 %
 %  Let us now express this in a more formal and recursive way.\\
@@ -531,10 +538,10 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  Here this sequence is $\treepath{\parent{n}}$, but for the cases that follow, let's keep in mind that $s_0$ is the sequence of nodes used to obtain $\Sigma(\parent{n}, \mathit{previous\_marking})$, whatever $\mathit{previous\_marking}$ is.\\
 %  Each place $p_i, i \in \{1, 2, ..., I\}$ of $\alpha(n)$ is accelerated thanks to a node $n_i$.
 %  We give an order on this places such that, for $i \leq j$, $\treepath{n_i}$ is shorter or as long as $\treepath{n_j}$.
-%  This is to consider the longest self increasing covering sequences first and thus obtain the shortest sequence $\sigma$ \todo{to prove}.\\
-%  We compute the sequence of nodes $s$ such that $\sigma = \lambda(s) = \lambda(s_0 + (n) + s_I)$.
+%  This is to consider the longest self increasing covering sequences first and thus obtain the shortest sequence $\seqt$ \todo{to prove}.\\
+%  We compute the sequence of nodes $s$ such that $\seqt = \lambda(s) = \lambda(s_0 + (n) + s_I)$.
 %  $s_0 + (n)$ is the ``simple way'' to reach a marking $\downc(\Lambda(n))$ and whose the \noplaces have the values of those of $\Lambda(n)$.
-%  We compute shortest $s_I$ to have \marp, $\mar \preceq \marp$:
+%  We compute shortest $s_I$ to have \mar', $\mar \preceq \mar'$:
 %  \[
 %    s_i =
 %    \begin{cases}
@@ -565,16 +572,16 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %
 %  If $\Lambda(n)$ was not accelerated but some of its ancestors was (that is:
-%  %$\exists p \in P : \Lambda(n)(p) = \omega$ and $\nexists p' \in P \text{ such that } \Lambda(n)(p') = \omega \wedge \nexists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p') = \omega$.
-%  %$\exists p \in P \text{ such that } \Lambda(n)(p) = \omega$ and for all such $p$, $\exists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p) = \omega$)
+%  %$\exists p \in \places : \Lambda(n)(p) = \omega$ and $\nexists p' \in \places \text{ such that } \Lambda(n)(p') = \omega \wedge \nexists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p') = \omega$.
+%  %$\exists p \in \places \text{ such that } \Lambda(n)(p) = \omega$ and for all such $p$, $\exists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p) = \omega$)
 %  $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$)
 %  then
 %  %since the Karp and Miller algorithm never removes $\omega$s,
 %  we know that its parent $\parent{n}$ is labelled with a marking ``having all the $\omega$s'' of $\Lambda(n)$:
 %  $\Omega(\Lambda(n)) = \Omega(\Lambda(\parent{n}))$.\\
-%  One can easily compute the lowest marking $\marpp$ in $\downc(\Lambda(\parent{n}))$ such that $\marpp \fire{\lambda(n)} \marp$ with $\mar \preceq \marpp$:
+%  One can easily compute the lowest marking $\mar''$ in $\downc(\Lambda(\parent{n}))$ such that $\mar'' \fire{\lambda(n)} \mar'$ with $\mar \preceq \mar''$:
 %  \[
-%    \marpp(p) = \begin{cases}
+%    \mar''(p) = \begin{cases}
 %      \Lambda(\parent{n})(p)
 %        &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
 %      \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(t)}(p))
@@ -582,14 +589,14 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %    \end{cases}
 %  \]
 %
-%  %We show that there exists a marking $\marpp \in \downc(\Lambda(\parent{n}))$ such that
-%  %(1) $\lambda(n)$ is enabled in $\marpp$
+%  %We show that there exists a marking $\mar'' \in \downc(\Lambda(\parent{n}))$ such that
+%  %(1) $\lambda(n)$ is enabled in $\mar''$
 %  %and that
-%  %(2) $\marp$ given by $\marpp\fire{\lambda(n)}\marp$ is such that $\mar \preceq \marp$.\\
-%  %To define \marpp we use $\Lambda(\parent{n})$ and choose some values for the \oplaces:
-%  %We claim that any \marpp as follows holds.
+%  %(2) $\mar'$ given by $\mar''\fire{\lambda(n)}\mar'$ is such that $\mar \preceq \mar'$.\\
+%  %To define \mar'' we use $\Lambda(\parent{n})$ and choose some values for the \oplaces:
+%  %We claim that any \mar'' as follows holds.
 %  %\[
-%  %  \marpp(p) = \begin{cases}
+%  %  \mar''(p) = \begin{cases}
 %  %    \Lambda(\parent{n})(p)
 %  %      &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
 %  %    c \text{ with } c \geq \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(t)}(p))
@@ -597,21 +604,21 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %  \end{cases}
 %  %\]
 %  Indeed, %(1)
-%  $\lambda(n)$ is enabled in $\marpp$:
-%  for the \noplaces $p$ of $\Lambda(\parent{n})$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \marpp(p)$;
+%  $\lambda(n)$ is enabled in $\mar''$:
+%  for the \noplaces $p$ of $\Lambda(\parent{n})$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \mar''(p)$;
 %  and for the \oplaces $p$ of $\Lambda(\parent{n})$, the chosen value is at least $I_{\lambda(t)}(p)$.\\
 %  Moreover, %(2)
-%  $\mar \preceq \marp$:
-%  for the \noplaces $p$ of $\Lambda(\parent{n})$, we have $\marp(p) = \marpp(p) + \Effect(\lambda(n))(p) = \Lambda(n)(p) \geq \mar(p)$ by choice of $n$ and \mar;
-%  and for the \oplaces $p$ of $\Lambda(\parent{n})$, we have $\marp(p) = \marpp(p) + \Effect(\lambda(n))(p) \geq \mar(p)$ by construction of $\marpp$.\\
-%  Thus, $\Sigma(n, \mar) = \Sigma(\parent{n}, \marpp) + \lambda(n)$
+%  $\mar \preceq \mar'$:
+%  for the \noplaces $p$ of $\Lambda(\parent{n})$, we have $\mar'(p) = \mar''(p) + \Effect(\lambda(n))(p) = \Lambda(n)(p) \geq \mar(p)$ by choice of $n$ and \mar;
+%  and for the \oplaces $p$ of $\Lambda(\parent{n})$, we have $\mar'(p) = \mar''(p) + \Effect(\lambda(n))(p) \geq \mar(p)$ by construction of $\mar''$.\\
+%  Thus, $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n)$
 %  whenever
 %  $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$.
 %  %This allows to define $\Sigma(n, \mar)$ recursively up on the branch.
 %
-%  %We first compute a marking $\marpp \in \downc(\Lambda(n''))$ such that $\lambda(\treepath{n'',n})$ is enabled in $\marpp$, then we show that $\marp$ given by $\marpp\fire{\lambda(\treepath{n'',n})}\marp$ is such that $\mar \preceq \marp$.\\
+%  %We first compute a marking $\mar'' \in \downc(\Lambda(n''))$ such that $\lambda(\treepath{n'',n})$ is enabled in $\mar''$, then we show that $\mar'$ given by $\mar''\fire{\lambda(\treepath{n'',n})}\mar'$ is such that $\mar \preceq \mar'$.\\
 %  %\[
-%  %  \marpp(p) =
+%  %  \mar''(p) =
 %  %  \begin{cases}
 %  %    \Lambda(n'')(p)
 %  %      &\text{ if } \Lambda(n'')(p) \neq w \\
@@ -619,13 +626,13 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %      &\text{ otherwise and if } \Effect(\lambda(\treepath{n'',n})) < 0
 %  %  \end{cases}
 %
-%  %then we compute a marking \marpp
+%  %then we compute a marking \mar''
 %
 %
-%  %then we construct $\sigma$ recursively on the nodes of the branch.
+%  %then we construct $\seqt$ recursively on the nodes of the branch.
 %  %The base case is the one treated above, where $\omega$ are first introduced.
-%  %Otherwise, one can define a marking $\marpp$ such that $\marpp(p) = \min(\mar(p), \Lambda(\parent{n})(p))$.
-%  %And so we have $\Sigma(\mar, n) = \Sigma(\marpp, \parent{n}) + (\lambda(n))$.
+%  %Otherwise, one can define a marking $\mar''$ such that $\mar''(p) = \min(\mar(p), \Lambda(\parent{n})(p))$.
+%  %And so we have $\Sigma(\mar, n) = \Sigma(\mar'', \parent{n}) + (\lambda(n))$.
 %
 %  \todo{Formally}
 %
@@ -639,7 +646,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  Here, one can compute $\Sigma(n, \mar)$ by combining the different constructions above:
 %  First create a marking
 %  \[
-%    \marpp(p) = \begin{cases}
+%    \mar''(p) = \begin{cases}
 %      \Lambda(\parent{n})(p)
 %        &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
 %      \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(t)}(p))
@@ -649,14 +656,14 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %  Then, we fix an order on the places $p_i \in \alpha(n), i \in \{1, 2,…\}$ such that the places accelerated thanks to a node $n_i$ nearer of the root of the tree are the first in $(p_1, p_2...)$.
 %  Compute $k_1 = $ \todo{} and for $i \neq 1, k_i = $\todo{}.
-%  Then, it is easy to see that $\Sigma(n, \mar) = \Sigma(\parent{n}, \marpp) + \lambda(n) + k_1 \dot \lambda(\treepath{n_1,n}) + k_2 \dot \lambda(\treepath{n_2,n}) + …$
+%  Then, it is easy to see that $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n) + k_1 \dot \lambda(\treepath{n_1,n}) + k_2 \dot \lambda(\treepath{n_2,n}) + …$
 \end{proof}
 
 %%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%% Prove of Karp and Miller algorithm by giving the shortest sequence that is a linear combination of subsequence of the transitions used to create the given branch… this is overkill
 %
-%To prove that the Karp and Miller Tree $\mathcal{T}$ is a coverability tree of \N, we show
+%To prove that the Karp and Miller Tree $\mathcal{T}$ is a coverability tree of \namePN, we show
 %\begin{enumerate}
 %  \item \todo{} that one can construct a sequence from \mari to any marking \mar “covered by the tree” given a node $n$ such that $\mar \in \downc(\lambda(n))$, and
 %  \item \todo{} that any marking $\mar \in \post^*(\mari)$ is “covered by at least one node of the tree”.
@@ -667,11 +674,11 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %Although very different in form, the proofs are based on those stated in \cite{Karp69}.
 %
 %\begin{lemm}
-%  Given an initialized \ac{PN} $\N = \PTm$ and a node $n$ of its Karp and Miller tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$,
-%  for any marking $\mar \in \downc(\Lambda(n))$ there exists a sequence of transitions $\sigma \in T^*$ and a marking $\marp$ such that $\mari \fire{\sigma} \marp$ and $\mar \preceq \marp$.
+%  Given an initialized \ac{PN} $\namePN = \PTm$ and a node $n$ of its Karp and Miller tree $\mathcal{T} = \langle N, B, n_0, \Lambda\rangle$,
+%  for any marking $\mar \in \downc(\Lambda(n))$ there exists a sequence of transitions $\seqt \in T^*$ and a marking $\mar'$ such that $\mari \fire{\seqt} \mar'$ and $\mar \preceq \mar'$.
 %\end{lemm}
 %\begin{proof}
-%  We show that there exists a function $\Sigma : \mathbb{N}^{|P|} \times N \mapsto T^* : \mar, n \rightarrow \sigma$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc(\Lambda(n))$, gives such a sequence $\sigma$.
+%  We show that there exists a function $\Sigma : \naturals^{\card{\places}} \times N \mapsto T^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc(\Lambda(n))$, gives such a sequence $\seqt$.
 %
 %  For this purpose, we introduce some notations:
 %  \begin{itemize}
@@ -688,9 +695,9 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %  Before we look at $\Sigma$, here is one key observation on the Karp and Miller tree:
 %  since the Karp and Miller algorithm never remove $\omega$s, we know that $\Omega(\Lambda(n)) \subseteq \Omega(\Lambda(\child{n}))$.
-%  Thus we have for any node $n \in N$ three disjoint sets of places whose the union is $P$:
+%  Thus we have for any node $n \in N$ three disjoint sets of places whose the union is $\places$:
 %  \begin{itemize}
-%    \item $\eta(n) = P \setminus \Omega(\Lambda(n))$ are the \noplaces of $\Lambda(n)$,
+%    \item $\eta(n) = \places \setminus \Omega(\Lambda(n))$ are the \noplaces of $\Lambda(n)$,
 %    \item $\zeta(n) = \Omega(\Lambda(\parent{n}))$ are the \oplaces that were already accelerated in $\Lambda(\parent{n})$, and
 %    \item $\alpha(n) = \Omega(\Lambda(n)) \setminus \Omega(\Lambda(\parent{n}))$ are the newly accelerated places.
 %  \end{itemize}
@@ -713,29 +720,29 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  \( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \Omega(\Lambda(n)) = \emptyset \).
 %  %Note that the previous case is a special case of this one.
 %  In a recursive way, this can be expressed as follows: $\Sigma(n, \mar) = \Sigma(\parent{n}, \Lambda(\parent{n})) + \lambda(n) \text{ whenever } \Omega(\Lambda(n)) = \emptyset$.
-%  %\( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in P \text{ s.t. } \Lambda(n)(p) = \omega \)
-%  %\[ \Sigma(n, \mar) = \Sigma\big(P(n),\Lambda(P(n))\big) + (\lambda(n)) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in P \text{ s.t. } \Lambda(n)(p) = \omega \]
+%  %\( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \Lambda(n)(p) = \omega \)
+%  %\[ \Sigma(n, \mar) = \Sigma\big(\places(n),\Lambda(\places(n))\big) + (\lambda(n)) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \Lambda(n)(p) = \omega \]
 %
 %  If $n$ is the first node of the branch labelled with a marking with places mapped to $\omega$,
 %  that is $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$,
-%  we construct $\Sigma(n, \mar) = \sigma$ as follows.
+%  we construct $\Sigma(n, \mar) = \seqt$ as follows.
 %  (Here are the ideas, we express them more precisely and in a recursive way right after.)\\
 %  First, consider the case where there exists exactly one \oplace $p$ in $\Lambda(n)$.
 %  This $\omega$ was introduced by $\KMAcc$ thanks to a node $n' \in \treepath{n}, \Lambda(n') \prec \Lambda(n)$.
 %  Thus $\lambda(\treepath{n',n})$ is an increasing self covering sequence
 %  and
-%  there exists some $k \in \mathbb{N}$ and $\marp \in \mathbb{N}^{|P|}$, $\mar \preceq \marp$
+%  there exists some $k \in \naturals$ and $\mar' \in \naturals^{\card{\places}}$, $\mar \preceq \mar'$
 %  such that
-%  $\sigma = \lambda(\treepath{n'}) + k \cdot \lambda(\treepath{n',n})$ and $\mari \fire{\sigma} \marp$. % with $\mar \preceq \marp$.
+%  $\seqt = \lambda(\treepath{n'}) + k \cdot \lambda(\treepath{n',n})$ and $\mari \fire{\seqt} \mar'$. % with $\mar \preceq \mar'$.
 %  More precisely, one can choose any $k$ that verifies $k \geq \left\lceil\frac{\mar(p) - \Lambda(n')(p)}{\Effect(\lambda(\treepath{n',n}))}\right\rceil$. %, but lower $k$ may also exists \todo{see notes +1+}.
 %  Note that $k > 0$.\\
-%  Second, if there exists many \oplaces $p_i$ in $\Lambda(n)$, one can compute $\sigma$ by considering the different $p_i$ one by one:
-%  We obtain for $p_1$ the sequence $\sigma_1 = \lambda(\treepath{n_1'}) + k_1 \cdot \lambda(\treepath{n_1',n})$ as above.
-%  Let $s_i$ be the sequence of nodes used to obtain $\sigma_i$, that is $s_1 = \treepath{n_1'} + k_1 \cdot \treepath{n_1',n}$.
+%  Second, if there exists many \oplaces $p_i$ in $\Lambda(n)$, one can compute $\seqt$ by considering the different $p_i$ one by one:
+%  We obtain for $p_1$ the sequence $\seqt_1 = \lambda(\treepath{n_1'}) + k_1 \cdot \lambda(\treepath{n_1',n})$ as above.
+%  Let $s_i$ be the sequence of nodes used to obtain $\seqt_i$, that is $s_1 = \treepath{n_1'} + k_1 \cdot \treepath{n_1',n}$.
 %  Now observe that
 %  the second $\omega$ was introduced thanks to a node $n_2$ that may appear many times in $s_1$ (it does whenever $n_2 \in \treepath{n_1',n}$ and $k_1 > 1$).
 %  This recursively extends to any $i \geq 2$.
-%  So, the construction of $\sigma_i$ is the same that for $\sigma_1$ except that we use $s_{i-1}$ instead of $\treepath{n}$ and that if $n_i'$ appears many times in $s_{i-1}$, we consider one of its occurrence. Note that the last one should produce the shortest sequence.%whenever there is many $n_i'$ in $\sigma_{i-1}$ we consider the last one of $\sigma_i$.
+%  So, the construction of $\seqt_i$ is the same that for $\seqt_1$ except that we use $s_{i-1}$ instead of $\treepath{n}$ and that if $n_i'$ appears many times in $s_{i-1}$, we consider one of its occurrence. Note that the last one should produce the shortest sequence.%whenever there is many $n_i'$ in $\seqt_{i-1}$ we consider the last one of $\seqt_i$.
 %  \todo{illustration}
 %
 %  Let us now express this in a more formal and recursive way.\\
@@ -744,10 +751,10 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  Here this sequence is $\treepath{\parent{n}}$, but for the cases that follow, let's keep in mind that $s_0$ is the sequence of nodes used to obtain $\Sigma(\parent{n}, \mathit{previous\_marking})$, whatever $\mathit{previous\_marking}$ is.\\
 %  Each place $p_i, i \in \{1, 2, ..., I\}$ of $\alpha(n)$ is accelerated thanks to a node $n_i$.
 %  We give an order on this places such that, for $i \leq j$, $\treepath{n_i}$ is shorter or as long as $\treepath{n_j}$.
-%  This is to consider the longest self increasing covering sequences first and thus obtain the shortest sequence $\sigma$ \todo{to prove}.\\
-%  We compute the sequence of nodes $s$ such that $\sigma = \lambda(s) = \lambda(s_0 + (n) + s_I)$.
+%  This is to consider the longest self increasing covering sequences first and thus obtain the shortest sequence $\seqt$ \todo{to prove}.\\
+%  We compute the sequence of nodes $s$ such that $\seqt = \lambda(s) = \lambda(s_0 + (n) + s_I)$.
 %  $s_0 + (n)$ is the ``simple way'' to reach a marking $\downc(\Lambda(n))$ and whose the \noplaces have the values of those of $\Lambda(n)$.
-%  We compute shortest $s_I$ to have \marp, $\mar \preceq \marp$:
+%  We compute shortest $s_I$ to have \mar', $\mar \preceq \mar'$:
 %  \[
 %    s_i =
 %    \begin{cases}
@@ -778,16 +785,16 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %
 %  If $\Lambda(n)$ was not accelerated but some of its ancestors was (that is:
-%  %$\exists p \in P : \Lambda(n)(p) = \omega$ and $\nexists p' \in P \text{ such that } \Lambda(n)(p') = \omega \wedge \nexists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p') = \omega$.
-%  %$\exists p \in P \text{ such that } \Lambda(n)(p) = \omega$ and for all such $p$, $\exists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p) = \omega$)
+%  %$\exists p \in \places : \Lambda(n)(p) = \omega$ and $\nexists p' \in \places \text{ such that } \Lambda(n)(p') = \omega \wedge \nexists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p') = \omega$.
+%  %$\exists p \in \places \text{ such that } \Lambda(n)(p) = \omega$ and for all such $p$, $\exists n' \in \treepath{n}, n' \neq n, \Lambda(n')(p) = \omega$)
 %  $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$)
 %  then
 %  %since the Karp and Miller algorithm never removes $\omega$s,
 %  we know that its parent $\parent{n}$ is labelled with a marking ``having all the $\omega$s'' of $\Lambda(n)$:
 %  $\Omega(\Lambda(n)) = \Omega(\Lambda(\parent{n}))$.\\
-%  One can easily compute the lowest marking $\marpp$ in $\downc(\Lambda(\parent{n}))$ such that $\marpp \fire{\lambda(n)} \marp$ with $\mar \preceq \marpp$:
+%  One can easily compute the lowest marking $\mar''$ in $\downc(\Lambda(\parent{n}))$ such that $\mar'' \fire{\lambda(n)} \mar'$ with $\mar \preceq \mar''$:
 %  \[
-%    \marpp(p) = \begin{cases}
+%    \mar''(p) = \begin{cases}
 %      \Lambda(\parent{n})(p)
 %        &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
 %      \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(t)}(p))
@@ -795,14 +802,14 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %    \end{cases}
 %  \]
 %
-%  %We show that there exists a marking $\marpp \in \downc(\Lambda(\parent{n}))$ such that
-%  %(1) $\lambda(n)$ is enabled in $\marpp$
+%  %We show that there exists a marking $\mar'' \in \downc(\Lambda(\parent{n}))$ such that
+%  %(1) $\lambda(n)$ is enabled in $\mar''$
 %  %and that
-%  %(2) $\marp$ given by $\marpp\fire{\lambda(n)}\marp$ is such that $\mar \preceq \marp$.\\
-%  %To define \marpp we use $\Lambda(\parent{n})$ and choose some values for the \oplaces:
-%  %We claim that any \marpp as follows holds.
+%  %(2) $\mar'$ given by $\mar''\fire{\lambda(n)}\mar'$ is such that $\mar \preceq \mar'$.\\
+%  %To define \mar'' we use $\Lambda(\parent{n})$ and choose some values for the \oplaces:
+%  %We claim that any \mar'' as follows holds.
 %  %\[
-%  %  \marpp(p) = \begin{cases}
+%  %  \mar''(p) = \begin{cases}
 %  %    \Lambda(\parent{n})(p)
 %  %      &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
 %  %    c \text{ with } c \geq \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(t)}(p))
@@ -810,21 +817,21 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %  \end{cases}
 %  %\]
 %  Indeed, %(1)
-%  $\lambda(n)$ is enabled in $\marpp$:
-%  for the \noplaces $p$ of $\Lambda(\parent{n})$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \marpp(p)$;
+%  $\lambda(n)$ is enabled in $\mar''$:
+%  for the \noplaces $p$ of $\Lambda(\parent{n})$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \mar''(p)$;
 %  and for the \oplaces $p$ of $\Lambda(\parent{n})$, the chosen value is at least $I_{\lambda(t)}(p)$.\\
 %  Moreover, %(2)
-%  $\mar \preceq \marp$:
-%  for the \noplaces $p$ of $\Lambda(\parent{n})$, we have $\marp(p) = \marpp(p) + \Effect(\lambda(n))(p) = \Lambda(n)(p) \geq \mar(p)$ by choice of $n$ and \mar;
-%  and for the \oplaces $p$ of $\Lambda(\parent{n})$, we have $\marp(p) = \marpp(p) + \Effect(\lambda(n))(p) \geq \mar(p)$ by construction of $\marpp$.\\
-%  Thus, $\Sigma(n, \mar) = \Sigma(\parent{n}, \marpp) + \lambda(n)$
+%  $\mar \preceq \mar'$:
+%  for the \noplaces $p$ of $\Lambda(\parent{n})$, we have $\mar'(p) = \mar''(p) + \Effect(\lambda(n))(p) = \Lambda(n)(p) \geq \mar(p)$ by choice of $n$ and \mar;
+%  and for the \oplaces $p$ of $\Lambda(\parent{n})$, we have $\mar'(p) = \mar''(p) + \Effect(\lambda(n))(p) \geq \mar(p)$ by construction of $\mar''$.\\
+%  Thus, $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n)$
 %  whenever
 %  $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$.
 %  %This allows to define $\Sigma(n, \mar)$ recursively up on the branch.
 %
-%  %We first compute a marking $\marpp \in \downc(\Lambda(n''))$ such that $\lambda(\treepath{n'',n})$ is enabled in $\marpp$, then we show that $\marp$ given by $\marpp\fire{\lambda(\treepath{n'',n})}\marp$ is such that $\mar \preceq \marp$.\\
+%  %We first compute a marking $\mar'' \in \downc(\Lambda(n''))$ such that $\lambda(\treepath{n'',n})$ is enabled in $\mar''$, then we show that $\mar'$ given by $\mar''\fire{\lambda(\treepath{n'',n})}\mar'$ is such that $\mar \preceq \mar'$.\\
 %  %\[
-%  %  \marpp(p) =
+%  %  \mar''(p) =
 %  %  \begin{cases}
 %  %    \Lambda(n'')(p)
 %  %      &\text{ if } \Lambda(n'')(p) \neq w \\
@@ -832,13 +839,13 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %      &\text{ otherwise and if } \Effect(\lambda(\treepath{n'',n})) < 0
 %  %  \end{cases}
 %
-%  %then we compute a marking \marpp
+%  %then we compute a marking \mar''
 %
 %
-%  %then we construct $\sigma$ recursively on the nodes of the branch.
+%  %then we construct $\seqt$ recursively on the nodes of the branch.
 %  %The base case is the one treated above, where $\omega$ are first introduced.
-%  %Otherwise, one can define a marking $\marpp$ such that $\marpp(p) = \min(\mar(p), \Lambda(\parent{n})(p))$.
-%  %And so we have $\Sigma(\mar, n) = \Sigma(\marpp, \parent{n}) + (\lambda(n))$.
+%  %Otherwise, one can define a marking $\mar''$ such that $\mar''(p) = \min(\mar(p), \Lambda(\parent{n})(p))$.
+%  %And so we have $\Sigma(\mar, n) = \Sigma(\mar'', \parent{n}) + (\lambda(n))$.
 %
 %  \todo{Formally}
 %
@@ -852,7 +859,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  Here, one can compute $\Sigma(n, \mar)$ by combining the different constructions above:
 %  First create a marking
 %  \[
-%    \marpp(p) = \begin{cases}
+%    \mar''(p) = \begin{cases}
 %      \Lambda(\parent{n})(p)
 %        &\text{ if } p \notin \Omega(\Lambda(\parent{n})) \\
 %      \max(\mar(p) - \Effect(\lambda(n))(p), I_{\lambda(t)}(p))
@@ -862,7 +869,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %  Then, we fix an order on the places $p_i \in \alpha(n), i \in \{1, 2,…\}$ such that the places accelerated thanks to a node $n_i$ nearer of the root of the tree are the first in $(p_1, p_2...)$.
 %  Compute $k_1 = $ \todo{} and for $i \neq 1, k_i = $\todo{}.
-%  Then, it is easy to see that $\Sigma(n, \mar) = \Sigma(\parent{n}, \marpp) + \lambda(n) + k_1 \dot \lambda(\treepath{n_1,n}) + k_2 \dot \lambda(\treepath{n_2,n}) + …$
+%  Then, it is easy to see that $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n) + k_1 \dot \lambda(\treepath{n_1,n}) + k_2 \dot \lambda(\treepath{n_2,n}) + …$
 %\end{proof}
 %
 %%%%%%%%%%%%%%%
@@ -871,7 +878,7 @@ The Karp and Miller tree has a lot of convenient properties that allow, among ot
 
 \begin{defi}[Simultaneous place unboundedness]
   Let \NPTm be a marked \ac{PN}.
-  Given a set of place $Q \subseteq P$, \N is said $Q$-simultaneous unbounded if and only if for any $c \in \mathbb{N}$ there exists \mar such that $\mari \fire* \mar$ and $\forall p \in Q : \mar(p) \geq c$.
+  Given a set of place $\setp \subseteq \places$, \namePN is said $\setp$-simultaneous unbounded if and only if for any $c \in \naturals$ there exists \mar such that $\mari \fire* \mar$ and $\forall p \in \setp : \mar(p) \geq c$.
 \end{defi}
 
 Furthermore, the Karp and Miller algorithm can easily be adapted to some parametric problems \cite{David17}, as we will show in \autoref{sec:preliminaries-ppn}.
@@ -906,7 +913,7 @@ To describe the algorithm more formally, we will need the following definitions:
 
 Given a pair of \omarks $(\mar_1, \mar_2)$, we define:
 \begin{itemize}
-  \item $\Postb((\mar_1, \mar_2)) = \{(\mar_1, \marp), (\mar_2, \marp) \mid \marp \in \Post(\mar_2)\}$,
+  \item $\Postb((\mar_1, \mar_2)) = \{(\mar_1, \mar'), (\mar_2, \mar') \mid \mar' \in \Post(\mar_2)\}$,
   \item and, with $\mar_1 \prec \mar_2$, $\Accelb(\mar_1, \mar_2) = \{(\mar_2, \KMAcc(\{\mar_1\}, \mar_2))\}$.
     $\Accelb(\mar_1, \mar_2)$ is not defined whenever $\mar_1 \nprec \mar_2$,
 \end{itemize}
@@ -915,10 +922,10 @@ With $R$ a set of pair of markings, we define:
 \begin{itemize}
   \item $\Postb(R) = \bigcup_{(\mar_1, \mar_2) \in R} \Postb((\mar_1, \mar_2))$
   \item $\Accelb(R) = \bigcup_{(\mar_1, \mar_2) \in R}^{\mar_1 \prec \mar_2} \Accelb((\mar_1, \mar_2))$
-  \item $\Flatten(R) = \{\mar \mid \exists \marp : (\marp, \mar) \in R\}$
+  \item $\Flatten(R) = \{\mar \mid \exists \mar' : (\mar', \mar) \in R\}$
 \end{itemize}
 
-The computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\N) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\N$ we have:
+The computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on the sequence $\CovSeq(\namePN) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\namePN$ we have:
 \begin{gather*}
   V_0 = \{(\mari, \mari)\} \text{ and } \\
   \forall i \geq 1 : V_i = V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1})
@@ -926,14 +933,14 @@ The computation of the coverability set of the marked \ac{PN} $\NPTm$ lies on th
 
 One can show that,
 first, for all node $n$ of the Karp and Miller tree, there exists a value $k \geq 0$ of $i$ such that $\Lambda(n) \in \Flatten(V_k)$,
-second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \N.
+second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \namePN.
 \todo{Indeed...}
 
 These two results lead to the following lemma:
 \begin{lemm}[\cite{Geeraerts07}]
-  Given a marked \ac{PN} \N such that $\CovSeq(\N) = (V_i)_{i \geq 0}$,
+  Given a marked \ac{PN} \namePN such that $\CovSeq(\namePN) = (V_i)_{i \geq 0}$,
   there exists $k \geq 0$ such that for all $l \in \{0, ..., k-1\}$ we have that $\downc(\Flatten(V_l)) \subset \downc(\Flatten(V_{l+1}))$
-  and for all $l \geq k : \downc(\Flatten(V_l)) = \Cover(\N)$.
+  and for all $l \geq k : \downc(\Flatten(V_l)) = \Cover(\namePN)$.
 \end{lemm}
 
 Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc(\Flatten(V_l)) = \downc(\Flatten(V_{l-1}))$ and to return $\downc(\Flatten(V_l))$.
@@ -941,7 +948,7 @@ Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.
 To perform it efficiently, one can use a well-chosen order $\sqsubseteq$ on the pair of markings.
 This order intents to sort the pairs of markings according to the distance in between, and is used to keep only ``the more distant'' pairs.
 Let us denote by $\ominus$ the componentwise difference between two markings and to extend it to \omarks.
-Formally, given two \omarks $\mar_1$ and $\mar_2$ on a set of places $P$, $(\mar_1 \ominus \mar_2)(p)$ is defined for all $p \in P$ as:
+Formally, given two \omarks $\mar_1$ and $\mar_2$ on a set of places $\places$, $(\mar_1 \ominus \mar_2)(p)$ is defined for all $p \in \places$ as:
 \[
   \begin{cases}
     \omega & \text{ whenever } \mar_1(p) = \omega \\
@@ -951,26 +958,26 @@ Formally, given two \omarks $\mar_1$ and $\mar_2$ on a set of places $P$, $(\mar
 \]
 
 Now we can define $\sqsubseteq$.
-Given two pairs $(\mar_1, \mar_2)$ and $(\marp_1, \marp_2)$ of \omarks over a set of places $P$:
+Given two pairs $(\mar_1, \mar_2)$ and $(\marp_1, \marp_2)$ of \omarks over a set of places $\places$:
 \[
   (\mar_1, \mar_2) \sqsubseteq (\marp_1, \marp_2) \Leftrightarrow
   \begin{cases}
     & \mar_1 \preceq \marp_1 \\
     \wedge & \mar_2 \preceq \marp_2 \\
-    \wedge & \forall p \in P : (\mar_2 \ominus \mar_1)(p) \leq (\marp_2 \ominus \marp_1)(p)
+    \wedge & \forall p \in \places : (\mar_2 \ominus \mar_1)(p) \leq (\marp_2 \ominus \marp_1)(p)
   \end{cases}
 \]
 
 For a set of pair of \omarks $R$, $\Maxs(R) = \{ r \in R \mid \nexists r' \in R, r \sqsubseteq r'\}$ is the set of highest \omark of $R$ with respect to $\sqsubseteq$.
 
 This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
-Thus, one can compute $\Cover(\N)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
+Thus, one can compute $\Cover(\namePN)$ of a \ac{PN} \NPTm by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc(\Flatten(V_i)) = \downc(\Flatten(V_{i-1}))$.
 \begin{gather*}
   V_0 = \{(\mari, \mari)\} \text{ and } \\
   \forall i \geq 1 : V_i = \Maxs(V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1}))
 \end{gather*}
 
-At the end, we have that $\downc(\Flatten(V_i)) = \Cover(\N)$.
+At the end, we have that $\downc(\Flatten(V_i)) = \Cover(\namePN)$.
 
 The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ can be found in \cite{Geeraerts07, Ganty09}.
 
@@ -985,28 +992,28 @@ The idea is to compute and refine simultaneously an over- and an under-approxima
 The under-approximation is computed as follows:
 We define $(C_i)_{i \geq 0}$ to be the sequence of finite set of markings holding no more than $i$ tokens in each place (plus \mari):
 \[
-  \forall i \in \mathbb{N} : C_i = \{0, ..., i\}^{|P|} \cup \{\mari\}
+  \forall i \in \naturals : C_i = \{0, ..., i\}^{\card{\places}} \cup \{\mari\}
 \]
-At step $i$, the algorithm computes $\Sous(\N, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \N restricted to the markings of $C_i$, \lang{i.e.} $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
-The under-approximation sought is the set of markings reachable through $\sousrel$ from \mari and is denoted $\R(\Sous(\N, C_i))$.
+At step $i$, the algorithm computes $\Sous(\namePN, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \namePN restricted to the markings of $C_i$, \lang{i.e.} $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
+The under-approximation sought is the set of markings reachable through $\sousrel$ from \mari and is denoted $\R(\Sous(\namePN, C_i))$.
 
-At step $i$, the algorithm also uses $L_i$ from the sequence $(L_i)_{i \geq 0}$ of finite set of \omarks such that $L_i = \{0, ..., i, \omega \}^{|P|} \cup \{\mari\}$.
+At step $i$, the algorithm also uses $L_i$ from the sequence $(L_i)_{i \geq 0}$ of finite set of \omarks such that $L_i = \{0, ..., i, \omega \}^{\card{\places}} \cup \{\mari\}$.
 That is, $L_i$ contains all the markings with at most $i$ tokens in any place, or $\omega$ (plus \mari).
-This set is used to construct the graph $\Sur(\N, C_i)$ defined as the graph $\langle L_i, \mari, \surrel \rangle$ where $(\mar_1, \mar_2) \in \surrel$ if, and only if:
+This set is used to construct the graph $\Sur(\namePN, C_i)$ defined as the graph $\langle L_i, \mari, \surrel \rangle$ where $(\mar_1, \mar_2) \in \surrel$ if, and only if:
 \begin{itemize}
   \item either $\mar_1 \rightarrow \mar_2$,
   \item either $\mar_1 \rightarrow \marp_2, \marp_2 \notin L_i, \marp_2 \preceq \mar_2, \text{ and } \nexists \marpp_2 \in L_i \text{ such that } \marp_2 \prec \marpp_2 \prec \mar_2$.
 \end{itemize}
 In other words: if $\mar_2 \notin L_i$, it is replaced by the lowest marking of $L_i$ which over-approximate it.
 Note that this is an \omark which exists and is unique. \todo{Indeed...}
-Then the over-approximation is the set of markings of $L_i$ reachable through $\surrel$ from \mari. It is denoted $\R(\Sur(\N, L_i))$.
+Then the over-approximation is the set of markings of $L_i$ reachable through $\surrel$ from \mari. It is denoted $\R(\Sur(\namePN, L_i))$.
 
 We can say that they are under- and over-approximations thanks to the following lemmata:
 \begin{lemm}[Under-approximation \cite{Ganty09}]
-  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \R(\Sous(\N,C_i)) \cap U \neq \emptyset \Rightarrow \Post^*(\mari) \cap U \neq \emptyset$.
+  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \naturals^{\card{\places}}$, and for all $i \geq 0: \R(\Sous(\namePN,C_i)) \cap U \neq \emptyset \Rightarrow \Post^*(\mari) \cap U \neq \emptyset$.
 \end{lemm}
 \begin{lemm}[Over-approximation \cite{Ganty09}]
-  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \mathbb{N}^{|P|}$, and for all $i \geq 0: \downc(\R(\Sur(\N,L_i))) \cap U = \emptyset \Rightarrow \Post^*(\mari) \cap U = \emptyset$.
+  For all \ac{PN} \NPTm, for all upward-closed set $U \subseteq \naturals^{\card{\places}}$, and for all $i \geq 0: \downc(\R(\Sur(\namePN,L_i))) \cap U = \emptyset \Rightarrow \Post^*(\mari) \cap U = \emptyset$.
 \end{lemm}
 
 One can prove that one of the conditions mentioned in the lemmata will eventually happen.
@@ -1014,16 +1021,16 @@ This ensures the termination of the algorithm.
 
 Indeed, let $S$ be the set of markings we want to cover and let $U$ be $\upc(S)$.
 If $U$ is reachable, we will eventually get a $C_i$ that contains all the markings of a path from $\mari$ to $U$.
-As this path will be present in $\Sous(\N, C_i)$, we will have that $\R(\Sous(\N,C_i)) \cap U \neq \emptyset$.\\
-Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the covering set of \N.
-Such a $j$ exists, and we have that $\downc(\R(\Sur(\N,L_j))) = \Cover(\N)$.
-Thus, we know that, for a negative instance of the problem, $\downc(\R(\Sur(\N,L_i))) \cap U = \emptyset$ will eventually happen for an $i \leq j$.
+As this path will be present in $\Sous(\namePN, C_i)$, we will have that $\R(\Sous(\namePN,C_i)) \cap U \neq \emptyset$.\\
+Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the covering set of \namePN.
+Such a $j$ exists, and we have that $\downc(\R(\Sur(\namePN,L_j))) = \Cover(\namePN)$.
+Thus, we know that, for a negative instance of the problem, $\downc(\R(\Sur(\namePN,L_i))) \cap U = \emptyset$ will eventually happen for an $i \leq j$.
 
 
 \removed{A backward algorithm \citep{Finkel90, Abdulla96}}
 %\subsection{A backward algorithm \citep{Finkel90, Abdulla96}}
 %
-%We will now present an algorithm to solve the coverability problem for a marking \mar of a \ac{PN} $\N = \PTm$.
+%We will now present an algorithm to solve the coverability problem for a marking \mar of a \ac{PN} $\namePN = \PTm$.
 %
 %This algorithm was introduced by Abdulla \lang{et al.} \cite{Abdulla96} for well-structured transition systems, a more general class of models which includes \acp{PN}.
 %It is close of the one introduced earlier in \cite{Finkel90}.
@@ -1034,7 +1041,7 @@ Thus, we know that, for a negative instance of the problem, $\downc(\R(\Sur(\N,L
 %For convenience, we will use another equivalent definition.
 %
 %\begin{defi}[Coverability]
-%  Given an initialized \ac{PN} \NPTm and an upward-closed set $U$, $U$ is said coverable if there exists a marking \marp such that $\marp \in U$ and $\mari \fire{*} \marp$.
+%  Given an initialized \ac{PN} \NPTm and an upward-closed set $U$, $U$ is said coverable if there exists a marking \mar' such that $\mar' \in U$ and $\mari \fire{*} \mar'$.
 %\end{defi}
 %
 %By choosing $\upc(\mar)$ as $U$, these two definitions set out the same instance of the coverability problem.
@@ -1042,7 +1049,7 @@ Thus, we know that, for a negative instance of the problem, $\downc(\R(\Sur(\N,L
 %
 %We say it is a backward algorithm in the sense that it is based on the computation of the set $\Pre^*(\mar)$ and answer by checking whether $\mari \in \Pre^*(\mar)$; unlike a forward approach which would have calculated the reachability set and conclude by checking whether \mar was in it. In other words, it computes all the configurations that can reach $U$ in any number of steps.
 %
-%The calculation is a fixed point algorithm that compute the increasing sequence, for the inclusion relation, of sets of markings: $(R_n)_{n \in \mathbb{N}}$, with $R_0 = U$ and $R_{n+1} = \Pre(R_n) \cup R_n$.
+%The calculation is a fixed point algorithm that compute the increasing sequence, for the inclusion relation, of sets of markings: $(R_n)_{n \in \naturals}$, with $R_0 = U$ and $R_{n+1} = \Pre(R_n) \cup R_n$.
 %Thus, $R_n$ is the set of markings from which there exists a sequence of at most $n$ transitions which may be fired and that cover $U$.
 %Because, with $U$ an upward-closed set of markings, $\Pre(U)$ is upward-closed too%
 %\footnote{This is due to the monotonicity of \acp{PN}, \todo{see for example cite\{someone\}}},
