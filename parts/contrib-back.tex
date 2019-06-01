@@ -20,8 +20,8 @@ Since this the backward algorithm relies only on the iteration of the $\Pre$ ope
 We will now give an adaptation of the general backward algorithm to solve the \Ucov problem on PostT-\ac{PPN}.
 
 Remember that $\back$ denotes the fixed-point algorithm described in the \autoref{sec:backward-algorithm}.
-With $v_0 : \mathbb{P} \mapsto \mathbb{N} : a \rightarrow 0 \forall a \in \mathbb{P}$ the valuation that maps all the parameters to 0, the new algorithm may be described as follows:
-given an initialized \ac{PPN} \SPTPm and an upward-closed set of markings $U$, compute $\back(v_0(\PPN), U)$.
+With $v_0 : \parameters \mapsto \naturals : a \rightarrow 0 \forall a \in \parameters$ the valuation that maps all the parameters to 0, the new algorithm may be described as follows:
+given an initialized \ac{PPN} $\defPPN$ and an upward-closed set of markings $U$, compute $\back(v_0(\namePPN), U)$.
 
 The termination of the algorithm follows from the termination of $\back$, and its correctness follows from the \autoref{theo:post-u-zero-val}:
 Intuitively, the correctness comes from the fact that $v_0$ is the worst valuation for the coverability problem.
@@ -29,22 +29,22 @@ To help the reader to grasp the mechanisms of the adaptation, we provide a proof
 \begin{proof}
   To prove the correctness of this algorithm is to prove that:
   \[
-    \back(v_0(\PPN), U) = \top \Leftrightarrow \UcovOp(\PPN, U) = \top
+    \back(v_0(\namePPN), U) = \top \Leftrightarrow \UcovOp(\namePPN, U) = \top
   \]
 
-$\UcovOp(\PPN, U) \Rightarrow \back(v_0(\PPN), U)$ is trivial. So we prove the other direction. Let us first rewrite the implication by applying the definition of $\back$: $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\PPN, U)$.
+$\UcovOp(\namePPN, U) \Rightarrow \back(v_0(\namePPN), U)$ is trivial. So we prove the other direction. Let us first rewrite the implication by applying the definition of $\back$: $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\namePPN, U)$.
 
 %We may apply the defintion of $\back$ to the left-hand side, and the definition of $\UcovOp$ with the properties of $\back$ to the right-hand side to obtain:
 %\[
-%  \mari \in \Pre_{v_0}^*(U) \Leftrightarrow \mari \in \Pre_v^*(U) \forall v \in \{\mathbb{P} \mapsto \mathbb{N}\}
+%  \mari \in \Pre_{v_0}^*(U) \Leftrightarrow \mari \in \Pre_v^*(U) \forall v \in \{\parameters \mapsto \naturals\}
 %\]
 
-%\paragraph*{We prove that $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\PPN, U)$:}
-  We know that there exists a marking of $U$ reachable from \mari in $v_0(\PPN)$.
+%\paragraph*{We prove that $\mari \in \Pre_{v_0}^*(U) \Rightarrow \UcovOp(\namePPN, U)$:}
+  We know that there exists a marking of $U$ reachable from \mari in $v_0(\namePPN)$.
   Let $\marp$ be such a marking and $\sigma$ be a sequence of transitions $\sigma = (t_1, \dots, t_{n-1})$ such that $\mari \fire[{v_0}]{\sigma} \marp$.
-  Now observe that for all valuations $v$ (from $\{\mathbb{P} \mapsto \mathbb{N}\}$), for all places $p \in P$, and for all transitions $t \in T$: $\matI_{v_0(\PPN)}(p,t) = \matI_{v(\PPN)}(p,t)$ and $\matO_{v_0(\PPN)}(p,t) \leq \matO_{v(\PPN)}(p,t)$, that is all transitions consume the same amount of token than with the $v_0$ valuation and produce at least the same amount. This directly implies that: \todo{introduces Effect\_v}
+  Now observe that for all valuations $v$ (from $\{\parameters \mapsto \naturals\}$), for all places $p \in \places$, and for all transitions $t \in \transitions$: $\matI_{v_0(\namePPN)}(p,t) = \matI_{v(\namePPN)}(p,t)$ and $\matO_{v_0(\namePPN)}(p,t) \leq \matO_{v(\namePPN)}(p,t)$, that is all transitions consume the same amount of token than with the $v_0$ valuation and produce at least the same amount. This directly implies that: \todo{introduces Effect\_v}
   \[
-    \forall v \in \{\mathbb{P} \mapsto \mathbb{N}\}, \forall p \in P, \forall t \in T :
+    \forall v \in \{\parameters \mapsto \naturals\}, \forall p \in \places, \forall t \in \transitions :
   \quad
   \Effect_{v_0}(t)(p) \leq \Effect_v(t)(p)
   \]
@@ -68,15 +68,15 @@ the idea is that, in this model, $v_0$ is the valuation that enables the most tr
 %Thus, we hope that if there exist a valuation that allows to cover $U$, $v_0$ will also allows to cover $U$.
 
 Again, let us prove the correctness without referring to the theorem mentioned above.
-Formally we have to prove that, for any given \ac{PPN} \SPTPm and upward-closed set of markings $U$:
+Formally we have to prove that, for any given \ac{PPN} $\defPPN$ and upward-closed set of markings $U$:
   \[
-    \back(v_0(\PPN), U) = \top \Leftrightarrow \EcovOp(\PPN, U) = \top
+    \back(v_0(\namePPN), U) = \top \Leftrightarrow \EcovOp(\namePPN, U) = \top
   \]
 
 \begin{proof}
-  $\back(v_0(\PPN), U) \Rightarrow \EcovOp(\PPN, U)$ is trivial.
+  $\back(v_0(\namePPN), U) \Rightarrow \EcovOp(\namePPN, U)$ is trivial.
 
-  By definition of \Ecov and $\back$, to prove that $\EcovOp(\PPN, U) \Rightarrow \back(v_0(\PPN), U)$ is to prove that
+  By definition of \Ecov and $\back$, to prove that $\EcovOp(\namePPN, U) \Rightarrow \back(v_0(\namePPN), U)$ is to prove that
   \[
     \exists v \mid \mari \in \Pre^*_{v}(U) \Rightarrow \mari \in \Pre^*_{v_0}(U)
   \]
@@ -84,7 +84,7 @@ Formally we have to prove that, for any given \ac{PPN} \SPTPm and upward-closed 
 
   Suppose that such a $v$ exists. We have a marking $\marp \in U$ and a sequence of transitions $\sigma = (t_1, \dots, t_{n-1})$ such that $\mari \fire[v]{\sigma} \marp$.
 
-  Once again let us compare the effect of the transitions in the \acp{PN} $v(\PPN)$ and $v_0(\PPN)$. Here, for any place $p$ and transition $t$: $\matI_{v(\PPN)}(p,t) \geq \matI_{v_0(\PPN)}(p,t)$ and $\matO_{v(\PPN)}(p,t) = \matO_{v_0(\PPN)}(p,t)$, that is all transitions produce the same amount of token than with the $v_0$ valuation but consume the same amount or more. So, if a marking enables a transition in $v(\PPN)$, it enables it in $v_0(\PPN)$ too. Moreover, $\Effect_v(t)(p) \leq \Effect_{v_0}(t)(p)$, thus, by recurrence on the transitions of $\sigma$, we have that:
+  Once again let us compare the effect of the transitions in the \acp{PN} $v(\namePPN)$ and $v_0(\namePPN)$. Here, for any place $p$ and transition $t$: $\matI_{v(\namePPN)}(p,t) \geq \matI_{v_0(\namePPN)}(p,t)$ and $\matO_{v(\namePPN)}(p,t) = \matO_{v_0(\namePPN)}(p,t)$, that is all transitions produce the same amount of token than with the $v_0$ valuation but consume the same amount or more. So, if a marking enables a transition in $v(\namePPN)$, it enables it in $v_0(\namePPN)$ too. Moreover, $\Effect_v(t)(p) \leq \Effect_{v_0}(t)(p)$, thus, by recurrence on the transitions of $\sigma$, we have that:
   \begin{enumerate}
     \item $\mari \fire[{v_0}]{t_1} \mar_1 \fire[{v_0}]{t_2} \dots \fire[v_0]{t_{n-1}} \mar_n$: the sequence $\sigma$ is enabled in $v_0$,
     \item $\marp \preceq \mar_n$: and the reached marking $\mar_n$ is greater or equal to $\marp$ according to $\preceq$.

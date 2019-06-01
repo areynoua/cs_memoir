@@ -4,8 +4,8 @@ By reduction from the halting problem as well as the counter boundedness problem
 This motivates the introduction of natural subclasses of \acp{PPN} where parametric coverability problems are decidable.
 
 Namely,
-PreT-PPNs are \acp{PPN} where parameters are used only in $\matI$,
-PostT-PPNs are \acp{PPN} where parameters are used only in $\matO$,
+PreT-PPNs are \acp{PPN} where parameters are used only in $\inm$,
+PostT-PPNs are \acp{PPN} where parameters are used only in $\outm$,
 and P-PPNs are \ac{PPN} where parameters are used only in the initial marking $\mari$.
 \todo{Re-write the following paragraph.}
 These subclasses were extensively studied in \cite{David17} where is given
@@ -24,38 +24,38 @@ This leads us to look for links between these two models.
 We will show how to construct a P-PPN that simulates a given PostT-PPN, that is, one that have the same behaviour.
 
 \begin{defi}[Simulation on Petri nets]
-  Given two \acp{PPN}, \SPTPmi and \SPTPmii, a relation $\rela \in (\mathbb{N} \cup  \mathbb{P}_1)^{|P_1|} \times (\mathbb{N} \cup  \mathbb{P}_2)^{|P_2|}$ is a \emph{simulation} if
+  Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$, a relation $\rela \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{simulation} if
   \[
     \forall (\mar_1, \mar_2) \in \rela \Leftrightarrow
     \begin{cases}
-      \forall t_1 \in T_1, \marp_1 \text{ such that } \mar_1 \fire{t_1} \marp_1 \\
-      \exists t_2 \in T_2, \marp_2 \text{ such that } \mar_2 \fire{t_2} \marp_2
+      \forall t_1 \in \transitions_1, \marp_1 \text{ such that } \mar_1 \fire{t_1} \marp_1 \\
+      \exists t_2 \in \transitions_2, \marp_2 \text{ such that } \mar_2 \fire{t_2} \marp_2
         \text{ and } (\marp_1, \marp_2) \in \rela.
     \end{cases}
   \]
-  If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \PPNii \emph{simulates} \PPNi.
+  If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \namePPN[2] \emph{simulates} \namePPN[1].
 \end{defi}
 
 Actually, we will divide the set of transitions of our new P-PPN into two separate subsets: usual or observable transitions, and silent transitions.
 The latter form a machinery that is not taken into account for the result of the simulation, then called a ``weak simulation'':
 \begin{defi}[Weak simulation on Petri nets]
-  Given two \acp{PPN}, \SPTPmi and \SPTPmii,
+  Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$,
   where $T_1 = T_{u1} \cup T_{s1}, T_{u1} \cap T_{s1} = \emptyset$,
   and   $T_2 = T_{u2} \cup T_{s2}, T_{u2} \cap T_{s2} = \emptyset$,
-  a relation $\rela \in (\mathbb{N} \cup  \mathbb{P}_1)^{|P_1|} \times (\mathbb{N} \cup  \mathbb{P}_2)^{|P_2|}$ is a \emph{weak simulation} if
+  a relation $\rela \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{weak simulation} if
   \[
     \forall (\mar_1, \mar_2) \in \rela \Leftrightarrow
     \left\{
     \begin{aligned}
-      &\forall t_1 \in T_1, \marp_1 \text{ such that } \mar_1 \fire{\sigma_1} \marp_1 \\
-      &\exists t_2 \in T_2, \marp_2 \text{ such that } \mar_2 \fire{\sigma_2} \marp_2
+      &\forall t_1 \in \transitions_1, \marp_1 \text{ such that } \mar_1 \fire{\sigma_1} \marp_1 \\
+      &\exists t_2 \in \transitions_2, \marp_2 \text{ such that } \mar_2 \fire{\sigma_2} \marp_2
         \text{ and } (\marp_1, \marp_2) \in \rela,
     \end{aligned}
     \right.
   \]
 where $\sigma_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.\todo{introduce regular notation}
 
-  If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \PPNii \emph{weakly simulates} \PPNi.
+  If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \namePPN[2] \emph{weakly simulates} \namePPN[1].
 \end{defi}
 
 \begin{figure}[htbp]
@@ -70,7 +70,7 @@ where $\sigma_i$ is a sequence of zero or more transition from $T_{si}$ followed
 
 We can now construct for any PostT-PPN a P-PPN that simulates it.
 
-Given a PostT-PPN $\PPN_1 = \langle P_1, T_1, \mathbb{P}, \mar_{0,1} \rangle$, create the new P-PPN $\PPN_2 = \langle P_2, T_2, \mathbb{P}, \mar_{0,2} \rangle$ like this.
+Given a PostT-PPN $\namePPN[1] = \tuple{\places_1, \transitions_1, \parameters, \mar_{0,1}}$, create the new P-PPN $\namePPN[2] = \tuple{\places_2, \transitions_2, \parameters, \mar_{0,2}}$ like this.
 Starting with an identical \ac{PPN}, first add a new place labelled \texttt{lock}, and, to all the transitions that does not have a parametrised output arc, add an input arc from, and an output one to \texttt{lock}.
 Then, for all parametrised transition $t$, replace the parametrised output arcs by the silent subnet depicted in blue on figure~\ref{fig:posttppn-to-pppn}:
 create a place \texttt{firing}$_t$ that will contains the ``lock token'' while simulating the firing of the parametrised transition, and a silent transition \texttt{done}$_t$ to release the lock,
@@ -80,11 +80,11 @@ This construction comes from \cite{David17}, to which we have added the uniquene
 This does not fundamentally change the properties of the newly built network, in that it also provides a simulation, but it reduces the size of its state tree.
 
 \begin{lemm}
-  For all valuation $v$ on $\mathbb{P}$, $v(\PPNii)$ weakly simulates $v(\PPNi)$.
+  For all valuation $v$ on $\parameters$, $v(\namePPN[2])$ weakly simulates $v(\namePPN[1])$.
 \end{lemm}
 
 \begin{proof}
-  First consider $v(\PPNi)$ and $v(\PPNi')$ where $\PPNi'$ is the network augmented by the \texttt{lock} place and its arcs from and to the non-parametrised transitions.
+  First consider $v(\namePPN[1])$ and $v(\namePPN[1]')$ where $\namePPN[1]'$ is the network augmented by the \texttt{lock} place and its arcs from and to the non-parametrised transitions.
   The simulation is obvious here: it contains all the pair of markings $(\mar_1, \mar_2)$ such that $\mar_1 \in \Post^*_v(\mar_{0,1})$ and
   \[
     \mar_2(p) =
@@ -94,16 +94,16 @@ This does not fundamentally change the properties of the newly built network, in
       \end{cases}
   \]
 
-  Now consider $v(\PPNii)$ and focus on the parametrised transitions.
-  Each time an arc from $t$ to $p$ parametrised by $a$ ($\matO_{\PPNi}(p)(t) = a$) is involved in a firing in $v(\PPNi)$, $v(a)$ tokens are created in $p$.
-  Regarding $v(\PPNii)$, the sequence $(t, \mathtt{fire}_{t,p}, \mathtt{done}_t, \mathtt{reload}_{t,p})$, where $\mathtt{fire}_{t,p}$ and $\mathtt{reload}_{t,p}$ are repeated $a$ times, creates $v(a)$ tokens in $p$ and reset the sub-net constructed for the simulation\todo{rewrite with regular notation}. Note that the rest of the network is not affected. Thus, monotonicity ensures that we have a weak simulation.
+  Now consider $v(\namePPN[2])$ and focus on the parametrised transitions.
+  Each time an arc from $t$ to $p$ parametrised by $a$ ($\matO_{\namePPN[1]}(p)(t) = a$) is involved in a firing in $v(\namePPN[1])$, $v(a)$ tokens are created in $p$.
+  Regarding $v(\namePPN[2])$, the sequence $(t, \mathtt{fire}_{t,p}, \mathtt{done}_t, \mathtt{reload}_{t,p})$, where $\mathtt{fire}_{t,p}$ and $\mathtt{reload}_{t,p}$ are repeated $a$ times, creates $v(a)$ tokens in $p$ and reset the sub-net constructed for the simulation\todo{rewrite with regular notation}. Note that the rest of the network is not affected. Thus, monotonicity ensures that we have a weak simulation.
 \end{proof}
 
 One can easily see that the weak simulation contains all the pair $(\mar_1, \mar_2)$ such that $\mar_1 \in \Post^*_v(\mar_{0,1})$ and
 \[
   \mar_2(p') =
     \begin{cases}
-      \mar_1(p') &\text{ if } p' \in P_1 \text{,}\\
+      \mar_1(p') &\text{ if } p' \in \places_1 \text{,}\\
       1 &\text{ if $p'$ is \texttt{lock},} \\
       v(a)\text{, with $a$ the parameter from $t$ to $p$} &\text{ if $p'$ is }\mathtt{tank1}_{t,p}\text{,} \\
       0 &\text{ otherwise.}
@@ -112,7 +112,7 @@ One can easily see that the weak simulation contains all the pair $(\mar_1, \mar
 
 Looking at the subnetwork in Figure~\ref{fig:posttppn-to-pppn},
 one guesses that the simulation does not contain “many” other places.
-Indeed, by unfolding the transition relation on the created subnet for $\matO_{\PPNi}(p)(t) = a$, one can observe that the reachable markings when $t$ is fired only once are of the form:
+Indeed, by unfolding the transition relation on the created subnet for $\matO_{\namePPN[1]}(p)(t) = a$, one can observe that the reachable markings when $t$ is fired only once are of the form:
 \[
   \mar_2(p') =
   \begin{cases}
@@ -132,19 +132,19 @@ Indeed, by unfolding the transition relation on the created subnet for $\matO_{\
   \right.
 \]
 
-Thus, for all reachable marking $\mar_2 \in \Post^*_{v(\PPNii)}(\mar_{0,2})$ of \PPNii there exists a reachable marking $\mar_1 \in \Post^*_{v(\PPNi)}(\mar_{0,1})$ of \PPNi that ``covers'' it for all the common places: $\forall p \in P_1, \mar_1(p) \geq \mar_2(p)$.
-Actually, \PPNi also simulates \PPNii.
-(\PPNi and \PPNii are said to be \emph{weakly co-similar}.)
+Thus, for all reachable marking $\mar_2 \in \Post^*_{v(\namePPN[2])}(\mar_{0,2})$ of \namePPN[2] there exists a reachable marking $\mar_1 \in \Post^*_{v(\namePPN[1])}(\mar_{0,1})$ of \namePPN[1] that ``covers'' it for all the common places: $\forall p \in \places_1, \mar_1(p) \geq \mar_2(p)$.
+Actually, \namePPN[1] also simulates \namePPN[2].
+(\namePPN[1] and \namePPN[2] are said to be \emph{weakly co-similar}.)
 
 \begin{lemm}
-  For all valuation $v$ on $\mathbb{P}$, $v(\PPNi)$ weakly simulates $v(\PPNii)$.
+  For all valuation $v$ on $\parameters$, $v(\namePPN[1])$ weakly simulates $v(\namePPN[2])$.
 \end{lemm}
 
 \begin{proof}
-  For all $\mar_{0,2} \fire[\val(\PPNii)]{t} \mar_{1,2}$, there exists $\mar_{1,1}$ such that $\mar_{0,1} \fire[v(\PPNi)]{t} \mar_{1,1}$.
+  For all $\mar_{0,2} \fire[{\val(\namePPN[2])}]{t} \mar_{1,2}$, there exists $\mar_{1,1}$ such that $\mar_{0,1} \fire[{v(\namePPN[1])}]{t} \mar_{1,1}$.
   After firing this first transition, either the transition was a non-parametrized one and we can repeat the operation, or it was parametrized and the lock disables the observable transitions until $\mathtt{done}_t$ has been fired.
   In the latter case, any firable sequence ending with $\mathtt{done}_t$ is silent and produces a marking $\mar'_{1,2}$ covered by $\mar_{1,1}$.
-  Thus, by monotonicity and thanks to the lock, we know that once $\mathtt{done}_t$ has been fired, all the transitions enabled in $\mar'_{1,2}$ in \PPNii are enabled in $\mar_{1,1}$ in \PPNi, except for some \texttt{reload} ones whose the effect is restricted to the \texttt{tank} places.
+  Thus, by monotonicity and thanks to the lock, we know that once $\mathtt{done}_t$ has been fired, all the transitions enabled in $\mar'_{1,2}$ in \namePPN[2] are enabled in $\mar_{1,1}$ in \namePPN[1], except for some \texttt{reload} ones whose the effect is restricted to the \texttt{tank} places.
   This can therefore be repeated and provides us with the desired weak-simulation.
 \end{proof}
 
@@ -155,7 +155,7 @@ In a PostT-\ac{PPN}, a place may contains an arbitrary large number of tokens ei
 In the latter case, the place is not necessary \emph{unbounded}, that is to say, once a valuation is given, the number of tokens the place may contains may be bounded, even if the bound is arbitrary large due to the arbitrary large values of the valuation.
 
 The adaptation of the Karp and Miller algorithm is therefore mainly the addition of a way to distinguish between these two cases.
-It is done by introducing a new value allowed in the markings, noted $*$ and such that $* \notin \mathbb{N}$, $* \neq \omega$, and $\forall c \in \mathbb{N}$, we have:
+It is done by introducing a new value allowed in the markings, noted $*$ and such that $* \notin \naturals$, $* \neq \omega$, and $\forall c \in \naturals$, we have:
 \begin{itemize}
   \item $c < * < \omega$,
   \item $* - c = *$,
@@ -183,14 +183,14 @@ the values of the different places of the accelerated marking are determined as 
   \end{cases}
 \]
 \begin{itemize}
-  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\Effect(\sigma)(p) \geq 0$.\\
+  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\effect{\sigma}(p) \geq 0$.\\
     This case corresponds to the classic acceleration and
     if $\marp(p) < \mar(p)$
     we have:
     \[
       \Acc(\mar, S)(p) = \omega
     \]
-  \item Or these first conditions does not hold but there exists a marking $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\Effect(\sigma)(p) \geq 0$.\\
+\item Or these first conditions does not hold but there exists a marking $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\effect{\sigma}(p) \geq 0$.\\
     This case handle the propagation of the $*$ mentioned above and
     if $\marp(p) < \mar(p)$
     we have:
@@ -203,7 +203,7 @@ the values of the different places of the accelerated marking are determined as 
 
 Intuitively, the second case formalise the idea that one can remove some tokens from a place with $*$ tokens without being an issue for the existence of a valuation that allows to cover a given marking.
 
-Keeping in mind that we are looking for the existence of a valuation, as large as it may be, that allows to cover a (set of) marking(s) of the \ac{PPN} \PPN, one can now perform the Karp and Miller algorithm, with the adapted acceleration function, on the plain \ac{PN} $v(\PPN)$ where $v$ is the $*$-valuation that maps every parameter to $*$.
+Keeping in mind that we are looking for the existence of a valuation, as large as it may be, that allows to cover a (set of) marking(s) of the \ac{PPN} \namePPN, one can now perform the Karp and Miller algorithm, with the adapted acceleration function, on the plain \ac{PN} $v(\namePPN)$ where $v$ is the $*$-valuation that maps every parameter to $*$.
 
 \subsection{Karp and Miller algorithm for \Ucov on PreT-\ac{PPN}}
 
