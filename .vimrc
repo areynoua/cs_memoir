@@ -14,7 +14,7 @@
 :inoremap cp<space> coverability problem<space>
 :inoremap algo<space> algorithm<space>
 :inoremap algos<space> algorithms<space>
-:inoremap iscs<space> increasing self-covering sequence<space>
+:inoremap incscs<space> increasing self-covering sequence<space>
 :inoremap scs<space> self-covering sequence<space>
 :inoremap ITE \begin{itemize}o\end{itemize}O\item<space>
 :inoremap ENU \begin{enumerate}o\end{enumerate}O\item<space>

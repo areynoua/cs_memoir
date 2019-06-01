@@ -155,15 +155,19 @@
 
 % Karp and Miller Tree
 \newcommand{\nameT}{\ensuremath{\mathcal{T}}\xspace}
-\newcommand{\bodyT}{\tuple{\nodes, \edges, n_0, \Lambda}}
+\newcommand{\bodyT}{\tuple{\nodes, \edges, n_0, \Lab}}
 \newcommand{\defT}{\nameT = \bodyT}
 % sets
 \newcommand{\nodes}{N}
 \newcommand{\edges}{B}
 % functions
 \newcommand{\lab}[1]{\Lab(#1)}
+\newcommand{\labt}[1]{\Labt\left({#1}\right)}
 \newcommand{\parent}[1]{#1^{-1}}
 \newcommand{\child}[1]{#1^{+1}}
+\newcommand{\tts}[2]{\Tts(#1,#2)} % tree to sequence
+\newcommand{\na}[1]{\Na(#1)} % newly accelerated
+\newcommand{\ab}[1]{\Ab(#1)} % accelerated before
 
 % object
 \newcommand{\tuple}[1]{\left\langle#1\right\rangle}
@@ -177,7 +181,7 @@
   \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
   {(#2)}}
 
-\NewDocumentCommand{\effect}{ m O{} }{\Effect(#1)%
+\NewDocumentCommand{\effect}{ m O{} }{\Effect\left(#1\right)%
   \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
   {(#2)}}
 
@@ -208,6 +212,7 @@
   \ifthenelse{\equal{\detokenize{#1}}{}}{}{^{(#1)}}}
 \newcommand{\seqt}[1][1]{%sequence of transitions
   \ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}{\sigma}{\rho}}
+\newcommand{\iscs}[1]{\seqt[2]_{#1}} % increasing self-covering sequence
 
 \NewDocumentCommand{\defSeq}{ O{\seq} O{\sit} m m }{#1 = \bodySeq[#2]{#3}{#4}}
 \NewDocumentCommand{\defInfSeq}{ O{\seq} O{\sit} O{1} O{2} }{#1 = \bodyInfSeq[#2][#3][#4]}
@@ -249,17 +254,21 @@
 \newcommand{\rela}{\mathrel{R}}
 
 % operators
+\DeclareMathOperator{\Ab}{\zeta}
 \DeclareMathOperator{\Cover}{Cover}
 \DeclareMathOperator{\Downc}{\downarrow^\preceq}
 \DeclareMathOperator{\Effect}{Effect}
 \DeclareMathOperator{\KMAcc}{Acceleration}
+\DeclareMathOperator{\Labt}{\lambda}
 \DeclareMathOperator{\Lab}{\Lambda}
 \DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
 \DeclareMathOperator{\Max}{Max^\preceq}
 \DeclareMathOperator{\Min}{Min^\preceq}
+\DeclareMathOperator{\Na}{\alpha}
 \DeclareMathOperator{\Oplaces}{\Omega}
 \DeclareMathOperator{\Post}{Post}
 \DeclareMathOperator{\Pre}{Pre}
+\DeclareMathOperator{\Tts}{\varsigma}
 \DeclareMathOperator{\Upc}{\uparrow^\preceq}
 \newcommand{\Treepath}{\mathscr{T}}
 

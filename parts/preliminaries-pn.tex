@@ -51,7 +51,7 @@ In a plain \ac{PN}, this is due to the existence of an increasing self-covering 
   \(
     \mar_i \fire{\seqt} \mar_j
   \),
-  with $\mari \fire{*} \mar_i$ %and $\seqt$ two sequences of transitions of $T$
+  with $\mari \fire{*} \mar_i$ %and $\seqt$ two sequences of transitions of $\transitions$
   and $\mar_i \preceq \mar_j$.
 \end{defi}
 
@@ -226,7 +226,7 @@ More precisely, it constructs a coverability tree and uses an acceleration funct
 \begin{defi}[Coverability tree]
   Given a \ac{PN} $\defPN$, a coverability tree \nameT of \namePN is a labelled tree $\defT$ where:
   \begin{itemize}
-    \item $\nodes$ is the set of nodes of the tree.%, is a set of \omark of \namePN such that $\downc{N} = \cover{\namePN}$.
+    \item $\nodes$ is the set of nodes of the tree.%, is a set of \omark of \namePN such that $\downc{\nodes} = \cover{\namePN}$.
 
     \item $n_0 \in \nodes$ is the root of the tree, \lang{i.e.} $\nexists n \in \nodes$ such that $(n, n_0) \in \edges$.
 
@@ -286,28 +286,37 @@ Although very different in form, the proofs are based on those stated in \cite{K
 \end{lemm}
 
 \begin{proof}
-  We show that there exists a function $\Sigma : \naturals^{\card{\places}} \times N \mapsto T^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc{\lab{n}}$, gives such a sequence $\seqt$.
+  We show that there exists a function $\Tts : \naturals^{\card{\places}} \times \nodes \mapsto \transitions^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc{\lab{n}}$, gives such a sequence $\seqt$.
 
   For this purpose, we introduce some notations:
   \begin{itemize}
-    \item we attach to the Karp and Miller tree $\nameT$ the mapping $\lambda : N \setminus \{n_0\} \mapsto T$ that gives for all node of the tree (but the root) the transition used to create it at step (2) of the Karp and Miller algorithm.
+    \item we attach to the Karp and Miller tree $\nameT$ the mapping $\Labt : \nodes \setminus \{n_0\} \mapsto \transitions$ that gives for all the nodes of the tree (but the root) the transition used to create it at step (2) of the Karp and Miller algorithm.
 
-      By abuse of notation, we will note $\lambda((n_1, n_2, ..., n_m))$
+      By abuse of notation, we will note $\labt{(n_1, n_2, ..., n_m)}$
       %with $n_i, i \in \{1, ..., m\}$ some nodes of $\nameT$
-      with  $n_i \in N$
-      the sequence $(\lambda(n_2), ..., \lambda(n_m))$.
-    \item for any $n \in N \setminus \{n_0\}$, $\parent{n}$ is the direct ancestor, or \emph{parent}, of $n$ in $\nameT$, that is, the last but one node in $\treepath{n}$.
+      with  $n_i \in \nodes$
+      the sequence $(\labt{n_2}, ..., \labt{n_m})$.
+    \item $\forall n \in \nodes \setminus \{n_0\}$, $\parent{n}$ is the direct ancestor, or \emph{parent}, of $n$ in $\nameT$, that is, the last but one node in $\treepath{n}$.
     \item \removed{given a sequence of nodes, for any node $n$ of the sequence but the last one, $\child{n}$ is the next node in the sequence.}
-    \item \todo{introduce operations on sequences: k.s, s1+s2}
   \end{itemize}
 
-  Before we look at $\Sigma$, here is one key observation on the Karp and Miller tree:
+  Before we look at $\Tts$, here is one key observation on the Karp and Miller tree:
   since the Karp and Miller algorithm never remove $\omega$s, we have
-  $\op{\lab{\parent{n}}} \subseteq \op{\lab{n}}$.
+  $\forall n \in \nodes \setminus \{n_0\}$, $\op{\lab{\parent{n}}} \subseteq \op{\lab{n}}$.
 
-  Without loss of generality, we assume that $\mari$ does not map any place to $\omega$, and thus $\Sigma(\mar, n_0) = ()$.
+  The idea of the construction of $\tts{\mar}{n}$ is that for any \oplace $p_i$ of $\lab{n}$, one can extract from $\treepath{n}$ a self-covering sequence $\seqt_i$ strictly increasing in $p_i$:
+  $\effect{\seqt_i}(p_i) > 0$ and $\effect{\seqt_i}(p) \geq 0$ for all $p \in \places$.
+  Indeed, if $\lab{n}$ does not contain any \oplace, then the sequence is given by $\labt{\treepath{n}}$.
+  Further down in the branch we may encounter the first node with some \oplaces.
+  These $\omega$s reveal the presence of increasing self-covering sequences that we can repeat to cover the desired marking.
+  If new $\omega$s appear later, the  increasing self-covering sequence is not obvious, since there may be that the effect of the sequence implicitly detected by the acceleration is negative for some places already accelerated before.
+  However, this negative effect on this place may be counterbalanced by the repetition of the sequence that allowed previously its acceleration.
+  We now show it in greater details.
 
-  We now recursively show that $\Sigma(\mar, n)$ exists for all such $\mar, n$ pair where $n \neq n_0$.
+  %Without loss of generality, we assume that $\mari$ does not map any place to $\omega$, and thus $\tts{\mar}{n_0} = ()$.
+  Since $\mari$ does not have any \oplace, $\tts{\mar}{n_0} = ()$.
+
+  We now recursively show that $\tts{\mar}{n}$ exists for all such $(\mar, n)$ pair where $n \neq n_0$.
 
   So assume $\mar$ and $n$ given and $\mar \in \downc{\lab{n}}$.
   When we deal with a given node, we'll need a specific order on the places, so we adopt the following conventions:
@@ -331,44 +340,45 @@ Although very different in form, the proofs are based on those stated in \cite{K
     \item $\alpha(n) = \{I+1, ..., J\}$ is the possibly empty set of the indices of the places accelerated ``at'' $n$: $j \in \alpha(n)$ iff $p_j \in \op{\lab{n}}$ and $p_j \notin \op{\lab{\parent{n}}}$.
   \end{itemize}
 
-  The idea of the construction of $\Sigma(\mar, n)$ is that for any \oplace $p_i$ of $\lab{n}$, one can extract from $\treepath{n}$ a self-covering sequence $\seqt_i$ strictly increasing in $p_i$:
-  $\effect{\seqt_i}(p_i) > 0$ and $\effect{\seqt_i}(p) \geq 0$ for all $p \in \places$.
+  Moreover, with $n$ clear from the context, $\forall i \in \aa{n} \cup \na{n}$, we will denote by $\iscs{i}$ the self-covering sequence increasing in $p_i$ extracted from $\treepath{n}$.
+  Actually, the work is twofold: when dealing with a node $n$ we have to determine $\iscs{j}$ for all $j \in \na{n}$, and how many times at least should we repeat $\iscs{i}$ for all $i \in \ab{n} \cup \na{n}$.
+
 
   As base case, consider that $\zeta(n) = \emptyset$.
-  If $\alpha(n) = \emptyset$, there was no acceleration on $\treepath{n}$ and by construction of $\nameT$, $\mari \fire{\lambda(\treepath{n})} \lab{n}$.
-  So we define $\Sigma(\mar, n)$ to be $\lambda(\treepath{n})$ whenever $\zeta(n) = \emptyset$ and $\alpha(n) = \emptyset$.\\
-  Actually this is a special case of the one where $\alpha(n)$ may be not empty.
-  In that case, \mar'' given by $\mari \fire{\lambda(\treepath{n})} \mar''$ agrees with $\lab{n}$ in its \noplaces.
-  To reach \mar' that covers \mar in all its places, we explicitly repeat the increasing self-covering sequences implicitly detected by the Karp and Miller algorithm.
+  If $\alpha(n) = \emptyset$, there was no acceleration on $\treepath{n}$ and by construction of $\nameT$, $\mari \fire{\labt{\treepath{n}}} \lab{n}$.
+  So we define $\tts{\mar}{n}$ to be $\labt{\treepath{n}}$ whenever $\zeta(n) = \emptyset$ and $\alpha(n) = \emptyset$.\\
+  This is a special case of the one where $\alpha(n)$ may be not empty.
+  In that case, $\mar''$ given by $\mari \fire{\labt{\treepath{n}}} \mar''$ agrees with $\lab{n}$ in its \noplaces.
+  To reach $\mar'$ that covers \mar in all its places, we explicitly repeat the increasing self-covering sequences implicitly detected by the Karp and Miller algorithm.
   By construction of $\nameT$ we know that for all $j \in \alpha(n) = \{1, ..., J\}$, $\lab{n_j} \prec \mar''$.
   Therefore:
   \begin{itemize}
-    \item $\lambda(\treepath[n_j]{n^\omega_j})$ is enabled in \mar'',
-    \item $\effect{\lambda(\treepath[n_j]{n^\omega_j})}(p) \geq 0$ for all $p \in \places$, and
-    \item $\effect{\lambda(\treepath[n_j]{n^\omega_j})}(p_j) > 0$ for all $j \in \alpha(n)$.
+    \item $\labt{\treepath[n_j]{n^\omega_j}}$ is enabled in $\mar''$,
+    \item $\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p) \geq 0$ for all $p \in \places$, and
+    \item $\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p_j) > 0$ for all $j \in \alpha(n)$.
   \end{itemize}
-  Note that $n^\omega_j = n$.
-  Thus, for all such $j$, $\treepath[n_j]{n^\omega_j}$ is the increasing self-covering sequence we were looking for.
+  (Note that $n^\omega_j = n$.)
+  Thus, for all such $j$, $\iscs{j} = \treepath[n_j]{n^\omega_j}$ is the increasing self-covering sequence we were looking for.
   Moreover, % whenever $\zeta(n) = \emptyset$,
-  $\seqt_j = \lambda(\treepath[n_j]{n})$ for all $j \in \alpha(n)$
+  $\seqt_j = \labt{\treepath[n_j]{n}}$ for all $j \in \alpha(n)$
   and
-  there exists some naturals $k_j$ such that we can define $\Sigma(\mar, n)$ to be
-  \[ \lambda(\treepath{n}) + k_1 \cdot \seqt_1 + \dots + k_J \cdot \seqt_J \] 
+  there exists some naturals $k_j$ such that we can define $\tts{\mar}{n}$ to be
+  \[ \labt{\treepath{n}} + k_1 \cdot \seqt_1 + \dots + k_J \cdot \seqt_J \] 
   Actually, one can easily compute such $k_j$ to obtain the shortest sequence of this form.
-  With $s_j = \lambda(\treepath{n}) + k_1 \cdot \seqt_1 + … + k_j \cdot \seqt_j$, we have:
+  With $s_j = \labt{\treepath{n}} + k_1 \cdot \seqt_1 + … + k_j \cdot \seqt_j$, we have:
   \[
     k_j =
     \begin{cases}
       \left\lceil
-        \frac{\mar(p_j) - \mari(p_j) - \effect{\lambda(\treepath{n})}(p_j)}
-            {\effect{\lambda(\treepath[n_j]{n})}}
+        \frac{\mar(p_j) - \mari(p_j) - \effect{\labt{\treepath{n}}}(p_j)}
+            {\effect{\labt{\treepath[n_j]{n}}}}
       \right\rceil
       &\text{ if } j = 1\\
       \\
       \max\left(0,
         \left\lceil
           \frac{\mar(p_j) - \mari(p_j) - \effect{s_{j-1}}(p_j)}
-              {\effect{\lambda(\treepath[n_j]{n})}}
+              {\effect{\labt{\treepath[n_j]{n}}}}
         \right\rceil
       \right)
       &\text{ if } j \in \{2, ..., J\}
@@ -381,50 +391,50 @@ Although very different in form, the proofs are based on those stated in \cite{K
   The induction step considers the case where $\zeta(n) \neq \emptyset$.
   By definition, a node in this case have at least one ancestor lying in the base case.
   Once again, let us focus first on the simpler case where $\alpha(n) = \emptyset$.
-  Here one can easily compute the $\preceq$-lowest marking \mar'' of $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\lambda(n)} \mar'$ (with $\mar \preceq \mar'$) and that agrees with $\lab{\parent{n}}$ for its \noplaces. It is given by:
+  Here one can easily compute the $\preceq$-lowest marking $\mar''$ of $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\labt{n}} \mar'$ (with $\mar \preceq \mar'$) and that agrees with $\lab{\parent{n}}$ for its \noplaces. It is given by:
   \[
     \mar''(p) = \begin{cases}
       \lab{\parent{n}}(p)
         &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-      \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(n)}(p)}
+      \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{n}}(p)}
         &\text{ otherwise}
     \end{cases}
   \]
 
   Indeed, %(1)
-  $\lambda(n)$ is enabled in $\mar''$:
-  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \mar''(p)$;
-  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\lambda(t)}(p)$.\\
+  $\labt{n}$ is enabled in $\mar''$:
+  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\labt{t}}(p) \leq \mar''(p)$;
+  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\labt{t}}(p)$.\\
   Moreover, %(2)
   $\mar \preceq \mar'$:
-  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\lambda(n)}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
-  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\lambda(n)}(p) \geq \mar(p)$ by construction of $\mar''$.\\
+  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
+  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) \geq \mar(p)$ by construction of $\mar''$.\\
   Thus, we define
-  $\Sigma(n, \mar)$ to be $\Sigma(\parent{n}, \mar'') + \lambda(n)$
+  $\tts{n}{\mar}$ to be $\tts{\parent{n}, \mar''} + \labt{n}$
   whenever
   $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$.
 
   In the general case, $\alpha(n)$ may be not empty.
-  There a difficulty arises from the fact that $\lambda(\treepath[n_j]{n^\omega_j}), j \in \alpha(n)$ may not be a self-covering sequence since its effect may be negative for some places $p_i$ (with $i \in \zeta(n)$).
-  This difficulty is solved by integrating enough repetitions of $\seqt_i$ along with $\lambda(\treepath[n_j]{n^\omega_j})$ in $\seqt_j$ to counterbalance it.
+  There a difficulty arises from the fact that $\labt{\treepath[n_j]{n^\omega_j}}, j \in \alpha(n)$ may not be a self-covering sequence since its effect may be negative for some places $p_i$ (with $i \in \zeta(n)$).
+  This difficulty is solved by integrating enough repetitions of $\seqt_i$ along with $\labt{\treepath[n_j]{n^\omega_j}}$ in $\seqt_j$ to counterbalance it.
 
   Here are two ways to shows that it can be done.
-  First, it may be easier to convince oneself of this by noting that, for all such $i$, there is a marking \mar'' such that $\Sigma(\mar'', n^\omega_i)$ has enough tokens in $p_i$ to undo the negative effect of $\lambda(\treepath[n_j]{n^\omega_j})$ in this place. But the calculation of \mar'' is a little technical.\\
+  First, it may be easier to convince oneself of this by noting that, for all such $i$, there is a marking $\mar''$ such that $\tts{\mar''}{n^\omega_i}$ has enough tokens in $p_i$ to undo the negative effect of $\labt{\treepath[n_j]{n^\omega_j}}$ in this place. But the calculation of $\mar''$ is a little technical.\\
    However, the computation of an actual self-covering sequence increasing in $p_j$, to use instead of $\treepath[n_j]{ n^\omega_j}$, is easy. With only one $i$, it is given by:
    \[
-     s_{j,i} = \lambda\left(\treepath[n_j]{n_i} + l_{j,i} \cdot \treepath[n_i]{n^\omega_i} + \treepath[n^\omega_i]{n^\omega_j}\right)
+     s_{j,i} = \labt{\treepath[n_j]{n_i} + l_{j,i} \cdot \treepath[n_i]{n^\omega_i} + \treepath[n^\omega_i]{n^\omega_j}}
     \text{ with } l_{j,i} =
-    \left\lceil \frac{-\effect{\lambda(\treepath[n_j]{n^\omega_j})}(p_i)}
-                     { \effect{\lambda(\treepath[n_i]{n^\omega_i})}(p_i)} \right\rceil \text{.}\]
+    \left\lceil \frac{-\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p_i)}
+                     { \effect{\labt{\treepath[n_i]{n^\omega_i}}}(p_i)} \right\rceil \text{.}\]
 
-  In the case where there are several different $i$'s, the sequence can be obtained by considering the $i$'s one by one. Then, the sequence we are looking for is $\lambda\left(s_{j,I}\right)$ given by: $\forall i \in \{0\} \cup \zeta(n) = \{0, ..., I\}$
+                   In the case where there are several different $i$'s, the sequence can be obtained by considering the $i$'s one by one. Then, the sequence we are looking for is $\labt{s_{j,I}}$ given by: $\forall i \in \{0\} \cup \zeta(n) = \{0, ..., I\}$
   \[
     s_{j,i} =
     \begin{cases}
       s_{j,0} = \treepath[n_j]{n^\omega_j}
         &\text{ if } i = 0 \\
       s_{j,i} = s_{j,i-1}
-        &\text{ if } i > 0 \text{ and } \effect{\lambda\left(s_{j,i-1}\right)}(p_i) \geq 0 \\
+        &\text{ if } i > 0 \text{ and } \effect{\labt{s_{j,i-1}}}(p_i) \geq 0 \\
       s_{j,i} = \text{ début de } s_{j,i-1} \text{ puis } l_{j,i} \cdot \treepath[n_i]{n^\omega_i} \text{ puis fin de } s_{j,i-1}
         &\text{ otherwise}
     \end{cases}
@@ -433,25 +443,25 @@ Although very different in form, the proofs are based on those stated in \cite{K
   with
   \[
     l_{j,i} = 
-    \left\lceil \frac{-\effect{\lambda(s_{j,i-1})}(p_i)}
-                     { \effect{\lambda(\treepath[n_i]{n^\omega_i})}p_i)} \right\rceil \text{.}
+    \left\lceil \frac{-\effect{\labt{s_{j,i-1}}}(p_i)}
+                     { \effect{\labt{\treepath[n_i]{n^\omega_i}}}p_i)} \right\rceil \text{.}
   \]
 
   This provides us with a mean to compute an actual increasing self-covering sequence for every accelerated place $p_j, j \in \alpha(n)$.
 
   The computation of the value of each $l_{j,i}$ is then done in a similar way to that of the $k_j$ mentioned above.
 
-  Indeed, consider that the first accelerated place $p_j$ is such that $\effect{\lambda(\treepath[n_j]{n^\omega_j})}(p_i)$ is negative for some $p_i$.
+  Indeed, consider that the first accelerated place $p_j$ is such that $\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p_i)$ is negative for some $p_i$.
 
 
 
   Formally, for all $i \in \zeta(n)$ and $j \in \alpha(n), i < j$, there exists some naturals $l_{j,i}$ such that the sequence
   $\seqt_j = $\todo{See notes "rep3" pour les détails}
-  %$\seqt_j = l_{j,1} \cdot \seqt_1 + … + l_{j,I} \cdot \seqt_I + \lambda(\treepath[n^\omega_I]{n})$
+  %$\seqt_j = l_{j,1} \cdot \seqt_1 + … + l_{j,I} \cdot \seqt_I + \labt{\treepath[n^\omega_I]{n}}$
   is self-covering and strictly increasing in $p_j$.
  
   \todo{Note: dans ce cas, choisir un ordre différent peut donner une séquence plus courte.}
-  \todo{Donc Sigma(m,n) = see notes "rep3"}
+  \todo{Donc Tts(m,n) = see notes "rep3"}
 %
 %
 % 
@@ -465,11 +475,11 @@ Although very different in form, the proofs are based on those stated in \cite{K
   %    \item $i < j$ whenever $\lab{n}$
 %  \end{itemize}
 %
-  %  For any node $n \in N$ let $\zeta(n) = \op{\lab{\parent{n}}}$ be the set of \oplaces that were already accelerated in $\lab{\parent{n}}$, and
+  %  For any node $n \in \nodes$ let $\zeta(n) = \op{\lab{\parent{n}}}$ be the set of \oplaces that were already accelerated in $\lab{\parent{n}}$, and
 %
 %
 %
-%  Thus we have for any node $n \in N$ three disjoint sets of places whose the union is $\places$:
+%  Thus we have for any node $n \in \nodes$ three disjoint sets of places whose the union is $\places$:
 %  \begin{itemize}
   %    \item $\eta(n) = \places \setminus \op{\lab{n}}$ are the \noplaces of $\lab{n}$,
   %    \item $\zeta(n) = \op{\lab{\parent{n}}}$ are the \oplaces that were already accelerated in $\lab{\parent{n}}$, and
@@ -478,11 +488,11 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %
 %
-  %  If $n$ is the root of the Karp and Miller tree, \mar is covered by $\lab{n_0}$ and thus $\Sigma(n, \mar)$ is the empty sequence:
-%  \( \Sigma(n, \mar) = () \text{ whenever } n = n_0 \).
+  %  If $n$ is the root of the Karp and Miller tree, \mar is covered by $\lab{n_0}$ and thus $\tts{n}{\mar}$ is the empty sequence:
+  %  \( \tts{n}{\mar} = () \text{ whenever } n = n_0 \).
 %  This is the base case.
 %
-  %  If $n \neq n_0$, we have $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n) + \lambda(s_I)$ for well chosen marking $\mar'' \in \downc{\lab{\parent{n}}}$ and sequence of nodes $s_I$.
+  %  If $n \neq n_0$, we have $\tts{n}{\mar} = \tts{\parent{n}, \mar''} + \labt{n} + \labt{s_I}$ for well chosen marking $\mar'' \in \downc{\lab{\parent{n}}}$ and sequence of nodes $s_I$.
 %
 %
 %
@@ -503,27 +513,27 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  (since the Karp and Miller algorithm never removes $\omega$s)
   %  and \mar is covered by $\lab{n}$.
 %  Thus, the sequence comes directly from $\treepath{n}$.
-  %  \( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \op{\lab{n}} = \emptyset \).
+  %  \( \tts{n}{\mar} = \labt{\treepath{n}} \text{ whenever } \op{\lab{n}} = \emptyset \).
 %  %Note that the previous case is a special case of this one.
-  %  In a recursive way, this can be expressed as follows: $\Sigma(n, \mar) = \Sigma(\parent{n}, \lab{\parent{n}}) + \lambda(n) \text{ whenever } \op{\lab{n}} = \emptyset$.
-  %  %\( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \)
-  %  %\[ \Sigma(n, \mar) = \Sigma\big(\places(n),\lab{\places(n)}\big) + (\lambda(n)) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \]
+  %  In a recursive way, this can be expressed as follows: $\tts{n}{\mar} = \tts{\parent{n}, \lab{\parent{n}}} + \labt{n} \text{ whenever } \op{\lab{n}} = \emptyset$.
+  %  %\( \tts{n}{\mar} = \labt{\treepath{n}} \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \)
+  %  %\[ \tts{n}{\mar} = \Tts\big(\places(n),\lab{\places(n)}\big) + (\labt{n}) = \labt{\treepath{n}} \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \]
 %
 %  If $n$ is the first node of the branch labelled with a marking with places mapped to $\omega$,
 %  that is $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$,
-%  we construct $\Sigma(n, \mar) = \seqt$ as follows.
+  %  we construct $\tts{n}{\mar} = \seqt$ as follows.
 %  (Here are the ideas, we express them more precisely and in a recursive way right after.)\\
   %  First, consider the case where there exists exactly one \oplace $p$ in $\lab{n}$.
   %  This $\omega$ was introduced by $\KMAcc$ thanks to a node $n' \in \treepath{n}, \lab{n'} \prec \lab{n}$.
-%  Thus $\lambda(\treepath[n']{n})$ is an increasing self covering sequence
+  %  Thus $\labt{\treepath[n']{n}}$ is an increasing self covering sequence
 %  and
 %  there exists some $k \in \naturals$ and $\mar' \in \naturals^{\card{\places}}$, $\mar \preceq \mar'$
 %  such that
-%  $\seqt = \lambda(\treepath{n'}) + k \cdot \lambda(\treepath[n']{n})$ and $\mari \fire{\seqt} \mar'$. % with $\mar \preceq \mar'$.
-  %  More precisely, one can choose any $k$ that verifies $k \geq \left\lceil\frac{\mar(p) - \lab{n'}(p)}{\effect{\lambda(\treepath[n']{n})}}\right\rceil$. %, but lower $k$ may also exists \todo{see notes +1+}.
+  %  $\seqt = \labt{\treepath{n'}} + k \cdot \labt{\treepath[n']{n}}$ and $\mari \fire{\seqt} \mar'$. % with $\mar \preceq \mar'$.
+  %  More precisely, one can choose any $k$ that verifies $k \geq \left\lceil\frac{\mar(p) - \lab{n'}(p)}{\effect{\labt{\treepath[n']{n}}}}\right\rceil$. %, but lower $k$ may also exists \todo{see notes +1+}.
 %  Note that $k > 0$.\\
   %  Second, if there exists many \oplaces $p_i$ in $\lab{n}$, one can compute $\seqt$ by considering the different $p_i$ one by one:
-%  We obtain for $p_1$ the sequence $\seqt_1 = \lambda(\treepath{n_1'}) + k_1 \cdot \lambda(\treepath[n_1']{n})$ as above.
+  %  We obtain for $p_1$ the sequence $\seqt_1 = \labt{\treepath{n_1'}} + k_1 \cdot \labt{\treepath[n_1']{n}}$ as above.
 %  Let $s_i$ be the sequence of nodes used to obtain $\seqt_i$, that is $s_1 = \treepath{n_1'} + k_1 \cdot \treepath[n_1']{n}$.
 %  Now observe that
 %  the second $\omega$ was introduced thanks to a node $n_2$ that may appear many times in $s_1$ (it does whenever $n_2 \in \treepath[n_1']{n}$ and $k_1 > 1$).
@@ -532,29 +542,29 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  \todo{illustration}
 %
 %  Let us now express this in a more formal and recursive way.\\
-  %  Since $\zeta(n) = \emptyset$, the previous case give us $\Sigma(\parent{n}, \lab{\parent{n}})$.
-  %  We denote by $s_0$ the sequence of nodes used to obtain $\Sigma(\parent{n}, \lab{\parent{n}})$.
-%  Here this sequence is $\treepath{\parent{n}}$, but for the cases that follow, let's keep in mind that $s_0$ is the sequence of nodes used to obtain $\Sigma(\parent{n}, \mathit{previous\_marking})$, whatever $\mathit{previous\_marking}$ is.\\
+  %  Since $\zeta(n) = \emptyset$, the previous case give us $\tts{\parent{n}, \lab{\parent{n}}}$.
+  %  We denote by $s_0$ the sequence of nodes used to obtain $\tts{\parent{n}, \lab{\parent{n}}}$.
+  %  Here this sequence is $\treepath{\parent{n}}$, but for the cases that follow, let's keep in mind that $s_0$ is the sequence of nodes used to obtain $\tts{\parent{n}, \mathit{previous\_marking}}$, whatever $\mathit{previous\_marking}$ is.\\
 %  Each place $p_i, i \in \{1, 2, ..., I\}$ of $\alpha(n)$ is accelerated thanks to a node $n_i$.
 %  We give an order on this places such that, for $i \leq j$, $\treepath{n_i}$ is shorter or as long as $\treepath{n_j}$.
 %  This is to consider the longest self increasing covering sequences first and thus obtain the shortest sequence $\seqt$ \todo{to prove}.\\
-%  We compute the sequence of nodes $s$ such that $\seqt = \lambda(s) = \lambda(s_0 + (n) + s_I)$.
+  %  We compute the sequence of nodes $s$ such that $\seqt = \labt{s} = \labt{s_0 + (n) + s_I}$.
   %  $s_0 + (n)$ is the ``simple way'' to reach a marking $\downc{\lab{n}}$ and whose the \noplaces have the values of those of $\lab{n}$.
 %  We compute shortest $s_I$ to have \mar', $\mar \preceq \mar'$:
 %  \[
 %    s_i =
 %    \begin{cases}
 %      \left\lceil
-  %        \frac{\mar(p_i) - \mari(p_i) - \effect{\lambda(s_0+(n))}(p_i)}
-  %            {\effect{\lambda(\treepath[n_i]{n})}}
+  %        \frac{\mar(p_i) - \mari(p_i) - \effect{\labt{s_0+(n)}}(p_i)}
+  %            {\effect{\labt{\treepath[n_i]{n}}}}
 %      \right\rceil
 %      \cdot \treepath[n_i]{n}
 %      &\text{ if } i = 1\\
 %      \\
 %      \max\left(0,
 %        \left\lceil
-  %          \frac{\mar(p_i) - \mari(p_i) - \effect{\lambda(s_0+(n)+s_{i-1})}(p_i)}
-  %              {\effect{\lambda(\treepath[n_i]{n})}}
+  %          \frac{\mar(p_i) - \mari(p_i) - \effect{\labt{s_0+(n)+s_{i-1}}}(p_i)}
+  %              {\effect{\labt{\treepath[n_i]{n}}}}
 %        \right\rceil
 %      \right)
 %      \cdot \treepath[n_i]{n}
@@ -562,9 +572,9 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %    \end{cases}
 %  \]
 %
-  %So we have $\Sigma(n, \mar) = \Sigma(\parent{n}, \lab{\parent{n}}) + \lambda((n) + s_I)$ whenever $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$.
+  %So we have $\tts{n}{\mar} = \tts{\parent{n}, \lab{\parent{n}}} + \labt{(n) + s_I}$ whenever $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$.
 %
-%  %Since the sequences $s_i$ thus obtained begin with $\treepath{n}$, $\Sigma(n , \mar)$ can be expressed in a recursive form, but it is more complicated than necessary to prove its existence.
+  %  %Since the sequences $s_i$ thus obtained begin with $\treepath{n}$, $\tts{n }{\mar}$ can be expressed in a recursive form, but it is more complicated than necessary to prove its existence.
 %  %\todo{see notes +1+}
 %
 %
@@ -578,51 +588,51 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %since the Karp and Miller algorithm never removes $\omega$s,
   %  we know that its parent $\parent{n}$ is labelled with a marking ``having all the $\omega$s'' of $\lab{n}$:
   %  $\op{\lab{n}} = \op{\lab{\parent{n}}}$.\\
-  %  One can easily compute the lowest marking $\mar''$ in $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\lambda(n)} \mar'$ with $\mar \preceq \mar''$:
+  %  One can easily compute the lowest marking $\mar''$ in $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\labt{n}} \mar'$ with $\mar \preceq \mar''$:
 %  \[
 %    \mar''(p) = \begin{cases}
   %      \lab{\parent{n}}(p)
   %        &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-  %      \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(t)}(p)}
+  %      \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{t}}(p)}
 %        &\text{ otherwise}
 %    \end{cases}
 %  \]
 %
   %  %We show that there exists a marking $\mar'' \in \downc{\lab{\parent{n}}}$ such that
-%  %(1) $\lambda(n)$ is enabled in $\mar''$
+  %  %(1) $\labt{n}$ is enabled in $\mar''$
 %  %and that
-%  %(2) $\mar'$ given by $\mar''\fire{\lambda(n)}\mar'$ is such that $\mar \preceq \mar'$.\\
+  %  %(2) $\mar'$ given by $\mar''\fire{\labt{n}}\mar'$ is such that $\mar \preceq \mar'$.\\
   %  %To define \mar'' we use $\lab{\parent{n}}$ and choose some values for the \oplaces:
 %  %We claim that any \mar'' as follows holds.
 %  %\[
 %  %  \mar''(p) = \begin{cases}
   %  %    \lab{\parent{n}}(p)
   %  %      &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-  %  %    c \text{ with } c \geq \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(t)}(p)}
+  %  %    c \text{ with } c \geq \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{t}}(p)}
 %  %      &\text{ otherwise}
 %  %  \end{cases}
 %  %\]
 %  Indeed, %(1)
-%  $\lambda(n)$ is enabled in $\mar''$:
-  %  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \mar''(p)$;
-  %  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\lambda(t)}(p)$.\\
+  %  $\labt{n}$ is enabled in $\mar''$:
+  %  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\labt{t}}(p) \leq \mar''(p)$;
+  %  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\labt{t}}(p)$.\\
 %  Moreover, %(2)
 %  $\mar \preceq \mar'$:
-  %  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\lambda(n)}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
-  %  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\lambda(n)}(p) \geq \mar(p)$ by construction of $\mar''$.\\
-%  Thus, $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n)$
+  %  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
+  %  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) \geq \mar(p)$ by construction of $\mar''$.\\
+  %  Thus, $\tts{n}{\mar} = \tts{\parent{n}, \mar''} + \labt{n}$
 %  whenever
 %  $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$.
-%  %This allows to define $\Sigma(n, \mar)$ recursively up on the branch.
+  %  %This allows to define $\tts{n}{\mar}$ recursively up on the branch.
 %
-  %  %We first compute a marking $\mar'' \in \downc{\lab{n''}}$ such that $\lambda(\treepath[n'']{n})$ is enabled in $\mar''$, then we show that $\mar'$ given by $\mar''\fire{\lambda(\treepath[n'']{n})}\mar'$ is such that $\mar \preceq \mar'$.\\
+  %  %We first compute a marking $\mar'' \in \downc{\lab{n''}}$ such that $\labt{\treepath[n'']{n}}$ is enabled in $\mar''$, then we show that $\mar'$ given by $\mar''\fire{\labt{\treepath[n'']{n}}}\mar'$ is such that $\mar \preceq \mar'$.\\
 %  %\[
 %  %  \mar''(p) =
 %  %  \begin{cases}
   %  %    \lab{n''}(p)
   %  %      &\text{ if } \lab{n''}(p) \neq w \\
-  %  %    \mar(p) - \min(\effect{\lambda(\treepath[n'']{n})}, \max\I(\lambda(n_i))
-  %  %      &\text{ otherwise and if } \effect{\lambda(\treepath[n'']{n})} < 0
+  %  %    \mar(p) - \min(\effect{\labt{\treepath[n'']{n}}}, \max\I(\labt{n_i})
+  %  %      &\text{ otherwise and if } \effect{\labt{\treepath[n'']{n}}} < 0
 %  %  \end{cases}
 %
 %  %then we compute a marking \mar''
@@ -631,7 +641,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %then we construct $\seqt$ recursively on the nodes of the branch.
 %  %The base case is the one treated above, where $\omega$ are first introduced.
   %  %Otherwise, one can define a marking $\mar''$ such that $\mar''(p) = \min(\mar(p), \lab{\parent{n}}(p))$.
-%  %And so we have $\Sigma(\mar, n) = \Sigma(\mar'', \parent{n}) + (\lambda(n))$.
+  %  %And so we have $\tts{\mar}{n} = \tts{\mar''}{\parent{n}} + (\labt{n})$.
 %
 %  \todo{Formally}
 %
@@ -642,20 +652,20 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
   %  Finally, let us consider the case where $\lab{n}$ may have newly accelerated places as well as others \oplaces.
 %  Actually, all the cases studied above are special cases of this one.
-%  Here, one can compute $\Sigma(n, \mar)$ by combining the different constructions above:
+  %  Here, one can compute $\tts{n}{\mar}$ by combining the different constructions above:
 %  First create a marking
 %  \[
 %    \mar''(p) = \begin{cases}
   %      \lab{\parent{n}}(p)
   %        &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-  %      \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(t)}(p)}
+  %      \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{t}}(p)}
 %        &\text{ otherwise}
 %    \end{cases}
 %  \]
 %
 %  Then, we fix an order on the places $p_i \in \alpha(n), i \in \{1, 2,…\}$ such that the places accelerated thanks to a node $n_i$ nearer of the root of the tree are the first in $(p_1, p_2...)$.
 %  Compute $k_1 = $ \todo{} and for $i \neq 1, k_i = $\todo{}.
-%  Then, it is easy to see that $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n) + k_1 \dot \lambda(\treepath[n_1]{n}) + k_2 \dot \lambda(\treepath[n_2]{n}) + …$
+  %  Then, it is easy to see that $\tts{n}{\mar} = \tts{\parent{n}, \mar''} + \labt{n} + k_1 \dot \labt{\treepath[n_1]{n}} + k_2 \dot \labt{\treepath[n_2]{n}} + …$
 \end{proof}
 
 %%%%%%%%%%%%%
@@ -664,7 +674,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %To prove that the Karp and Miller Tree $\nameT$ is a coverability tree of \namePN, we show
 %\begin{enumerate}
-%  \item \todo{} that one can construct a sequence from \mari to any marking \mar “covered by the tree” given a node $n$ such that $\mar \in \downc{\lambda(n)}$, and
+%  \item \todo{} that one can construct a sequence from \mari to any marking \mar “covered by the tree” given a node $n$ such that $\mar \in \downc{\labt{n}}$, and
 %  \item \todo{} that any marking $\mar \in \post^*(\mari)$ is “covered by at least one node of the tree”.
 %\end{enumerate}
 %
@@ -673,28 +683,28 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %Although very different in form, the proofs are based on those stated in \cite{Karp69}.
 %
 %\begin{lemm}
-%  Given an initialized \ac{PN} $\defPN$ and a node $n$ of its Karp and Miller tree $\nameT = \langle N, B, n_0, \Lab\rangle$,
+%  Given an initialized \ac{PN} $\defPN$ and a node $n$ of its Karp and Miller tree $\nameT = \langle \nodes, B, n_0, \Lab\rangle$,
 %  for any marking $\mar \in \downc{\lab{n}}$ there exists a sequence of transitions $\seqt \in \transitions^*$ and a marking $\mar'$ such that $\mari \fire{\seqt} \mar'$ and $\mar \preceq \mar'$.
 %\end{lemm}
 %\begin{proof}
-%  We show that there exists a function $\Sigma : \naturals^{\card{\places}} \times N \mapsto T^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc{\lab{n}}$, gives such a sequence $\seqt$.
+%  We show that there exists a function $\Tts : \naturals^{\card{\places}} \times \nodes \mapsto \transitions^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc{\lab{n}}$, gives such a sequence $\seqt$.
 %
 %  For this purpose, we introduce some notations:
 %  \begin{itemize}
-%    \item we attach to the Karp and Miller tree $\nameT$ the mapping $\lambda : N \setminus \{n_0\} \mapsto T$ that gives for all node of the tree (but the root) the transition used to create it at step (2) of the Karp and Miller algorithm.
+%    \item we attach to the Karp and Miller tree $\nameT$ the mapping $\Labt : \nodes \setminus \{n_0\} \mapsto \transitions$ that gives for all node of the tree (but the root) the transition used to create it at step (2) of the Karp and Miller algorithm.
 %
-%      By abuse of notation, we will note $\lambda((n_1, n_2, ..., n_m))$
+%      By abuse of notation, we will note $\labt{(n_1, n_2, ..., n_m)}$
 %      %with $n_i, i \in \{1, ..., m\}$ some nodes of $\nameT$
-%      with  $n_i \in N$
-%      the sequence $(\lambda(n_2), ..., \lambda(n_m))$.
-%    \item for any $n \in N \setminus \{n_0\}$, $\parent{n}$ is the direct ancestor, or \emph{parent}, of $n$ in $\nameT$, that is, the last but one node in $\treepath{n}$.
+%      with  $n_i \in \nodes$
+%      the sequence $(\labt{n_2}, ..., \labt{n_m})$.
+%    \item for any $n \in \nodes \setminus \{n_0\}$, $\parent{n}$ is the direct ancestor, or \emph{parent}, of $n$ in $\nameT$, that is, the last but one node in $\treepath{n}$.
 %    \item given a sequence of nodes, for any node $n$ of the sequence but the last one, $\child{n}$ is the next node in the sequence.
 %    \item \todo{introduce operations on sequences: k.s, s1+s2}
 %  \end{itemize}
 %
-%  Before we look at $\Sigma$, here is one key observation on the Karp and Miller tree:
+%  Before we look at $\Tts$, here is one key observation on the Karp and Miller tree:
 %  since the Karp and Miller algorithm never remove $\omega$s, we know that $\op{\lab{n}} \subseteq \op{\lab{\child{n}}}$.
-%  Thus we have for any node $n \in N$ three disjoint sets of places whose the union is $\places$:
+%  Thus we have for any node $n \in \nodes$ three disjoint sets of places whose the union is $\places$:
 %  \begin{itemize}
 %    \item $\eta(n) = \places \setminus \op{\lab{n}}$ are the \noplaces of $\lab{n}$,
 %    \item $\zeta(n) = \op{\lab{\parent{n}}}$ are the \oplaces that were already accelerated in $\lab{\parent{n}}$, and
@@ -704,10 +714,10 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %  Without loss of generality, we assume that $\mari$ does not map any place to $\omega$.
 %
-%  We now recursively show that $\Sigma(\mar, n)$ exists for all such $\mar, n$ pair.
+%  We now recursively show that $\tts{\mar}{n}$ exists for all such $\mar, n$ pair.
 %
-%  If $n$ is the root of the Karp and Miller tree, \mar is covered by $\lab{n_0}$ and thus $\Sigma(n, \mar)$ is the empty sequence:
-%  \( \Sigma(n, \mar) = () \text{ whenever } n = n_0 \).
+%  If $n$ is the root of the Karp and Miller tree, \mar is covered by $\lab{n_0}$ and thus $\tts{n}{\mar}$ is the empty sequence:
+%  \( \tts{n}{\mar} = () \text{ whenever } n = n_0 \).
 %  This is the base case.
 %  We now present several simple cases for the induction step in order to easily introduce the general case.
 %
@@ -716,27 +726,27 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  (since the Karp and Miller algorithm never removes $\omega$s)
 %  and \mar is covered by $\lab{n}$.
 %  Thus, the sequence comes directly from $\treepath{n}$.
-%  \( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \op{\lab{n}} = \emptyset \).
+%  \( \tts{n}{\mar} = \labt{\treepath{n}} \text{ whenever } \op{\lab{n}} = \emptyset \).
 %  %Note that the previous case is a special case of this one.
-%  In a recursive way, this can be expressed as follows: $\Sigma(n, \mar) = \Sigma(\parent{n}, \lab{\parent{n}}) + \lambda(n) \text{ whenever } \op{\lab{n}} = \emptyset$.
-%  %\( \Sigma(n, \mar) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \)
-%  %\[ \Sigma(n, \mar) = \Sigma\big(\places(n),\lab{\places(n)}\big) + (\lambda(n)) = \lambda(\treepath{n}) \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \]
+%  In a recursive way, this can be expressed as follows: $\tts{n}{\mar} = \tts{\parent{n}, \lab{\parent{n}}} + \labt{n} \text{ whenever } \op{\lab{n}} = \emptyset$.
+%  %\( \tts{n}{\mar} = \labt{\treepath{n}} \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \)
+%  %\[ \tts{n}{\mar} = \Tts\big(\places(n),\lab{\places(n)}\big) + (\labt{n}) = \labt{\treepath{n}} \text{ whenever } \nexists p \in \places \text{ s.t. } \lab{n}(p) = \omega \]
 %
 %  If $n$ is the first node of the branch labelled with a marking with places mapped to $\omega$,
 %  that is $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$,
-%  we construct $\Sigma(n, \mar) = \seqt$ as follows.
+%  we construct $\tts{n}{\mar} = \seqt$ as follows.
 %  (Here are the ideas, we express them more precisely and in a recursive way right after.)\\
 %  First, consider the case where there exists exactly one \oplace $p$ in $\lab{n}$.
 %  This $\omega$ was introduced by $\KMAcc$ thanks to a node $n' \in \treepath{n}, \lab{n'} \prec \lab{n}$.
-%  Thus $\lambda(\treepath[n']{n})$ is an increasing self covering sequence
+%  Thus $\labt{\treepath[n']{n}}$ is an increasing self covering sequence
 %  and
 %  there exists some $k \in \naturals$ and $\mar' \in \naturals^{\card{\places}}$, $\mar \preceq \mar'$
 %  such that
-%  $\seqt = \lambda(\treepath{n'}) + k \cdot \lambda(\treepath[n']{n})$ and $\mari \fire{\seqt} \mar'$. % with $\mar \preceq \mar'$.
-%  More precisely, one can choose any $k$ that verifies $k \geq \left\lceil\frac{\mar(p) - \lab{n'}(p)}{\effect{\lambda(\treepath[n']{n})}}\right\rceil$. %, but lower $k$ may also exists \todo{see notes +1+}.
+%  $\seqt = \labt{\treepath{n'}} + k \cdot \labt{\treepath[n']{n}}$ and $\mari \fire{\seqt} \mar'$. % with $\mar \preceq \mar'$.
+%  More precisely, one can choose any $k$ that verifies $k \geq \left\lceil\frac{\mar(p) - \lab{n'}(p)}{\effect{\labt{\treepath[n']{n}}}}\right\rceil$. %, but lower $k$ may also exists \todo{see notes +1+}.
 %  Note that $k > 0$.\\
 %  Second, if there exists many \oplaces $p_i$ in $\lab{n}$, one can compute $\seqt$ by considering the different $p_i$ one by one:
-%  We obtain for $p_1$ the sequence $\seqt_1 = \lambda(\treepath{n_1'}) + k_1 \cdot \lambda(\treepath[n_1']{n})$ as above.
+%  We obtain for $p_1$ the sequence $\seqt_1 = \labt{\treepath{n_1'}} + k_1 \cdot \labt{\treepath[n_1']{n}}$ as above.
 %  Let $s_i$ be the sequence of nodes used to obtain $\seqt_i$, that is $s_1 = \treepath{n_1'} + k_1 \cdot \treepath[n_1']{n}$.
 %  Now observe that
 %  the second $\omega$ was introduced thanks to a node $n_2$ that may appear many times in $s_1$ (it does whenever $n_2 \in \treepath[n_1']{n}$ and $k_1 > 1$).
@@ -745,29 +755,29 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  \todo{illustration}
 %
 %  Let us now express this in a more formal and recursive way.\\
-%  Since $\zeta(n) = \emptyset$, the previous case give us $\Sigma(\parent{n}, \lab{\parent{n}})$.
-%  We denote by $s_0$ the sequence of nodes used to obtain $\Sigma(\parent{n}, \lab{\parent{n}})$.
-%  Here this sequence is $\treepath{\parent{n}}$, but for the cases that follow, let's keep in mind that $s_0$ is the sequence of nodes used to obtain $\Sigma(\parent{n}, \mathit{previous\_marking})$, whatever $\mathit{previous\_marking}$ is.\\
+%  Since $\zeta(n) = \emptyset$, the previous case give us $\tts{\parent{n}, \lab{\parent{n}}}$.
+%  We denote by $s_0$ the sequence of nodes used to obtain $\tts{\parent{n}, \lab{\parent{n}}}$.
+%  Here this sequence is $\treepath{\parent{n}}$, but for the cases that follow, let's keep in mind that $s_0$ is the sequence of nodes used to obtain $\tts{\parent{n}, \mathit{previous\_marking}}$, whatever $\mathit{previous\_marking}$ is.\\
 %  Each place $p_i, i \in \{1, 2, ..., I\}$ of $\alpha(n)$ is accelerated thanks to a node $n_i$.
 %  We give an order on this places such that, for $i \leq j$, $\treepath{n_i}$ is shorter or as long as $\treepath{n_j}$.
 %  This is to consider the longest self increasing covering sequences first and thus obtain the shortest sequence $\seqt$ \todo{to prove}.\\
-%  We compute the sequence of nodes $s$ such that $\seqt = \lambda(s) = \lambda(s_0 + (n) + s_I)$.
+%  We compute the sequence of nodes $s$ such that $\seqt = \labt{s} = \labt{s_0 + (n) + s_I}$.
 %  $s_0 + (n)$ is the ``simple way'' to reach a marking $\downc{\lab{n}}$ and whose the \noplaces have the values of those of $\lab{n}$.
 %  We compute shortest $s_I$ to have \mar', $\mar \preceq \mar'$:
 %  \[
 %    s_i =
 %    \begin{cases}
 %      \left\lceil
-%        \frac{\mar(p_i) - \mari(p_i) - \effect{\lambda(s_0+(n))}(p_i)}
-%            {\effect{\lambda(\treepath[n_i]{n})}}
+%        \frac{\mar(p_i) - \mari(p_i) - \effect{\labt{s_0+(n)}}(p_i)}
+%            {\effect{\labt{\treepath[n_i]{n}}}}
 %      \right\rceil
 %      \cdot \treepath[n_i]{n}
 %      &\text{ if } i = 1\\
 %      \\
 %      \max\left(0,
 %        \left\lceil
-%          \frac{\mar(p_i) - \mari(p_i) - \effect{\lambda(s_0+(n)+s_{i-1})}(p_i)}
-%              {\effect{\lambda(\treepath[n_i]{n})}}
+%          \frac{\mar(p_i) - \mari(p_i) - \effect{\labt{s_0+(n)+s_{i-1}}}(p_i)}
+%              {\effect{\labt{\treepath[n_i]{n}}}}
 %        \right\rceil
 %      \right)
 %      \cdot \treepath[n_i]{n}
@@ -775,9 +785,9 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %    \end{cases}
 %  \]
 %
-%So we have $\Sigma(n, \mar) = \Sigma(\parent{n}, \lab{\parent{n}}) + \lambda((n) + s_I)$ whenever $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$.
+%So we have $\tts{n}{\mar} = \tts{\parent{n}, \lab{\parent{n}}} + \labt{(n) + s_I}$ whenever $\zeta(n) = \emptyset \wedge \alpha(n) \neq \emptyset$.
 %
-%  %Since the sequences $s_i$ thus obtained begin with $\treepath{n}$, $\Sigma(n , \mar)$ can be expressed in a recursive form, but it is more complicated than necessary to prove its existence.
+%  %Since the sequences $s_i$ thus obtained begin with $\treepath{n}$, $\tts{n }{\mar}$ can be expressed in a recursive form, but it is more complicated than necessary to prove its existence.
 %  %\todo{see notes +1+}
 %
 %
@@ -791,51 +801,51 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %since the Karp and Miller algorithm never removes $\omega$s,
 %  we know that its parent $\parent{n}$ is labelled with a marking ``having all the $\omega$s'' of $\lab{n}$:
 %  $\op{\lab{n}} = \op{\lab{\parent{n}}}$.\\
-%  One can easily compute the lowest marking $\mar''$ in $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\lambda(n)} \mar'$ with $\mar \preceq \mar''$:
+%  One can easily compute the lowest marking $\mar''$ in $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\labt{n}} \mar'$ with $\mar \preceq \mar''$:
 %  \[
 %    \mar''(p) = \begin{cases}
 %      \lab{\parent{n}}(p)
 %        &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-%      \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(t)}(p)}
+%      \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{t}}(p)}
 %        &\text{ otherwise}
 %    \end{cases}
 %  \]
 %
 %  %We show that there exists a marking $\mar'' \in \downc{\lab{\parent{n}}}$ such that
-%  %(1) $\lambda(n)$ is enabled in $\mar''$
+%  %(1) $\labt{n}$ is enabled in $\mar''$
 %  %and that
-%  %(2) $\mar'$ given by $\mar''\fire{\lambda(n)}\mar'$ is such that $\mar \preceq \mar'$.\\
+%  %(2) $\mar'$ given by $\mar''\fire{\labt{n}}\mar'$ is such that $\mar \preceq \mar'$.\\
 %  %To define \mar'' we use $\lab{\parent{n}}$ and choose some values for the \oplaces:
 %  %We claim that any \mar'' as follows holds.
 %  %\[
 %  %  \mar''(p) = \begin{cases}
 %  %    \lab{\parent{n}}(p)
 %  %      &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-%  %    c \text{ with } c \geq \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(t)}(p)}
+%  %    c \text{ with } c \geq \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{t}}(p)}
 %  %      &\text{ otherwise}
 %  %  \end{cases}
 %  %\]
 %  Indeed, %(1)
-%  $\lambda(n)$ is enabled in $\mar''$:
-%  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\lambda(t)}(p) \leq \mar''(p)$;
-%  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\lambda(t)}(p)$.\\
+%  $\labt{n}$ is enabled in $\mar''$:
+%  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\labt{t}}(p) \leq \mar''(p)$;
+%  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\labt{t}}(p)$.\\
 %  Moreover, %(2)
 %  $\mar \preceq \mar'$:
-%  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\lambda(n)}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
-%  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\lambda(n)}(p) \geq \mar(p)$ by construction of $\mar''$.\\
-%  Thus, $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n)$
+%  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
+%  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) \geq \mar(p)$ by construction of $\mar''$.\\
+%  Thus, $\tts{n}{\mar} = \tts{\parent{n}, \mar''} + \labt{n}$
 %  whenever
 %  $\alpha(n) = \emptyset \wedge \zeta(n) \neq \emptyset$.
-%  %This allows to define $\Sigma(n, \mar)$ recursively up on the branch.
+%  %This allows to define $\tts{n}{\mar}$ recursively up on the branch.
 %
-%  %We first compute a marking $\mar'' \in \downc{\lab{n''}}$ such that $\lambda(\treepath[n'']{n})$ is enabled in $\mar''$, then we show that $\mar'$ given by $\mar''\fire{\lambda(\treepath[n'']{n})}\mar'$ is such that $\mar \preceq \mar'$.\\
+%  %We first compute a marking $\mar'' \in \downc{\lab{n''}}$ such that $\labt{\treepath[n'']{n}}$ is enabled in $\mar''$, then we show that $\mar'$ given by $\mar''\fire{\labt{\treepath[n'']{n}}}\mar'$ is such that $\mar \preceq \mar'$.\\
 %  %\[
 %  %  \mar''(p) =
 %  %  \begin{cases}
 %  %    \lab{n''}(p)
 %  %      &\text{ if } \lab{n''}(p) \neq w \\
-%  %    \mar(p) - \min(\effect{\lambda(\treepath[n'']{n})}, \max\I(\lambda(n_i))
-%  %      &\text{ otherwise and if } \effect{\lambda(\treepath[n'']{n})} < 0
+%  %    \mar(p) - \min(\effect{\labt{\treepath[n'']{n}}}, \max\I(\labt{n_i})
+%  %      &\text{ otherwise and if } \effect{\labt{\treepath[n'']{n}}} < 0
 %  %  \end{cases}
 %
 %  %then we compute a marking \mar''
@@ -844,7 +854,7 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %  %then we construct $\seqt$ recursively on the nodes of the branch.
 %  %The base case is the one treated above, where $\omega$ are first introduced.
 %  %Otherwise, one can define a marking $\mar''$ such that $\mar''(p) = \min(\mar(p), \lab{\parent{n}}(p))$.
-%  %And so we have $\Sigma(\mar, n) = \Sigma(\mar'', \parent{n}) + (\lambda(n))$.
+%  %And so we have $\tts{\mar}{n} = \tts{\mar''}{\parent{n}} + (\labt{n})$.
 %
 %  \todo{Formally}
 %
@@ -855,20 +865,20 @@ Although very different in form, the proofs are based on those stated in \cite{K
 %
 %  Finally, let us consider the case where $\lab{n}$ may have newly accelerated places as well as others \oplaces.
 %  Actually, all the cases studied above are special cases of this one.
-%  Here, one can compute $\Sigma(n, \mar)$ by combining the different constructions above:
+%  Here, one can compute $\tts{n}{\mar}$ by combining the different constructions above:
 %  First create a marking
 %  \[
 %    \mar''(p) = \begin{cases}
 %      \lab{\parent{n}}(p)
 %        &\text{ if } p \notin \op{\lab{\parent{n}}} \\
-%      \max{\mar(p) - \effect{\lambda(n)}(p), I_{\lambda(t)}(p)}
+%      \max{\mar(p) - \effect{\labt{n}}(p), I_{\labt{t}}(p)}
 %        &\text{ otherwise}
 %    \end{cases}
 %  \]
 %
 %  Then, we fix an order on the places $p_i \in \alpha(n), i \in \{1, 2,…\}$ such that the places accelerated thanks to a node $n_i$ nearer of the root of the tree are the first in $(p_1, p_2...)$.
 %  Compute $k_1 = $ \todo{} and for $i \neq 1, k_i = $\todo{}.
-%  Then, it is easy to see that $\Sigma(n, \mar) = \Sigma(\parent{n}, \mar'') + \lambda(n) + k_1 \dot \lambda(\treepath[n_1]{n}) + k_2 \dot \lambda(\treepath[n_2]{n}) + …$
+%  Then, it is easy to see that $\tts{n}{\mar} = \tts{\parent{n}, \mar''} + \labt{n} + k_1 \dot \labt{\treepath[n_1]{n}} + k_2 \dot \labt{\treepath[n_2]{n}} + …$
 %\end{proof}
 %
 %%%%%%%%%%%%%%%
