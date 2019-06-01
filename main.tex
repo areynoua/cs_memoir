@@ -7,6 +7,8 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{mathrsfs} % script (\mathscr)
+\usepackage{mathtools} % overbracket
+\usepackage{fouridx}
 
 \input{res/bordermatrix.tex}
 
@@ -122,8 +124,11 @@
 % conventions
 % fixed: transition = t
 % fixed: place = p
+% fixed: node = n
+% fixed: root = n_0
 % fixed: set = {}
 % fixed: vector = ()
+% fixed: sequence = ()
 % command name prefixes: name, def, body
 
 % PNs
@@ -132,39 +137,32 @@
 \newcommand{\omark}{$\omega$-marking\xspace}
 \newcommand{\omarks}{$\omega$-markings\xspace}
 % names
-\newcommand{\namePN} {\ensuremath{\mathcal{N}}\xspace}
-\newcommand{\namePPN}{\ensuremath{\mathcal{S}}\xspace}
+\newcommand{\namePN}[1][] {\ensuremath{\mathcal{N}_{#1}}\xspace}
+\newcommand{\namePPN}[1][]{\ensuremath{\mathcal{S}_{#1}}\xspace}
 % bodies
-\newcommand{\bodyPN} {\tuple{\places, \transitions, \mari}}
-\newcommand{\bodyPPN}{\tuple{\places, \transitions, \parameters, \mari}}
-\newcommand{\bodyNonMarkedPN} {\tuple{\places, \transitions}}
-\newcommand{\bodyNonMarkedPPN}{\tuple{\places, \transitions, \parameters}}
+\newcommand{\bodyPN}[1][] {\tuple{\places_{#1}, \transitions_{#1}, \mar_{0,#1}}}
+\newcommand{\bodyPPN}[1][]{\tuple{\places_{#1}, \transitions_{#1}, \parameters_{#1}, \mar_{0,#1}}}
+\newcommand{\bodyNonMarkedPN}[1][] {\tuple{\places_{#1}, \transitions_{#1}}}
+\newcommand{\bodyNonMarkedPPN}[1][]{\tuple{\places_{#1}, \transitions_{#1}, \parameters_{#1}}}
 % defs
-\newcommand{\defPN} {\namePN  = \bodyPN}
-\newcommand{\defPPN}{\namePPN = \bodyPPN}
-\newcommand{\defNonMarkedPN} {\namePN  = \bodyNonMarkedPN}
-\newcommand{\defNonMarkedPPN}{\namePPN = \bodyNonMarkedPPN}
+\newcommand{\defPN}[1][] {\namePN[#1]  = \bodyPN[#1]}
+\newcommand{\defPPN}[1][]{\namePPN[#1] = \bodyPPN[#1]}
+\newcommand{\defNonMarkedPN}[1][] {\namePN[#1]  = \bodyNonMarkedPN[#1]}
+\newcommand{\defNonMarkedPPN}[1][]{\namePPN[#1] = \bodyNonMarkedPPN[#1]}
+
+% Karp and Miller Tree
+\newcommand{\nameT}{\ensuremath{\mathcal{T}}\xspace}
+\newcommand{\bodyT}{\tuple{\nodes, \edges, n_0, \Lambda}}
+\newcommand{\defT}{\nameT = \bodyT}
+% sets
+\newcommand{\nodes}{N}
+\newcommand{\edges}{B}
+% functions
+\newcommand{\lab}[1]{\Lab(#1)}
 
 % object
 \newcommand{\tuple}[1]{\left\langle#1\right\rangle}
 \newcommand{\setComp}[2]{\left\{#1 \mid #2\right\}}
-
-% functions
-\newcommand{\fire}[2][]{\xrightarrow{#2}_{#1}}
-\newcommand{\card}[1]{\left|#1\right|}
-\newcommand{\transpose}[1]{#1^T}
-\newcommand{\post}[2][]{\Post_{#1}(#2)}
-\newcommand{\pre}[2][]{\Pre_{#1}(#2)}
-\newcommand{\posts}[2][]{\Post^*_{#1}(#2)}
-\newcommand{\pres}[2][]{\Pre^*_{#1}(#2)}
-\newcommand{\cover}[1]{\Cover(#1)}
-\newcommand{\op}[1]{\Oplaces(#1)}
-\newcommand{\upc}[1]{\Upc(#1)}
-\newcommand{\downc}[1]{\Upc(#1)}
-\newcommand{\maxp}[1]{\Max(#1)}
-\newcommand{\maxs}[1]{\Maxs(#1)}
-
-\newcommand{\val}[1][]{v\ifthenelse{\equal{\detokenize{#1}}{}}{}{(#1)}}
 
 \NewDocumentCommand{\inw}{ O{} O{} }{I_{#1}% %input weight
   \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
@@ -186,7 +184,6 @@
   \ifthenelse{\equal{\detokenize{#2}}{\detokenize{}}}{}
   {(#2)}}
 
-
 % sets
 \newcommand{\set}{\ensuremath{\mathcal{E}}\xspace}
 \newcommand{\places}{P}
@@ -199,16 +196,30 @@
 \newcommand{\ucs}{\mathcal{U}} %upward closed set
 \newcommand{\setp}{\mathcal{Q}} %set of places
 
+\newcommand{\front}{F}
+
 % sequence
-\newcommand{\seq}{s}
+\newcommand{\seq}[1][]{\mathscr{S}%
+  \ifthenelse{\equal{\detokenize{#1}}{}}{}{^{(#1)}}}
 \newcommand{\seqt}[1][1]{%sequence of transitions
   \ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}{\sigma}{\rho}}
-\NewDocumentCommand{\bodySeq}{ O{\sit} m m }{(#1_{#2}, \dots, #1_{#3})}
-\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{0} O{1} }{(#1_{#2}, #1_{#3}, \dots)}
+
+\NewDocumentCommand{\defSeq}{ O{\seq} O{\sit} m m }{#1 = \bodySeq[#2]{#3}{#4}}
+\NewDocumentCommand{\defInfSeq}{ O{\seq} O{\sit} O{1} O{2} }{#1 = \bodyInfSeq[#2][#3][#4]}
+\NewDocumentCommand{\defSeqt}{ O{\seqt} m m }{#1 = \bodySeqt{#2}{#3}}
+
 \newcommand{\bodySeqt}[2]{\bodySeq[\transition]{#1}{#2}}
 \newcommand{\bodySeqm}[2]{\bodySeq[\mar]{#1}{#2}}
-\NewDocumentCommand{\defInfSeq}{ O{\seq} O{\sit} O{0} O{1} }{#1 = \bodyInfSeq[#2][#3][#4]}
-\NewDocumentCommand{\defSeqt}{ O{\seqt} m m }{#1 = \bodySeqt{#2}{#3}}
+
+\NewDocumentCommand{\bodySeq}{ O{\sit} m m }{(\elemsSeq[#1]{#2}{#3})}
+\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{1} O{2} }{(\elemsSeq[#1][#2][#3])}
+
+\NewDocumentCommand{\elemsSeq}{ O{\sit} m m }{#1_{#2}, \dots, #1_{#3}}
+\NewDocumentCommand{\elemsInfSeq}{ O{\sit} O{1} O{2} }{#1_{#2}, #1_{#3}, \dots}
+
+% seq functions
+\newcommand{\concat}{+}
+\newcommand{\slice}[3][\seq]{\fourIdx{#2}{}{#3}{}{#1}}
 
 
 % units
@@ -233,15 +244,38 @@
 \newcommand{\rela}{\mathrel{R}}
 
 % operators
+\DeclareMathOperator{\Cover}{Cover}
+\DeclareMathOperator{\Downc}{\downarrow^\preceq}
 \DeclareMathOperator{\Effect}{Effect}
+\DeclareMathOperator{\KMAcc}{Acceleration}
+\DeclareMathOperator{\Lab}{\Lambda}
+\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
+\DeclareMathOperator{\Max}{Max^\preceq}
+\DeclareMathOperator{\Min}{Min^\preceq}
+\DeclareMathOperator{\Oplaces}{\Omega}
 \DeclareMathOperator{\Post}{Post}
 \DeclareMathOperator{\Pre}{Pre}
-\DeclareMathOperator{\Cover}{Cover}
-\DeclareMathOperator{\Oplaces}{\Omega}
-\DeclareMathOperator{\Max}{Max^\preceq}
-\DeclareMathOperator{\Maxs}{Max^\sqsubseteq}
 \DeclareMathOperator{\Upc}{\uparrow^\preceq}
-\DeclareMathOperator{\Downc}{\downarrow^\preceq}
+\newcommand{\Treepath}{\mathscr{T}}
+
+% functions
+\newcommand{\card}[1]{\left|#1\right|}
+\newcommand{\cover}[1]{\Cover(#1)}
+\newcommand{\downc}[1]{\Downc(#1)}
+\newcommand{\fire}[2][]{\xrightarrow{#2}_{#1}}
+\newcommand{\kmacc}[1]{\KMAcc(#1)}
+\newcommand{\maxp}[1]{\Max(#1)}
+\newcommand{\maxs}[1]{\Maxs(#1)}
+\newcommand{\minp}[1]{\Min(#1)}
+\newcommand{\op}[1]{\Oplaces(#1)}
+\newcommand{\posts}[2][]{\Post^*_{#1}(#2)}
+\newcommand{\post}[2][]{\Post_{#1}(#2)}
+\newcommand{\pres}[2][]{\Pre^*_{#1}(#2)}
+\newcommand{\pre}[2][]{\Pre_{#1}(#2)}
+\newcommand{\transpose}[1]{#1^T}
+\newcommand{\treepath}[2][]{\slice[\Treepath]{#1}{#2}}
+\newcommand{\upc}[1]{\Upc(#1)}
+\newcommand{\val}[1][]{v\ifthenelse{\equal{\detokenize{#1}}{}}{}{(#1)}}
 
 
 
@@ -252,7 +286,7 @@
 
 
 
-\newcommand{\N}{\ensuremath{\mathcal{N}}\xspace}
+%\newcommand{\N}{\ensuremath{\mathcal{N}}\xspace}
 \newcommand{\PPN}{\ensuremath{\mathcal{S}}\xspace}
 \newcommand{\PPNi}{\ensuremath{\mathcal{S}_1}\xspace}
 \newcommand{\PPNii}{\ensuremath{\mathcal{S}_2}\xspace}
@@ -269,7 +303,6 @@
 \newcommand{\SPTPmii}{\ensuremath{\PPNii = \PTPmii}\xspace}
 \newcommand{\SPTP}{\ensuremath{\PPN = \PTP}\xspace}
 
-\newcommand{\treepath}[1]{\mathscr{T}_{#1}}
 \newcommand{\parent}[1]{#1^{-1}}
 \newcommand{\child}[1]{#1^{+1}}
 
@@ -290,10 +323,8 @@
 
 \DeclareMathOperator{\Accelb}{A\overline{cce}l}
 \DeclareMathOperator{\Acc}{Acc}
-\DeclareMathOperator{\KMAcc}{Acceleration}
 \DeclareMathOperator{\CovSeq}{CovSeq}
 \DeclareMathOperator{\Flatten}{Flatten}
-\DeclareMathOperator{\Min}{Min^\preceq}
 \DeclareMathOperator{\Postb}{P\overbar{ost}}
 \DeclareMathOperator{\R}{\mathcal{R}}
 \DeclareMathOperator{\Sous}{Sous}
