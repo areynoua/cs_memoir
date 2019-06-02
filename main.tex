@@ -208,8 +208,9 @@
 \newcommand{\front}{F}
 
 % sequence
-\newcommand{\seq}[1][]{\mathscr{S}%
-  \ifthenelse{\equal{\detokenize{#1}}{}}{}{^{(#1)}}}
+\newcommand{\seq}[1][]{\ifthenelse{\equal{\detokenize{#1}}{}}%
+  {\mathscr{S}}%
+  {\elem{\mathscr{S}}{#1}}}
 \newcommand{\seqt}[1][1]{%sequence of transitions
   \ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}{\sigma}{\rho}}
 \newcommand{\iscs}[1]{\seqt[2]_{#1}} % increasing self-covering sequence
@@ -230,7 +231,7 @@
 % seq functions
 \newcommand{\concat}{+}
 \newcommand{\slice}[3][\seq]{\fourIdx{#2}{}{#3}{}{#1}}
-
+\newcommand{\elem}[2]{#1^{(#2)}}
 
 % units
 \newcommand{\mar}{\ensuremath{\mathbf{m}}\xspace}

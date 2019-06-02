@@ -29,7 +29,7 @@
 :let @o='c()P`<v`>ll'
 :let @f='il%hxI\setComplx:s/ \?\\mid \?/}{/^d0k$J'
 :let @v='/\\vect\>de@p'
-:let @g='/\\\(kmacc\|effect\|lab\|maxp\|maxs\|upc\|downc\|maxs\?\|minp\|op\|cover\|pres\?\|posts\?\)(lveguel@s'
+let @g='/\\\(kmacc\|na\|ab\|effect\|labt\?\|maxp\|maxs\|upc\|downc\|minp\|op\|cover\|pres\?\|posts\?\|tts\)(lveguel@s'
 :let @h='/\\\(inm\|matIS\|matOS\|inw\[t\]\|outw\[t\]\)(lgu el@c'
 
 :set spell spelllang=en

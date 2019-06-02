@@ -293,7 +293,9 @@ Given two sequences $\defSeq{1}{n}$ and $\defSeq[\seq'][\sit']{1}{n'}$ of elemen
   \item $\slice{\sit_i}{\sit_j} = \bodySeq{i}{j}$ is the subsequence of $\seq$ starting from $\sit_i$ and ending with $\sit_j$.\\
     There may be several occurrences of the given elements in $\seq$.
     We consider by convention: for the end bound, its last occurrence; and for the beginning bound, its last occurrence occurring before the end bound.
-    If this is not possible, either because one of the given elements is not in the sequence, or because there is no occurrence for the start bound before the end bound, then the denoted sub-sequence is empty.
+    If this is not possible, either because one of the given elements is not in the sequence, or because there is no occurrence for the start bound before the end bound, then the denoted sub-sequence is empty,
+  \item $\slice{}{\sit_j} = \slice{\seq[1]}{\sit_j}$ stands for the \emph{prefix}, \lang{i.e.} beginning, of the sequence, until the last occurrence of $\sit_j$,
+  \item $\slice{\sit_i}{} = \slice{\sit_i}{\seq[\card{\seq}]}$ is the end of the sequence, from the last occurrence of $\sit_i$ to the end.
 \end{itemize}
 
 
