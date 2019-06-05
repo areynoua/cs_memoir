@@ -273,10 +273,10 @@ The correctness and the termination of the algorithm lies on the strong monotoni
 To prove that the Karp and Miller Tree $\nameT$ is a coverability tree of \namePN, we show:
 \begin{enumerate}
   \item that one can construct a sequence from \mari to any marking \mar “covered by the tree”, given a node $n$ such that $\mar \in \downc{\lab{n}}$, and
-  \item \todo{} that any marking $\mar \in \posts{\mari}$ is “covered by at least one node of the tree”.
+  \item that any marking of $\cover{\namePN}$ is “covered by at least one node of the tree”.
 \end{enumerate}
 
-\todo{} Finally, we prove that $\nameT$ is finite and that the algorithm terminates.
+Finally, we prove that $\nameT$ is finite and that the algorithm terminates.
 
 Although very different in form, the proofs are based on those stated in \cite{Karp69}.
 
@@ -342,9 +342,10 @@ Although very different in form, the proofs are based on those stated in \cite{K
   \end{itemize}
 
   Moreover, with $n$ clear from the context, $\forall i \in \ab{n} \cup \na{n}$, we will denote by $\iscs{i}$ the self-covering sequence increasing in $p_i$ extracted from $\treepath{n}$.
-  Actually, the work is twofold: when dealing with a node $n$ we have to determine $\iscs{j}$ for all $j \in \na{n}$, and how many times at least should we repeat $\iscs{i}$ for all $i \in \ab{n} \cup \na{n}$.
+  Actually, the work is twofold: when dealing with a node $n$ we have to determine $\iscs{j}$ for all $j \in \na{n}$, and how many times at least should we repeat $\iscs{i}$ for all $i \in \ab{n} \cup \na{n}$, \lang{i.e}, we are looking for for a sequence of the form:
+  \[ \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} + \labt{\treepath[n^\omega_J]{n}} \]
 
-  As base case, consider that $\ab{n} = \emptyset$.
+  First consider that $\ab{n} = \emptyset$.
   If $\na{n} = \emptyset$, there was no acceleration on $\treepath{n}$ and by construction of $\nameT$, $\mari \fire{\labt{\treepath{n}}} \lab{n}$.
   So we define $\tts{\mar}{n}$ to be $\labt{\treepath{n}}$ whenever $\ab{n} = \emptyset$ and $\na{n} = \emptyset$.\\
   This is a special case of the one where $\na{n}$ may be not empty.
@@ -387,8 +388,8 @@ Although very different in form, the proofs are based on those stated in \cite{K
 
   The chosen order ensure that with $j_1 \leq j_2$ we have $\card{\iscs{j_1}} \geq \card{\iscs{j_2}}$ and so any other order would give a sequence longer or as long as the one computed here.
 
-  The induction step considers the case where $\ab{n} \neq \emptyset$.
-  By definition, a node in this case have at least one ancestor lying in the base case.
+  Now considers the case where $\ab{n} \neq \emptyset$.
+  %By definition, a node in this case have at least one ancestor lying in the base case.
   Once again, let us focus first on the simpler case where $\na{n} = \emptyset$.
   Here one can easily compute the $\preceq$-lowest marking $\mar''$ of $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\labt{n}} \mar'$ (with $\mar \preceq \mar'$)
   and that agrees with $\lab{\parent{n}}$ for its \noplaces. It is given by:
@@ -455,10 +456,9 @@ Although very different in form, the proofs are based on those stated in \cite{K
   This provides us with a mean to compute an actual increasing self-covering sequence for every accelerated place $p_j, j \in \na{n}$.
 
   Thus, as before we define $\Tts$ to be
-  \[ \tts{\mar}{n} = \labt{\treepath{m}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} \]
-  with $m = n_i : \min_{i \in \range{1}{J}}(\card{\treepath{n_i}})$ is the first node of the branch used in a increasing self-covering sequence $\iscs{}$.
+  \[ \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} \]
+  %with $m = n_i : \min_{i \in \range{1}{J}}(\card{\treepath{n_i}})$ is the first node of the branch used in a increasing self-covering sequence $\iscs{}$.
   Here however, since $j_1 < j_2$ does not implies $\card{\iscs{j_1}} \geq \card{\iscs{j_2}}$ anymore, another order may lead to shortest sequences.
-  Moreover, the marking is not guaranteed to agree with $\lab{n}$ in its \noplaces.
 
 
 
@@ -468,13 +468,42 @@ Although very different in form, the proofs are based on those stated in \cite{K
   \]
   with
   \[
-    \tts{\mar}{n} = \labt{\treepath{m}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} + \labt{\treepath[n^\omega_J]{n}}
+    \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} + \labt{\treepath[n^\omega_J]{n}}
   \]
-  where each increasing self-covering sequences $\iscs{j}$ is computed in the context first node of the branch where it is accelerated: $n^\omega_j$,
-  where the $k_j$ are computed in the context of the last node where an acceleration occurred $n^\omega_J$, considering a node $\mar''$ such that
-  \( \mar'' \fire{\labt{\treepath[n^\omega_J]{n}}} \mar' \).
+  where each increasing self-covering sequences $\iscs{j}$ is computed in the context of first node of the branch where it is accelerated: $n^\omega_j$,
+  where the $k_j$ are computed in the context of the last node where an acceleration occurred $n^\omega_J$, considering a marking $\mar''$ such that
+  \( \mar'' \fire{\labt{\treepath[n^\omega_J]{n}}} \mar' \). \qedhere
 
 \end{proof}
+
+\begin{lemm}
+  Given an initialized \ac{PN} $\defPN$ and any of its coverable marking $\mar \in \cover{\namePN}$,
+  there exists a node $n$ of its Karp and Miller tree $\defT$, such that $\mar \preceq \lab{n}$.
+\end{lemm}
+
+\begin{proof}
+  Let \mar be a marking of $\cover{\namePN}$ and $\defSeqt{0}{n-1}$ a sequence of transitions that witnesses it: \(\mari \fire{\seqt} \mar', \mar \preceq \mar'\).
+  Let $\bodySeqm{1}{n}$ be the markings : \(\mari \fire{t_0} \mar_1 \fire{t_1} \dots \fire{t_{n-1}} \mar_n = \mar'\).
+
+  Then, apply the following operations on this sequence of markings:
+  while there exists a pair of markings \((\mar_i, \mar_j), i < j, \mar_i \preceq \mar_j\) in the sequence:
+  \begin{itemize}
+    \item if $\mar_i = \mar_j$, remove all the nodes after $\mar_j$,
+    \item otherwise, for each place $p$ such that $\mar_i(p) < \mar_j(p)$, replace $\mar_k(p)$ by $\omega$ for all the markings $\mar_k$ from $\mar_j$ (included) to the end of the sequence.
+  \end{itemize}
+
+  At the end, the sequence obtained is the sequence of labels in some path $\treepath{n}$ from the $n_0$ to $n$ and the final label cover $\mar$.
+\end{proof}
+
+\begin{lemm}
+  For any \ac{PN}, its Karp and Miller tree is finite.
+\end{lemm}
+
+\begin{proof}
+  This follows from \autoref{lemm:wqo}.
+\end{proof}
+
+
 
 The Karp and Miller tree has a lot of convenient properties that allow, among other, to answer the coverability problem as well as the simultaneous place unboundedness problem.
 

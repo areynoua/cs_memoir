@@ -223,7 +223,7 @@
 \newcommand{\bodySeqm}[2]{\bodySeq[\mar]{#1}{#2}}
 
 \NewDocumentCommand{\bodySeq}{ O{\sit} m m }{(\elemsSeq[#1]{#2}{#3})}
-\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{1} O{2} }{(\elemsSeq[#1][#2][#3])}
+\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{1} O{2} }{(\elemsInfSeq[#1][#2][#3])}
 
 \NewDocumentCommand{\elemsSeq}{ O{\sit} m m }{#1_{#2}, \dots, #1_{#3}}
 \NewDocumentCommand{\elemsInfSeq}{ O{\sit} O{1} O{2} }{#1_{#2}, #1_{#3}, \dots}
