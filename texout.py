@@ -8,7 +8,12 @@ letters = 'abcdefghijklmnopqrstuvwxyz'
 #    pass
 
 def read() :
-    return stdin.read(1)
+    try :
+        r = stdin.read(1)
+    except UnicodeDecodeError :
+        print("ERROR in texout script")
+        return ' '
+    return r
 
 def read_nonl() :
     c = stdin.read(1)

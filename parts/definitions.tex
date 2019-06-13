@@ -284,12 +284,13 @@ We make a parenthesis here to introduce the notations on the sequences we will u
 With $\set$ a set, a sequence of elements of $\set$ is a list of its elements in a given order.
 We usually write it within parentheses.
 
-Given two sequences $\defSeq{1}{n}$ and $\defSeq[\seq'][\sit']{1}{n'}$ of elements from $\set$, a natural $c$ and two indices $i$ and $j \in \range{1}{n}, i < j$, we use the following notations:
+Given two sequences $\defSeq{1}{n}$ and $\defSeq[\seq'][\sit']{1}{n'}$ of elements from $\set$, a natural $c$ and two indices $i$, $j \in \range{1}{n}, i < j$ and an object $\sit$, we use the following notations:
 \begin{itemize}
   \item $\seq \concat \seq' = (\elemsSeq{1}{n}, \elemsSeq[\sit']{1}{n'})$ is the concatenation of $\seq$ and $\seq'$,
   \item $c \cdot \seq = (\overbrace{\overbracket{\elemsSeq{1}{n}}, \overbracket{\elemsSeq{1}{n}}, {\dots}}^{c \text{ times}})$ is the concatenation of $\seq$ with itself, repeated $c$ times,
   \item $\seq[i]$ is the $i$th element of $\seq$, so here $\seq[i] = \sit_i$, 
-  \item $\set^*$ is the set of all the sequences of elements of $\set$,
+  \item $\set^*$ is the set of all the sequences of elements of $\set$, that is a sequence of zero or more elements from $\set$; by extension,
+  \item $\sit^*$ denotes $\{\sit\}^*$, that is a sequence of zero or more repetitions of $\sit$,
   \item $\slice{\sit_i}{\sit_j} = \bodySeq{i}{j}$ is the subsequence of $\seq$ starting from $\sit_i$ and ending with $\sit_j$.\\
     There may be several occurrences of the given elements in $\seq$.
     We consider by convention: for the end bound, its last occurrence; and for the beginning bound, its last occurrence occurring before the end bound.

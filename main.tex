@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper,oneside]{book}
 
 % Math typesetting
+\usepackage{latexsym}
 \usepackage{amsmath} % loads amsbsy, amsopn, amstext
 \usepackage{amsthm}
 \usepackage{thmtools, thm-restate}
@@ -48,6 +49,7 @@
 ]{hyperref}
 % Edit \autoref texts
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+\usepackage{cleveref}
 \renewcommand\subsectionautorefname{section}
 \renewcommand\subsubsectionautorefname{section}
 \renewcommand\theoremautorefname{theorem} % TODO
@@ -141,7 +143,7 @@
 \newcommand{\omarks}{$\omega$-markings\xspace}
 % names
 \newcommand{\namePN}[1][] {\ensuremath{\mathcal{N}_{#1}}\xspace}
-\newcommand{\namePPN}[1][]{\ensuremath{\mathcal{S}_{#1}}\xspace}
+\newcommand{\namePPN}[1][]{\ensuremath{\mathcal{S}_{{#1}}}\xspace}
 % bodies
 \newcommand{\bodyPN}[1][] {\tuple{\places_{#1}, \transitions_{#1}, \mar_{0,#1}}}
 \newcommand{\bodyPPN}[1][]{\tuple{\places_{#1}, \transitions_{#1}, \parameters_{#1}, \mar_{0,#1}}}
@@ -228,6 +230,8 @@
 \NewDocumentCommand{\elemsSeq}{ O{\sit} m m }{#1_{#2}, \dots, #1_{#3}}
 \NewDocumentCommand{\elemsInfSeq}{ O{\sit} O{1} O{2} }{#1_{#2}, #1_{#3}, \dots}
 
+\newcommand{\mpath}[2]{#1 \leadsto #2}
+
 % seq functions
 \newcommand{\concat}{+}
 \newcommand{\slice}[3][\seq]{\fourIdx{#2}{}{#3}{}{#1}}
@@ -283,7 +287,7 @@
 \newcommand{\maxs}[1]{\Maxs(#1)}
 \newcommand{\minp}[1]{\Min(#1)}
 \newcommand{\op}[1]{\Oplaces(#1)}
-\newcommand{\posts}[2][]{\Post^*_{#1}(#2)}
+\newcommand{\posts}[2][]{\Post^*_{{#1}}(#2)}
 \newcommand{\post}[2][]{\Post_{#1}(#2)}
 \newcommand{\pres}[2][]{\Pre^*_{#1}(#2)}
 \newcommand{\pre}[2][]{\Pre_{#1}(#2)}

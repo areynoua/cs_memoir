@@ -21,19 +21,18 @@ This leads us to look for links between these two models.
 
 \subsubsection{From PostT-PPNs to P-PPNs}
 
-We will show how to construct a P-PPN that simulates a given PostT-PPN, that is, one that have the same behaviour.
+We will show how to construct a P-PPN that simulates a given PostT-PPN, that is, one that has ``the same'' behaviour.
 
 \begin{defi}[Simulation on Petri nets]
   Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$, a relation $\rela \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{simulation} if
-  \[
-    \forall (\mar_1, \mar_2) \in \rela \Leftrightarrow
-    \begin{cases}
-      \forall t_1 \in \transitions_1, \marp_1 \text{ such that } \mar_1 \fire{t_1} \marp_1 \\
-      \exists t_2 \in \transitions_2, \marp_2 \text{ such that } \mar_2 \fire{t_2} \marp_2
-        \text{ and } (\marp_1, \marp_2) \in \rela.
-    \end{cases}
-  \]
+  \begin{gather*}
+    (\mar_1, \mar_2) \in \rela \\
+    \Updownarrow\\
+    \forall (t_1,\mar'_1), t_1 \in \transitions_1, \mar_1 \fire{t_1} \marp_1 \>:\>
+    \exists (t_2,\mar'_2), t_2 \in \transitions_2, \mar_2 \fire{t_2} \marp_2, (\mar'_1, \mar'_2) \in \rela.
+  \end{gather*}
   If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \namePPN[2] \emph{simulates} \namePPN[1].
+  \todo{Fallait-il vraiment mettre le quantifieur universel à gauche de la double implication ??}
 \end{defi}
 
 Actually, we will divide the set of transitions of our new P-PPN into two separate subsets: usual or observable transitions, and silent transitions.
@@ -42,20 +41,16 @@ The latter form a machinery that is not taken into account for the result of the
   Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$,
   where $T_1 = T_{u1} \cup T_{s1}, T_{u1} \cap T_{s1} = \emptyset$,
   and   $T_2 = T_{u2} \cup T_{s2}, T_{u2} \cap T_{s2} = \emptyset$,
-  a relation $\rela \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{weak simulation} if
-  \[
-    \forall (\mar_1, \mar_2) \in \rela \Leftrightarrow
-    \left\{
-    \begin{aligned}
-      &\forall t_1 \in \transitions_1, \marp_1 \text{ such that } \mar_1 \fire{\sigma_1} \marp_1 \\
-      &\exists t_2 \in \transitions_2, \marp_2 \text{ such that } \mar_2 \fire{\sigma_2} \marp_2
-        \text{ and } (\marp_1, \marp_2) \in \rela,
-    \end{aligned}
-    \right.
-  \]
-where $\sigma_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.\todo{introduce regular notation}
+  a relation $\simeq \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{weak simulation} if
+  \begin{gather*}
+    (\mar_1, \mar_2) \in \simeq \\
+    \Updownarrow\\
+    \forall (\seqt_1,\mar'_1), \seqt_1 \in \transitions_1^*, \mar_1 \fire{\seqt_1} \mar'_1 \>:\>
+    \exists (\seqt_2,\mar'_2), \seqt_2 \in \transitions_2^*, \mar_2 \fire{\seqt_2} \mar'_2, (\mar'_1, \mar'_2) \in \simeq.
+  \end{gather*}
+  where $\seqt_i = \transitions_{si}^* + t_{ui} + \transitions_{si}^*,\enspace t_{ui} \in \transitions_{ui}$.% $\seqt_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.
 
-  If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \namePPN[2] \emph{weakly simulates} \namePPN[1].
+  If there exists such a relation $\simeq$ with $(\mar_{0,1}, \mar_{0,2}) \in \simeq$, noted $\mar_{0,1} \simeq \mar_{0,2}$ we say that \namePPN[2] \emph{weakly simulates} \namePPN[1].
 \end{defi}
 
 \begin{figure}[htbp]
@@ -76,7 +71,54 @@ Then, for all parametrised transition $t$, replace the parametrised output arcs 
 create a place \texttt{firing}$_t$ that will contains the ``lock token'' while simulating the firing of the parametrised transition, and a silent transition \texttt{done}$_t$ to release the lock,
 then for all parameterized output arc to a place $p$, replace it by the places \texttt{tank1}$_{t,p}$, \texttt{tank2}$_{t,p}$ and the silent transitions \texttt{reload}$_{t,p}$, \texttt{fire}$_{t,p}$ as depicted.
 
-This construction comes from \cite{David17}, to which we have added the uniqueness of the \texttt{lock} place for the whole network and its connection with all the transitions, even those not parameterized.
+Formally,
+\begin{align*}
+  \places_2 &= \places_1 \cup \{ \mathtt{lock} \}
+    \cup \setComp{\mathtt{firing}_t}{\exists p \in \places_1 \text{ s.t. } \outm[\namePPN[1]][p,t] \in \parameters} \\
+    &\qquad\cup \setComp{\mathtt{tank1}_{t,p}, \mathtt{tank2}_{t,p}}{\outm[\namePPN[1]][p,t] \in \parameters} \\
+  \places_2 &= \bigcup \begin{cases}
+      \places_1 \\
+      \{ \mathtt{lock} \} \\
+      \setComp{\mathtt{firing}_t}{\exists p \in \places_1 \text{ s.t. } \outm[\namePPN[1]][p,t] \in \parameters} \\
+      \setComp{\mathtt{tank1}_{t,p}, \mathtt{tank2}_{t,p}}{\outm[\namePPN[1]][p,t] \in \parameters}
+    \end{cases}\\
+  \transitions_2 &= \bigcup \begin{cases}
+      \transitions_1 \\
+      \setComp{\mathtt{done}_t}{\exists p \in \places_1 \text{ s.t. } \outm[\namePPN[1]][p,t] \in \parameters} \\
+      \setComp{\mathtt{fire}_{t,p}, \mathtt{reload}_{t,p}}{\outm[\namePPN[1]][p,t] \in \parameters}
+    \end{cases}\\
+  \inm[\namePPN[2]][p,t] &= \begin{cases}
+      \inm[\namePPN[1]][p,t] &\text{ whenever } p \in \places_1 \wedge t \in \transitions_1 \\
+      1 &\text{ whenever } p = \mathtt{lock}
+          \wedge t \in \transitions_1 \cup \setComp{ \mathtt{reload}_{t',p'}}{t' \in \transitions_1, p' \in \places_1}\\
+        &\quad\text{ or } p = \mathtt{firing}_{t'}
+          \wedge t \in \{\mathtt{done}_{t'}\} \cup \setComp{\mathtt{fire}_{t',p'}}{p' \in \places_1} \\
+        &\quad\text{ or } p = \mathtt{tank1}_{t',p'} \wedge t = \mathtt{fire}_{t',p'} \\
+        &\quad\text{ or } p = \mathtt{tank2}_{t',p'} \wedge t = \mathtt{reload}_{t',p'} \\
+      0 &\text{ otherwise }
+    \end{cases} \\
+  \outm[\namePPN[2]][p,t] &= \begin{cases}
+      \outm[\namePPN[1]][p,t] &\text{ whenever } p \in \places_1 \wedge t \in \transitions_1 \wedge \outm[\namePPN[1]][p,t] \notin \parameters \\
+      1 &\text{ whenever } p = \mathtt{lock}
+          \wedge t \in \transitions_1 \wedge \nexists p' \text{ s.t. } \outm[\namePPN[1]][p',t] \in \parameters \\
+        &\quad\text{ or } p = \mathtt{lock}
+          \wedge t \in \setComp{\mathtt{done}_{t'}}{t' \in \transitions_1} \cup \setComp{\mathtt{reload}_{t',p'}}{t' \in \transitions_1, p' \in \places_1} \\
+        &\quad\text{ or } p = \mathtt{firing}_{t'}
+          \wedge t \in \{t'\} \cup \setComp{\mathtt{fire}_{t',p'}}{p' \in \places_1} \\
+        &\quad\text{ or } p = \mathtt{tank1}_{t',p'} \wedge t = \mathtt{reload}_{t',p'} \\
+        &\quad\text{ or } p = \mathtt{tank2}_{t',p'} \wedge t = \mathtt{fire}_{t',p'} \\
+      0 &\text{ otherwise }
+    \end{cases}\\
+  \mar_{0,2}(p) &= \begin{cases}
+      \mar_{0,1}(p)             &\text{ if } p \in \places_1 \\
+      1                         &\text{ if } p = \mathtt{lock} \\
+      \outm[\namePPN[1]][p',t'] &\text{ if } p = \mathtt{tank1}_{t',p'} \\
+      0                         &\text{ otherwise }
+    \end{cases}
+\end{align*}
+\todo{This break the formalism introduced at the benining}
+
+This construction comes from \cite{David17}, to which we have added the uniqueness of the \texttt{lock} place for the whole network and its connection with all the transitions, even the non-parametrised ones.
 This does not fundamentally change the properties of the newly built network, in that it also provides a simulation, but it reduces the size of its state tree.
 
 \begin{lemm}
@@ -84,36 +126,55 @@ This does not fundamentally change the properties of the newly built network, in
 \end{lemm}
 
 \begin{proof}
-  First consider $v(\namePPN[1])$ and $v(\namePPN[1]')$ where $\namePPN[1]'$ is the network augmented by the \texttt{lock} place and its arcs from and to the non-parametrised transitions.
-  The simulation is obvious here: it contains all the pair of markings $(\mar_1, \mar_2)$ such that $\mar_1 \in \Post^*_v(\mar_{0,1})$ and
-  \[
-    \mar_2(p) =
-      \begin{cases}
-        1 &\text{ if $p$ is \texttt{lock},} \\
-        \mar_1(p) &\text{ otherwise.}
+  Let $\simeq$ be the weak simulation relation that witnesses it, \lang{i.e.} $\mar_{0,1} \simeq \mar_{0,2}$.
+  This relation surely exists: we recursively show that it contains all the pairs $(\mar_1, \mar_2)$ such that
+  \begin{align*}
+    \mar_1 &\in \posts[\val]{\mar_{0,1}}\\
+    \mar_2(p) &= \begin{cases}
+        \mar_1(p) &\text{ if } p \in \places_1\\
+        1         &\text{ if } p \text{ is } \mathtt{lock} \\
+        \val[a]\text{, with $a$ the parameter from $t$ to $p'$ in $\namePPN[1]$} &\text{ if $p$ is }\mathtt{tank1}_{t,p'} \\
+        0 &\text{ otherwise.}
       \end{cases}
-  \]
+  \end{align*}
 
-  Now consider $v(\namePPN[2])$ and focus on the parametrised transitions.
-  Each time an arc from $t$ to $p$ parametrised by $a$ ($\matO_{\namePPN[1]}(p)(t) = a$) is involved in a firing in $v(\namePPN[1])$, $v(a)$ tokens are created in $p$.
-  Regarding $v(\namePPN[2])$, the sequence $(t, \mathtt{fire}_{t,p}, \mathtt{done}_t, \mathtt{reload}_{t,p})$, where $\mathtt{fire}_{t,p}$ and $\mathtt{reload}_{t,p}$ are repeated $a$ times, creates $v(a)$ tokens in $p$ and reset the sub-net constructed for the simulation\todo{rewrite with regular notation}. Note that the rest of the network is not affected. Thus, monotonicity ensures that we have a weak simulation.
+  This holds for $(\mar_{0,1}, \mar_{0,2})$.
+
+  Now, consider $\mar_1 \simeq \mar_2$.
+  Thus, the induction hypothesis ensures that for all $\mar_1 \fire[{\val[{\namePPN[1]}]}]{t} \mar'_1$ the following sequence of transitions $\seqt$ is enabled in $\mar_2$:
+  \begin{align*}
+    \seqt = (t)
+      &+ \outm[\namePPN[1]][p_{i_1},t] \cdot (\mathtt{fire}_{t,p_{i_1}})
+       + \outm[\namePPN[1]][p_{i_2},t] \cdot (\mathtt{fire}_{t,p_{i_2}})
+       + \dots \\
+      &+ (\mathtt{done}_{t}) \\
+      &+ \outm[\namePPN[1]][p_{i_1},t] \cdot (\mathtt{reload}_{t,p_{i_1}})
+       + \outm[\namePPN[1]][p_{i_2},t] \cdot (\mathtt{reload}_{t,p_{i_2}})
+       + \dots
+  \end{align*}
+  with $p_{i_1}, p_{i_2}, \dots$ the places $p_{i_j}$ of $\places_1$ such that $\outm[\namePPN[1]][p_{i_j}] \in \parameters$.
+  Moreover, this sequence leads to a marking $\mar'_2$, $\mar_2 \fire[{\val[{\namePPN[2]}]}]{\seqt} \mar'_2$, for which the induction hypothesis holds.
+  Thus $\mar'_1 \simeq \mar'_2$ and we can construct inductively the weak simulation relation.
+  %First consider $v(\namePPN[1])$ and $v(\namePPN[1]')$ where $\namePPN[1]'$ is the network augmented by the \texttt{lock} place and its arcs from and to the non-parametrised transitions.
+  %The simulation is obvious here: it contains all the pair of markings $(\mar_1, \mar_2)$ such that $\mar_1 \in \Post^*_v(\mar_{0,1})$ and
+  %\[
+  %  \mar_2(p) =
+  %    \begin{cases}
+  %      1 &\text{ if $p$ is \texttt{lock},} \\
+  %      \mar_1(p) &\text{ otherwise.}
+  %    \end{cases}
+  %\]
+
+  %Now consider $v(\namePPN[2])$ and focus on the parametrised transitions.
+  %Each time an arc from $t$ to $p$ parametrised by $a$ ($\matO_{\namePPN[1]}(p)(t) = a$) is involved in a firing in $v(\namePPN[1])$, $v(a)$ tokens are created in $p$.
+  %Regarding $v(\namePPN[2])$, the sequence $(t, \mathtt{fire}_{t,p}, \mathtt{done}_t, \mathtt{reload}_{t,p})$, where $\mathtt{fire}_{t,p}$ and $\mathtt{reload}_{t,p}$ are repeated $a$ times, creates $v(a)$ tokens in $p$ and reset the sub-net constructed for the simulation\todo{rewrite with regular notation}. Note that the rest of the network is not affected. Thus, monotonicity ensures that we have a weak simulation.
 \end{proof}
 
-One can easily see that the weak simulation contains all the pair $(\mar_1, \mar_2)$ such that $\mar_1 \in \Post^*_v(\mar_{0,1})$ and
-\[
-  \mar_2(p') =
-    \begin{cases}
-      \mar_1(p') &\text{ if } p' \in \places_1 \text{,}\\
-      1 &\text{ if $p'$ is \texttt{lock},} \\
-      v(a)\text{, with $a$ the parameter from $t$ to $p$} &\text{ if $p'$ is }\mathtt{tank1}_{t,p}\text{,} \\
-      0 &\text{ otherwise.}
-    \end{cases}
-\]
-
-Looking at the subnetwork in Figure~\ref{fig:posttppn-to-pppn},
-one guesses that the simulation does not contain “many” other places.
-Indeed, by unfolding the transition relation on the created subnet for $\matO_{\namePPN[1]}(p)(t) = a$, one can observe that the reachable markings when $t$ is fired only once are of the form:
-\[
+Looking at the subnet in Figure~\ref{fig:posttppn-to-pppn},
+one guesses that $\posts[\val({\namePPN[2]})]{\mar_{0,2}}$ does not contain “many” markings that are not involved in the weak simulation.
+Indeed, by unfolding the transition relation on the created subnet for $\outm[\namePPN[1]][p,t] = a$, one can observe that the reachable markings when $t$ is fired only once are of the form:
+\begin{align}
+  \label{eqn:widget-reachable-markings}
   \mar_2(p') =
   \begin{cases}
     l   &\text{ if } p' \text{ is } \mathtt{lock}, \\
@@ -126,11 +187,11 @@ Indeed, by unfolding the transition relation on the created subnet for $\matO_{\
   \left\{
     \begin{aligned}
       l + f &= 1 \\
-      a_1 + a_2 &= a \\
-      a_3 &\leq a_1 \leq a
+      a_1 + a_2 &= \val[a] \\
+      a_3 \leq a_1 &\leq \val[a]
     \end{aligned}
   \right.
-\]
+\end{align}
 
 Thus, for all reachable marking $\mar_2 \in \Post^*_{v(\namePPN[2])}(\mar_{0,2})$ of \namePPN[2] there exists a reachable marking $\mar_1 \in \Post^*_{v(\namePPN[1])}(\mar_{0,1})$ of \namePPN[1] that ``covers'' it for all the common places: $\forall p \in \places_1, \mar_1(p) \geq \mar_2(p)$.
 Actually, \namePPN[1] also simulates \namePPN[2].
@@ -141,18 +202,49 @@ Actually, \namePPN[1] also simulates \namePPN[2].
 \end{lemm}
 
 \begin{proof}
-  For all $\mar_{0,2} \fire[{\val(\namePPN[2])}]{t} \mar_{1,2}$, there exists $\mar_{1,1}$ such that $\mar_{0,1} \fire[{v(\namePPN[1])}]{t} \mar_{1,1}$.
-  After firing this first transition, either the transition was a non-parametrized one and we can repeat the operation, or it was parametrized and the lock disables the observable transitions until $\mathtt{done}_t$ has been fired.
-  In the latter case, any firable sequence ending with $\mathtt{done}_t$ is silent and produces a marking $\mar'_{1,2}$ covered by $\mar_{1,1}$.
-  Thus, by monotonicity and thanks to the lock, we know that once $\mathtt{done}_t$ has been fired, all the transitions enabled in $\mar'_{1,2}$ in \namePPN[2] are enabled in $\mar_{1,1}$ in \namePPN[1], except for some \texttt{reload} ones whose the effect is restricted to the \texttt{tank} places.
-  This can therefore be repeated and provides us with the desired weak-simulation.
+  We inductively create the weak simulation by keeping the following invariant:
+  \( \mar_2 \simeq \mar_1 \Rightarrow \forall p \in \places_1, \mar_2(p) \geq \mar_1(p) \).
+  Note that this property ensures that any visible transition enabled in $\mar_2$ is enabled in $\mar_1$.
+  
+  This holds for $(\mar_{0,2}, \mar_{0,1})$.
+
+  Given a pair $\mar_2 \simeq \mar_1$ of the weak simulation, for all $\mar'_2$ given by
+  $\mar_2 \fire[{\val(\namePPN[2])}]{t} \mar'_2$
+  we add into the relation the pair $(\mar'_2, \mar'_1)$ where
+  \begin{itemize}
+    \item $\mar'_1$ is given by $\mar_1 \fire[{\val(\namePPN[1])}]{t} \mar'_1$ if $t \in \transitions_1$,
+    \item $\mar'_1$ is $\mar_1$ otherwise, \lang{i.e.} if the $t$ is silent.
+  \end{itemize}
+
+  Indeed, if $t \in \transitions_1$, strong monotonicity of \ac{PN} ensures that the induction hypothesis holds for $(\mar'_2, \mar'_1)$.
+  On the other hand, if $t$ is silent, either it is a transition $\mathtt{done}_{t'}$ or $\mathtt{reload}_{t',p'}$ and they do not change any place $p \in \places_1$; either it is a $\mathtt{fire}_{t',p'}$ transition and it adds a token in $p' \in \places_1$.
+  However, $\mathtt{fire}_{t',p'}$ may be firered at most $\val[{\outm[{\namePPN[1]}]}]$ times each time $t'$ is fired once.
+  (You can refer to~\cref{eqn:widget-reachable-markings} for more details.)
+  This ensures that the induction hypothesis holds.
+  %For all $\mar_{0,2} \fire[{\val(\namePPN[2])}]{t} \mar_{1,2}$, there exists $\mar_{1,1}$ such that $\mar_{0,1} \fire[{v(\namePPN[1])}]{t} \mar_{1,1}$.
+  %After firing this first transition, either the transition was a non-parametrized one and we can repeat the operation, or it was parametrized and the lock disables the observable transitions until $\mathtt{done}_t$ has been fired.
+  %In the latter case, any firable sequence ending with $\mathtt{done}_t$ is silent and produces a marking $\mar'_{1,2}$ covered by $\mar_{1,1}$.
+  %Thus, by monotonicity and thanks to the lock, we know that once $\mathtt{done}_t$ has been fired, all the transitions enabled in $\mar'_{1,2}$ in \namePPN[2] are enabled in $\mar_{1,1}$ in \namePPN[1], except for some \texttt{reload} ones whose the effect is restricted to the \texttt{tank} places.
+  %This can therefore be repeated and provides us with the desired weak-simulation.
 \end{proof}
+
+\paragraph{From P-PPN to PostT-PPN}
 
 \subsection{Karp and Miller algorithm for \Ecov on PostT-\ac{PPN}}
 
 The adaptation of the Karp and Miller algorithm to solve the \Ecov problem on PostT-\acp{PPN} is the result of one key observation.
 In a PostT-\ac{PPN}, a place may contains an arbitrary large number of tokens either because of the presence of a self-covering increasing sequence, as in a plain \ac{PN}, or because of an arbitrary large valuation.
 In the latter case, the place is not necessary \emph{unbounded}, that is to say, once a valuation is given, the number of tokens the place may contains may be bounded, even if the bound is arbitrary large due to the arbitrary large values of the valuation.
+This is the case for place $p_1$ in the net shown in \cref{fig:postt-ppn-bound}: obviously it can contain $\val(\param)$ tokens, whose value may be arbitrarily high; but the place is bounded to this value.
+The number of tokens in place $p_2$, on the contrary, is not bounded.
+
+\begin{figure}[htbp]
+  \centering
+  \include{res/postt-ppn-bound}
+  \par
+  \caption{An initialized PostT-\ac{PPN}}
+  \label{fig:postt-ppn-bound}
+\end{figure}
 
 The adaptation of the Karp and Miller algorithm is therefore mainly the addition of a way to distinguish between these two cases.
 It is done by introducing a new value allowed in the markings, noted $*$ and such that $* \notin \naturals$, $* \neq \omega$, and $\forall c \in \naturals$, we have:
@@ -173,15 +265,21 @@ For our purpose, we add: \todo{or not?}
 $*$ being defined, the propagation of the $*$ still have to be ensured in the cases where all the input places of a transition are marked by a $*$, even if the output of the transition is not a parameter.
 This is done by adapting the acceleration function.
 This new acceleration function, $\Acc$, distinguishes three cases.
-Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration
+Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration,
 the values of the different places of the accelerated marking are determined as follows:
 \[
   \Acc(\mar, S)(p) =
   \begin{cases}
-    \omega & \text{if } \exists \marp \in S : \marp \prec \mar \text{ and } \marp(p) < \mar(p)
-    ...
+    \omega & \text{if } \exists \marp \in S : \marp \prec \mar
+      \text{ and } \marp(p) < \mar(p) \\
+      &\phantom{\text{if } \exists \marp \in S :}\text{ and }
+        \forall p' \in \places, \mar'(p') \neq \omega:
+        \effect{\mpath{\mar'}{\mar}}(p') \geq 0
+        % Je pense que cette dernière condition est impliquée par la première
+        % STOP HERE
   \end{cases}
 \]
+\todo{introduce \textbackslash mpath}
 \begin{itemize}
   \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\effect{\sigma}(p) \geq 0$.\\
     This case corresponds to the classic acceleration and
@@ -197,7 +295,7 @@ the values of the different places of the accelerated marking are determined as 
     \[
       \Acc(\mar, S)(p) = *
     \]
-  \item Or no one of the previous cases hold.
+  \item Or no one of the previous cases holds.
     In this case $\Acc(\mar, S)(p) = \mar(p)$.
 \end{itemize}
 
