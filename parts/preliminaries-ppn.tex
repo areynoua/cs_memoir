@@ -273,12 +273,36 @@ We give it here before to explain the different cases.
 
 Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration,
 the values of the different places of the accelerated marking are determined as follows:
+%\[
+%  \Acc(\mar, S)(p) =
+%  \begin{cases}
+%    \omega  & \tif \exists \marp \in S : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
+%            & \phantom{\tif \exists \marp \in S : }
+%              \forall p' \in \places, \mar'(p') \neq \omega: \effect{\mpath{\mar'}{\mar}}(p') \geq 0\\
+%        % Cette dernière condition dit qu'un effet négatif n'est pas autorisé dans
+%        % une place marquée de *. En effet dans ce cas il ne suffirait pas de répéter
+%        % un morceau de séquence; mais il faudrait choisir une valuation plus grande.
+%        % Cependant, je pense que pour répondre au E-cov problem on pourrait justement
+%        % autoriser un effet négatif ici. À creuser.
+%    *       & \tothrwand\\
+%            & \text{ }\exists \mar' \in S : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
+%            & \phantom{\text{ }\exists \mar' \in S :}
+%              \forall p' \in \places, \mar'(p') \in \naturals: \effect{\mpath{\mar'}{\mar}}(p') \geq 0 \\
+%        % En fait la dernière condition ajoute aussi que si une place est accélérée
+%        % entre le marquage choisi pour cette accélération et le marquage qu'on est en train
+%        % d'accélérer, alors il faut vérifier que l'effet soit bien positif.
+%        % Par exemple: <0,1> +a,+0 <*,1> -3,+1 <*,2>.
+%        % Peut on accélérer le 2 si l'effet sur le * est -3?
+%    \mar(p) & \tothrw
+%  \end{cases}
+%\]
+% Accélération modifiée
 \[
   \Acc(\mar, S)(p) =
   \begin{cases}
     \omega  & \tif \exists \marp \in S : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
             & \phantom{\tif \exists \marp \in S : }
-              \forall p' \in \places, \mar'(p') \neq \omega: \effect{\mpath{\mar'}{\mar}}(p') \geq 0\\
+              \forall p' \in \places, \mar(p') \neq \omega: \effect{\mpath{\mar'}{\mar}}(p') \geq 0\\
         % Cette dernière condition dit qu'un effet négatif n'est pas autorisé dans
         % une place marquée de *. En effet dans ce cas il ne suffirait pas de répéter
         % un morceau de séquence; mais il faudrait choisir une valuation plus grande.
@@ -287,7 +311,7 @@ the values of the different places of the accelerated marking are determined as 
     *       & \tothrwand\\
             & \text{ }\exists \mar' \in S : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
             & \phantom{\text{ }\exists \mar' \in S :}
-              \forall p' \in \places, \mar'(p') \in \naturals: \effect{\mpath{\mar'}{\mar}}(p') \geq 0 \\
+              \forall p' \in \places, \mar(p') \in \naturals: \effect{\mpath{\mar'}{\mar}}(p') \geq 0 \\
         % En fait la dernière condition ajoute aussi que si une place est accélérée
         % entre le marquage choisi pour cette accélération et le marquage qu'on est en train
         % d'accélérer, alors il faut vérifier que l'effet soit bien positif.
@@ -339,4 +363,4 @@ This ensure that the transition is regarded as enabled only if it may actually f
 The other direction of the implication holds too, that is to say that, if a transition has a parametric input arc whose the corresponding place is bounded, there exists a valuation that does not enable the transition.
 Indeed, recall that all simultaneous unbounded places in a \ac{PN} appear marked by $\omega$ in at least one label of the Karp and Miller tree for this \ac{PN}.
 
-% vim: set spell spelllang=en :
+% vim: set spell spelllang=en_gb,fr :
