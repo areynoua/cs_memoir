@@ -32,4 +32,4 @@
 let @g='/\\\(kmacc\|na\|ab\|effect\|labt\?\|maxp\|maxs\|upc\|downc\|minp\|op\|cover\|pres\?\|posts\?\|tts\)(lveguel@s'
 :let @h='/\\\(inm\|matIS\|matOS\|inw\[t\]\|outw\[t\]\)(lgu el@c'
 
-:set spell spelllang=en
+:set spell spelllang=en_gb

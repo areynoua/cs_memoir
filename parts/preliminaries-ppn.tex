@@ -14,12 +14,14 @@ We will present this two algorithms as they contain ideas used in the sequel.
 \todo{Introduce next subsection}
 
 \subsection{Links between P-PPNs and PostT-PPNs}
+\label{sec:p-ppn-and-postt-ppn}
 
 Considering the synthesis of valuations for P-PPNs, one idea that comes naturally is to apply $\back$ from a marking to be covered.
 We also have the intuition that this same result can be obtained in a similar way for PostT-PPNs. 
 This leads us to look for links between these two models.
 
-\subsubsection{From PostT-PPNs to P-PPNs}
+\paragraph{From PostT-PPNs to P-PPNs}
+\label{sec:postt-ppn-to-p-ppn}
 
 We will show how to construct a P-PPN that simulates a given PostT-PPN, that is, one that has ``the same'' behaviour.
 
@@ -229,8 +231,10 @@ Actually, \namePPN[1] also simulates \namePPN[2].
 \end{proof}
 
 \paragraph{From P-PPN to PostT-PPN}
+\label{sec:p-ppn-to-postt-ppn}
 
 \subsection{Karp and Miller algorithm for \Ecov on PostT-\ac{PPN}}
+\label{sec:km-ecov-postt-ppn}
 
 The adaptation of the Karp and Miller algorithm to solve the \Ecov problem on PostT-\acp{PPN} is the result of one key observation.
 In a PostT-\ac{PPN}, a place may contains an arbitrary large number of tokens either because of the presence of a self-covering increasing sequence, as in a plain \ac{PN}, or because of an arbitrary large valuation.
@@ -265,25 +269,47 @@ For our purpose, we add: \todo{or not?}
 $*$ being defined, the propagation of the $*$ still have to be ensured in the cases where all the input places of a transition are marked by a $*$, even if the output of the transition is not a parameter.
 This is done by adapting the acceleration function.
 This new acceleration function, $\Acc$, distinguishes three cases.
+We give it here before to explain the different cases.
+
 Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration,
 the values of the different places of the accelerated marking are determined as follows:
 \[
   \Acc(\mar, S)(p) =
   \begin{cases}
-    \omega & \text{if } \exists \marp \in S : \marp \prec \mar
-      \text{ and } \marp(p) < \mar(p) \\
-      &\phantom{\text{if } \exists \marp \in S :}\text{ and }
-        \forall p' \in \places, \mar'(p') \neq \omega:
-        \effect{\mpath{\mar'}{\mar}}(p') \geq 0
-        % Je pense que cette dernière condition est impliquée par la première
-        % STOP HERE
+    \omega  & \tif \exists \marp \in S : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
+            & \phantom{\tif \exists \marp \in S : }
+              \forall p' \in \places, \mar'(p') \neq \omega: \effect{\mpath{\mar'}{\mar}}(p') \geq 0\\
+        % Cette dernière condition dit qu'un effet négatif n'est pas autorisé dans
+        % une place marquée de *. En effet dans ce cas il ne suffirait pas de répéter
+        % un morceau de séquence; mais il faudrait choisir une valuation plus grande.
+        % Cependant, je pense que pour répondre au E-cov problem on pourrait justement
+        % autoriser un effet négatif ici. À creuser.
+    *       & \tothrwand\\
+            & \text{ }\exists \mar' \in S : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
+            & \phantom{\text{ }\exists \mar' \in S :}
+              \forall p' \in \places, \mar'(p') \in \naturals: \effect{\mpath{\mar'}{\mar}}(p') \geq 0 \\
+        % En fait la dernière condition ajoute aussi que si une place est accélérée
+        % entre le marquage choisi pour cette accélération et le marquage qu'on est en train
+        % d'accélérer, alors il faut vérifier que l'effet soit bien positif.
+        % Par exemple: <0,1> +a,+0 <*,1> -3,+1 <*,2>.
+        % Peut on accélérer le 2 si l'effet sur le * est -3?
+    \mar(p) & \tothrw
   \end{cases}
 \]
 \todo{introduce \textbackslash mpath}
+
+\begin{figure}[htbp]
+  \centering
+  \include{res/postt-ppn-example}
+  \par
+  \caption{An initialized PostT-\ac{PPN}}
+  \label{fig:postt-ppn-example}
+\end{figure}
+
 \begin{itemize}
-  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \neq \omega$ we have $\effect{\sigma}(p) \geq 0$.\\
+  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p'$ such that $\marp(p') \neq \omega$ we have $\effect{\sigma}(p') \geq 0$.\\
     This case corresponds to the classic acceleration and
-    if $\marp(p) < \mar(p)$
+    for all $p$ such that $\marp(p) < \mar(p)$
     we have:
     \[
       \Acc(\mar, S)(p) = \omega
@@ -304,6 +330,7 @@ Intuitively, the second case formalise the idea that one can remove some tokens 
 Keeping in mind that we are looking for the existence of a valuation, as large as it may be, that allows to cover a (set of) marking(s) of the \ac{PPN} \namePPN, one can now perform the Karp and Miller algorithm, with the adapted acceleration function, on the plain \ac{PN} $v(\namePPN)$ where $v$ is the $*$-valuation that maps every parameter to $*$.
 
 \subsection{Karp and Miller algorithm for \Ucov on PreT-\ac{PPN}}
+\label{sec:km-ucov-pret-ppn}
 
 Here is a symmetrical situation.
 The parameters are used to indicate the number of tokens required for transitions to fire, and we want to determine if a (set of) marking(s) is coverable for all the possible valuations of the parameters, as large as they may be.

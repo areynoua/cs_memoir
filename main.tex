@@ -48,8 +48,11 @@
   xetex
 ]{hyperref}
 % Edit \autoref texts
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 \usepackage{cleveref}
+\crefname{theo}{theorem}{theorems}
+\crefname{lemm}{lemma}{lemma}
+\crefname{defi}{definition}{definitions}
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 \renewcommand\subsectionautorefname{section}
 \renewcommand\subsubsectionautorefname{section}
 \renewcommand\theoremautorefname{theorem} % TODO
@@ -106,7 +109,11 @@
 		minimum height=0.055\linewidth,
 		inner xsep=0pt,
 		minimum width=3pt
-	}
+	},
+  horizontal/.style={
+		minimum height=3pt,
+		minimum width=0.055\linewidth
+  }
 }
 
 %%%% Document specific
@@ -125,6 +132,11 @@
 \newcommand{\oplace}{$\omega$-place\xspace}
 \newcommand{\oplaces}{$\omega$-places\xspace}
 \newcommand{\noplaces}{non-$\omega$-places\xspace}
+\newcommand{\tand}{\text{ and }}
+\newcommand{\tif}{\text{ if }}
+\newcommand{\tothrw}{\text{ otherwise }}
+\newcommand{\tandif}{\text{ and if }}
+\newcommand{\tothrwand}{\text{ otherwise and }}
 
 % conventions
 % fixed: transition = t
@@ -452,6 +464,8 @@
 \input{parts/contributions}
 \section{Parametric coverability problems and specific valuations}
 \input{parts/contrib-valuations}
+\section{Adapting the Karp and Miller procedure for \Ecov on P-\ac{PPN}}
+\input{parts/contrib-km}
 \section{Adapting the general backward algorithm}
 \input{parts/contrib-back}
 \section{Adapting \ac{EEC}}% for PreT-\acp{PPN}}
