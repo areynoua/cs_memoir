@@ -268,7 +268,6 @@ For our purpose, we add: \todo{or not?}
 
 $*$ being defined, the propagation of the $*$ still have to be ensured in the cases where all the input places of a transition are marked by a $*$, even if the output of the transition is not a parameter.
 This is done by adapting the acceleration function.
-This new acceleration function, $\Acc$, distinguishes three cases.
 We give it here before to explain the different cases.
 
 Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration,
@@ -330,6 +329,7 @@ the values of the different places of the accelerated marking are determined as 
   \label{fig:postt-ppn-example}
 \end{figure}
 
+This new acceleration function, $\Acc$, distinguishes three cases:
 \begin{itemize}
   \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p'$ such that $\marp(p') \neq \omega$ we have $\effect{\sigma}(p') \geq 0$.\\
     This case corresponds to the classic acceleration and
@@ -338,13 +338,22 @@ the values of the different places of the accelerated marking are determined as 
     \[
       \Acc(\mar, S)(p) = \omega
     \]
-\item Or these first conditions does not hold but there exists a marking $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\effect{\sigma}(p) \geq 0$.\\
-    This case handle the propagation of the $*$ mentioned above and
-    if $\marp(p) < \mar(p)$
+\item Or these first conditions does not hold but there is a marking
+  that meets these conditions, except that the effect of the sequence of transitions is negative in some places $p'$ with $\mar(p') = *$,
+  \lang{i.e.},
+  there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\effect{\sigma}(p) \geq 0$.\\
+    This case handle the propagation of the $*$ mentioned above.
+    Indeed, we can choose an arbitrary large valuation to be able to fire this sequence an arbitrary large number of times; however, for a given valuation, this number of repetition is bounded.
+    So, if $\marp(p) < \mar(p)$
     we have:
     \[
       \Acc(\mar, S)(p) = *
     \]
+  For example, given the marked PPN depicted on \cref{fig:postt-ppn-example}, consider the sequence $\mari = (1, 1, 1, 1) \fire{t_1} \mar' = (0, *, 2, 1) \fire{t_2} \mar = (0, *, 3, 1)$.
+    We do have $\mar' \prec \mar$ and $\mar'(p_3) < \mar(p_3)$, but $\effect{\mpath{\mar'}{\mar}}(p_2) < 0$.
+    This shows that this sequence does not witness that $p_3$ is unbounded,
+    however its bound may be made arbitrary large,
+    thus $\Acc(\mar, \{\mari, \mar'\}) = (0, *, *, 1)$.
   \item Or no one of the previous cases holds.
     In this case $\Acc(\mar, S)(p) = \mar(p)$.
 \end{itemize}
