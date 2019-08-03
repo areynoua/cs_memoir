@@ -1,0 +1,27 @@
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth,
+  silentp/.style={draw=blue,fill=blue!20},
+  silentt/.style={draw=blue,fill=blue},
+  silente/.style={draw=blue}]
+
+  \begin{scope}[shift={(-4,0)}]
+    \node [place]          (p1) at (0,4) {$\param[1]$};
+    \node [place,tokens=2] (p2) at (0,3) {};
+    \node [place,tokens=1] (p3) at (0,2) {};
+    \node [place]          (p4) at (0,1) {};
+    \draw [decorate,decoration={brace,mirror}] (0.6,0.6) -- (0.6,4.4);
+    \draw [->,decorate,decoration={coil,aspect=0}] (0.7,2.5) -- (1.3,2.5);
+  \end{scope}
+
+  \node [place,tokens=1,silentp]      (PI) at (-2,2.5) {};
+  \node [place]                       (P1) at (0,4) {};
+  \node [place]                       (P2) at (0,3) {};
+  \node [place]                       (P3) at (0,2) {};
+  \node [place]                       (P4) at (0,1) {};
+  \draw [decorate,decoration={brace}] (-2.6,0.6) -- (-2.6,4.4);
+
+  \node [transition, silentt] (TI) at (-1.1,2.5) {}
+    edge [pre, silente]  (PI)
+    edge [post, silente, bend left]  node[auto] {$\param[1]$} (P1)
+    edge [post, silente, bend left]  node[auto] {$2$}         (P2)
+    edge [post, silente, bend right]                          (P3);
+\end{tikzpicture}

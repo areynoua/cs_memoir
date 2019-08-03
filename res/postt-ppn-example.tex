@@ -1,0 +1,18 @@
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth]
+  \node [place,tokens=1] (p1) [label=$p_1$] at (0,2) {};
+  \node [place,tokens=1] (p2) [label=$p_2$] at (2,3) {};
+  \node [place,tokens=1] (p3) [label=-45:$p_3$] at (2,1) {};
+  \node [place,tokens=1] (p4) [label=225:$p_4$] at (-0.5,0) {};
+
+  \node [transition] (t1) [label=112:$t_1$] at (1,2) {}
+    edge [pre]                            (p1)
+    edge [post, bend left]  node [above] {$\param$} (p2)
+    edge [post, bend right]                        (p3);
+  \node [transition,horizontal] (t2) [label=15:$t_2$] at (3,2) {}
+    edge [pre,  bend right]  node [above] {$2$}     (p2)
+    edge [post, bend left ]                        (p3);
+  \node [transition] (t3) [label=-22:$t_3$] at (1,0) {}
+    edge [pre, bend right]  node [auto] {$3$}      (p3)
+    edge [post]                                    (p4)
+    edge [post, bend left]                         (p1);
+\end{tikzpicture}

@@ -13,7 +13,7 @@
 %
 %The situation is symmetrical for PreT-\ac{PPN}, where the algorithm does not seem to be of much help for the \Ucov problem but where considering a 0-valuation leads to a result about the \Ecov problem.
 
-Since this the backward algorithm relies only on the iteration of the $\Pre$ operator, the four theorems stated above provide us with four adaptations of the algorithm.
+Since the backward algorithm relies only on the iteration of the $\Pre$ operator, the four theorems stated above provide us with four adaptations of the algorithm.
 
 \subsection{Adapting the backward algorithm for \Ucov on PostT-\ac{PPN}}
 
@@ -23,9 +23,9 @@ Remember that $\back$ denotes the fixed-point algorithm described in \cref{sec:b
 With $v_0 : \parameters \mapsto \naturals : a \rightarrow 0 \forall a \in \parameters$ the valuation that maps all the parameters to 0, the new algorithm may be described as follows:
 given an initialized \ac{PPN} $\defPPN$ and an upward-closed set of markings $U$, compute $\back(v_0(\namePPN), U)$.
 
-The termination of the algorithm follows from the termination of $\back$, and its correctness follows from the \cref{theo:post-u-zero-val}:
+The termination of the algorithm follows from the termination of $\back$, and its correctness follows from \Cref{theo:post-u-zero-val}:
 Intuitively, the correctness comes from the fact that $v_0$ is the worst valuation for the coverability problem.
-To help the reader to grasp the mechanisms of the adaptation, we provide a proof that does not relies on the \cref{theo:post-u-zero-val}.
+To help the reader grasp the mechanisms of the adaptation, we provide a proof that does not relies on \Cref{theo:post-u-zero-val}.
 \begin{proof}
   To prove the correctness of this algorithm is to prove that:
   \[

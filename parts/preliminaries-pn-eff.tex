@@ -1,0 +1,91 @@
+This is usually called ``an efficient computation method of the coverability set of \acp{PN}''.
+It was proposed in \cite{Geeraerts07thesis, Geeraerts07} as another approach to the computation of the coverability set.
+It is not based on the Karp and Miller algorithm and is not an alternative to it in the sense that it does not allow to answer the same set of questions than the Karp and Miller tree answers.
+However, this technique solves the coverability problem more efficiently in practice.
+
+As in the Karp and Miller algorithm, an acceleration function exploits the strong monotonicity of \acp{PN} to allow termination.
+But here, the acceleration of a marking is performed with only one marking as the base (instead of a set of marking).
+
+To choose the base to use, the algorithm works on pair of \omarks.
+These pairs allow to record a relationship between the markings.
+More precisely, the algorithm constructs a pair of \omarks $(\mar_1, \mar_2)$ only if $\downc{\mar_2} \subseteq \downc{\posts{\mar_1}}$.
+
+To reduce the size of the set of pairs of \omarks, only the pairs where the difference (as defined below) between $\mar_1$ and $\mar_2$ is maximal are kept.
+This will be the purpose of the order $\sqsubseteq$ we will define and it is justified by the intuitive idea that two more distant markings produce larger accelerations.
+Therefore, if the algorithm builds a pair $(\mar_1, \mar_2)$, it can forget about any other ($\sqsubseteq$-comparable) pair whose the elements are closer because
+\begin{itemize}
+  \item by monotonicity, all potential successors of the elements of this pair will be covered by successors of $\mar_1$ or $\mar_2$, and
+  \item any acceleration that can be created from this pair is covered by an acceleration one can build from $(\mar_1, \mar_2)$.
+\end{itemize}
+
+To describe the algorithm more formally, we will need the following definitions:
+
+Given a pair of \omarks $(\mar_1, \mar_2)$, we define:
+\begin{itemize}
+  \item $\Postb((\mar_1, \mar_2)) = \{(\mar_1, \mar'), (\mar_2, \mar') \mid \mar' \in \post{\mar_2}\}$,
+  \item and, with $\mar_1 \prec \mar_2$, $\Accelb(\mar_1, \mar_2) = \{(\mar_2, \kmacc{\{\mar_1\}, \mar_2})\}$.
+    $\Accelb(\mar_1, \mar_2)$ is not defined whenever $\mar_1 \nprec \mar_2$,
+\end{itemize}
+
+With $R$ a set of pair of markings, we define:
+\begin{itemize}
+  \item $\Postb(R) = \bigcup_{(\mar_1, \mar_2) \in R} \Postb((\mar_1, \mar_2))$
+  \item $\Accelb(R) = \bigcup_{(\mar_1, \mar_2) \in R}^{\mar_1 \prec \mar_2} \Accelb((\mar_1, \mar_2))$
+  \item $\Flatten(R) = \{\mar \mid \exists \mar' : (\mar', \mar) \in R\}$
+\end{itemize}
+
+The computation of the coverability set of the marked \ac{PN} $\defPN$ lies on the sequence $\CovSeq(\namePN) = (V_i)_{i \geq 0}$ of pair of \omarks, where, for all marked \ac{PN} $\namePN$ we have:
+\begin{gather*}
+  V_0 = \{(\mari, \mari)\} \text{ and } \\
+  \forall i \geq 1 : V_i = V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1})
+\end{gather*}
+
+One can show that,
+first, for all node $n$ of the Karp and Miller tree, there exists a value $k \geq 0$ of $i$ such that $\lab{n} \in \Flatten(V_k)$,
+second, all the markings produced by $\Postb$ and $\Accelb$ are in the coverability set of \namePN.
+\todo{Indeed...}
+
+These two results lead to the following lemma:
+\begin{lemm}[\cite{Geeraerts07}]
+  Given a marked \ac{PN} \namePN such that $\CovSeq(\namePN) = (V_i)_{i \geq 0}$,
+  there exists $k \geq 0$ such that for all $l \in \{0, ..., k-1\}$ we have that $\downc{\Flatten(V_l)} \subset \downc{\Flatten(V_{l+1})}$
+  and for all $l \geq k : \downc{\Flatten(V_l)} = \cover{\namePN}$.
+\end{lemm}
+
+Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc{\Flatten(V_l)} = \downc{\Flatten(V_{l-1})}$ and to return $\downc{\Flatten(V_l)}$.
+
+To perform it efficiently, one can use a well-chosen order $\sqsubseteq$ on the pair of markings.
+This order intents to sort the pairs of markings according to the distance in between, and is used to keep only ``the more distant'' pairs.
+Let us denote by $\ominus$ the componentwise difference between two markings and to extend it to \omarks.
+Formally, given two \omarks $\mar_1$ and $\mar_2$ on a set of places $\places$, $(\mar_1 \ominus \mar_2)(p)$ is defined for all $p \in \places$ as:
+\[
+  \begin{cases}
+    \omega & \text{ whenever } \mar_1(p) = \omega \\
+    -\omega & \text{ whenever } \mar_2(p) = \omega \text{ and } \mar_1(p) \neq \omega \\
+    \mar_1(p) - \mar_2(p) & \text{ otherwise}
+  \end{cases}
+\]
+
+Now we can define $\sqsubseteq$.
+Given two pairs $(\mar_1, \mar_2)$ and $(\marp_1, \marp_2)$ of \omarks over a set of places $\places$:
+\[
+  (\mar_1, \mar_2) \sqsubseteq (\marp_1, \marp_2) \Leftrightarrow
+  \begin{cases}
+    & \mar_1 \preceq \marp_1 \\
+    \wedge & \mar_2 \preceq \marp_2 \\
+    \wedge & \forall p \in \places : (\mar_2 \ominus \mar_1)(p) \leq (\marp_2 \ominus \marp_1)(p)
+  \end{cases}
+\]
+
+For a set of pair of \omarks $R$, $\maxs{R} = \{ r \in R \mid \nexists r' \in R, r \sqsubseteq r'\}$ is the set of highest \omark of $R$ with respect to $\sqsubseteq$.
+
+This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
+Thus, one can compute $\cover{\namePN}$ of a \ac{PN} $\defPN$ by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc{\Flatten(V_i)} = \downc{\Flatten(V_{i-1})}$.
+\begin{gather*}
+  V_0 = \{(\mari, \mari)\} \text{ and } \\
+  \forall i \geq 1 : V_i = \maxs{V_{i-1} \cup \Postb(V_{i-1}) \cup \Accelb(V_{i-1})}
+\end{gather*}
+
+At the end, we have that $\downc{\Flatten(V_i)} = \cover{\namePN}$.
+
+The correction and termination of the algorithm as well as useful properties of $\sqsubseteq$ can be found in \cite{Geeraerts07, Ganty09}.

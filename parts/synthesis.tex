@@ -1,0 +1,139 @@
+\todo{change introduction and many other parts as this was not planned at first}
+
+The use of parameter opens the way to the computation of parameters values ensuring some properties in the system.
+This is called the \emph{synthesis problem}.
+
+\begin{defi}[Coverability synthesis problem]
+  \label{defi:cov-synth-prblm}
+  Given a \ac{PPN} $\defPPN$ and an upward-closed set $\ucs$ of markings on $\places$,
+  compute the set $\vcov{\namePPN}{\ucs}$ of valuations of $\parameters$
+  such that
+  $\cov{\val[\namePPN]}{\ucs} = \top \Leftrightarrow \val \in \vcov{\namePPN}{\ucs}$.
+\end{defi}
+
+\subsection{$\vback$ to solve the coverability synthesis problem on P-PPNs}
+
+We present a simple algorithm based on $\back$ to compute $\Vcov$ for all P-PPNs \namePPN and goal sets of markings.
+%It is close to the algorithm introduced in \cite{David17} for the ``direct computation of the coverability synthesis set for PreT-PPNs''.
+
+Given a P-PPN $\defPPN$ and a goal upward-closed set of markings $\ucs$,
+first compute $\pres{\ucs}$.
+Then we have
+\(
+  \vcov{\namePPN}{\ucs} =
+  \setComp{\val}{
+    \val[\mar_0] \in \pres{\ucs}
+    %\cap \downc{\val_\omega(\mar_0)}
+  }
+\).
+
+The termination and the correctness follow from the termination and the correctness of $\back$.
+
+%The termination comes from the termination of $\back$.
+%
+%\begin{lemm}[Correctness]
+%  Given a P-PPN \namePPN and an upward-closed set $\ucs$ of markings of \namePPN,
+%  then
+%  %this two propositions are equivalent:\todo{check words proposition and equivalent}
+%  \[
+%    \text{(1) } \cov{\val[\namePPN]}{\ucs}
+%    \Leftrightarrow
+%    \text{(2) } \val[\mar_0] \in \pres{\ucs} \cap \downc{\val_\omega(\mar_0)}
+%  \]
+%\end{lemm}
+%
+%\begin{proof}
+%  We prove (1) $\Rightarrow$ (2) by contradiction.
+%  Suppose $\cov{\val[\namePPN]}{\ucs} = \top$ and
+%  $\val[\mar_0] \notin \pres{\ucs} \cap \downc{\val_\omega(\mar_0)}$.
+%  By definition of $\omega$,
+%  for all valuation $\val$,
+%  $\val[\mar_0] \in \downc{\val_\omega(\mar_0)}$.
+%  Thus, $\val[\mar_0] \notin \pres{\ucs}$.
+%  However, from the proof of the correctness of $\back$ \todo{cite/ref}, we have that
+%  $\cov{\val[\namePPN]}{\ucs} \Leftrightarrow \val[\mar_0] \in \pres{\ucs}$.
+%  This contradicts our initial supposition.
+%
+%  To prove that (2) $\Rightarrow$ (1), suppose that there exists $\val$ such that
+%  $\val[\mar_0] \in \pres{\ucs} \cap \downc{\val_\omega(\mar_0)}$.
+%  Thus, $\val[\mar_0] \in \pres{\ucs}$.
+%  From the proof of the correctness of $\back$ \todo{cite/ref}, we have that
+%  $\cov{\val[\namePPN]}{\ucs} \Leftrightarrow \val[\mar_0] \in \pres{\ucs}$.
+%\end{proof}
+
+\paragraph{Effectiveness}
+The $\Vcov$ set may be infinite.
+However,
+by using the vector representation of valuations, we obtain an upward-closed set that can be represented by its minimal elements.
+%$\downc{\val_\omega(\mar_0)}$ is downward-closed and
+
+Indeed,
+$\pres{\ucs}$ are the markings that allow to cover $\ucs$.
+%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
+Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too \todo{need a proof?}.
+Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
+Then,
+\begin{align*}
+  \mar_0 \in \pres{\ucs} \Leftrightarrow \ &
+    \mar_1 \preceq \mar_0 \vee \dots \vee \mar_k \preceq \mar_0 \\
+  \Leftrightarrow \ &
+    (\mar_1(p_1) \leq \mar_0(p_1) \wedge \mar_1(p_2) \leq \mar_0(p_2) \wedge \dots) \\
+  &\vee \dots \\
+  &\vee
+    (\mar_k(p_1) \leq \mar_0(p_1) \wedge \mar_k(p_2) \leq \mar_0(p_2) \wedge \dots)
+\end{align*}
+
+From this expression, we can remove the conjunctions that can not be true for any valuation, that is, those related to a minimal marking $\mar \in \minp{\pres{\ucs}}$ with
+\(
+  \exists p \in \places : \mar_0(p) \notin \parameters \text{ and } \mar(p) > \mar_0(p)
+\).
+The other conjunctions provide us with the minimal valuations of $\vcov{\namePPN}{\ucs}$:
+for each conjunction, each contained proposition is either a tautology (whenever $\mar_0(p) \notin \parameters$), or a lower bound on a parameter (whenever $\mar_0(p) \in \parameters$).
+\todo{It is easy to see that the set of valuation thus obtained is correct and complete.}
+
+\todo{thanks to the bisimulation relation described on section .. one can use this method to compute vcov on a PreTPPN}.
+
+\todo{thanks to the cosimulation relation described on section .. one can use this method to compute .. on a PostTPPN}
+
+\paragraph{Effectivness}
+The $\Vcov$ set may be infinite.
+However,
+by using the vector representation of valuations, we obtain an upward-closed set that can be represented by its minimal elements.
+%$\downc{\val_\omega(\mar_0)}$ is downward-closed and
+
+Indeed,
+$\pres{\ucs}$ are the markings that allow to cover $\ucs$.
+%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
+Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too \todo{need a proof?}.
+Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
+That is,
+\begin{align*}
+  \mar \in \pres{\ucs} \Leftrightarrow \ &
+    \mar_1 \preceq \mar \vee \dots \vee \mar_k \preceq \mar \\
+  \Leftrightarrow \ &
+    (\mar_1(p_1) \leq \mar(p_1) \wedge \mar_1(p_2) \leq \mar(p_2) \wedge \dots) \\
+  &\vee
+    (\mar_2(p_1) \leq \mar(p_1) \wedge \mar_2(p_2) \leq \mar(p_2) \wedge \dots) \\
+  &\vee \dots
+\end{align*}
+$\forall \param \in \parameters$,
+let $\mar_0^{-1}(\param)$ be the set places $p$ such that $\mar_0(p) = \param$.
+Without loss of generality, consider that the parameters $\parameters = \{\param_1, \dots, \param_i\}$ in $\mar_0$ are used in, and only in, the $j$ first places.
+Then,
+\begin{align*}
+  \val[\mar_0] \in \pres{\ucs} \Leftrightarrow \ &
+    \mar_1 \preceq \val[\mar_0] \vee \dots \vee \mar_k \preceq \val[\mar_0] \\
+  \Leftrightarrow \ &
+    (\mar_1(p_1) \leq \val[\mar_0](p_1) \wedge \mar_1(p_2) \leq \val[\mar_0](p_2) \wedge \dots) \\
+  &\vee
+    (\mar_2(p_1) \leq \val[\mar_0](p_1) \wedge \mar_2(p_2) \leq \val[\mar_0](p_2) \wedge \dots) \\
+  &\vee \dots
+\end{align*}
+
+
+
+Since parameters are used on the initial marking only,
+we are looking for the valuations such that 
+
+
+\cref{lemm:wqo}

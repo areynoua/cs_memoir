@@ -1,0 +1,11 @@
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth]
+  \node [place,tokens=1] (p0) [label=$p_0$] at (-1,1) {};
+  \node [place] (p1) [label=$p_1$] at (1,1) {};
+  \node [place] (p2) [label=$p_2$] at (1,0) {};
+
+  \node [transition] (t1) [label=$t_1$] at (0,1) {}
+    edge [post] node [auto] {$\param[1]$} (p1)
+    edge [pre] (p0);
+  \node [transition] (t2) [label=$t_2$] at (0,0) {}
+    edge [post] (p2);
+\end{tikzpicture}

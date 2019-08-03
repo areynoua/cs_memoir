@@ -1,6 +1,7 @@
-\acp{PN} are a mathematical and graphical model introduced by Carl Adam Petri in 1962 \citep{Petri62,Petri66}. It was successfully used to analyse systems in a wide range of domains, and has proven to be particularly successful for the formal verification of asynchronous systems.
+\acp{PN} are a mathematical and graphical model introduced by Carl Adam Petri in 1962 \citep{Petri62,Petri66}.
+It was successfully used to analyse systems in a wide range of domains, and has proven to be particularly successful for the formal verification of asynchronous systems.
 
-In their standard definition, \acp{PN} are instantiated through many natural numbers\footnote{\lang{i.e.} a \ac{PN} may be represented as a pair of matrices whose the values are from $\mathbb{N}$} which may represent, for example, the amount of resource needed for a given action to be carried out.
+In their standard definition, \acp{PN} are instantiated through many natural numbers\footnote{\lang{i.e.} a \ac{PN} may be represented as a pair of matrices whose the values are from $\naturals$.} which may represent, for example, the amount of resource needed for a given action to be carried out.
 
 The introduction of parameters into the model to avoid the need to state these values explicitly%
 \footnote{One can find in the literature many other way to use parameters in \acp{PN}. For example, place and~/~or transitions may also be parameters in order to dynamically change the network structure, like in \cite{Christensen97}.}
@@ -15,9 +16,7 @@ The rest of the document is as follows:
 In this first part, we define the plain Petri net model (\lang{i.e.} the classical one) and the parametric model.
 We then briefly motivate our study, \todo{give concrete examples of applications,} and give an overview of the previous works on parametrisation of \acp{PN}.
 Finally, we place the \ac{PN} model in a broader model family: the \acp{WSTS}.\\
-In a second part, we recall, first, the classical results that we will study on this new model, second, the results already obtained for the parameterized Petri net model as we have defined them.\\
+In a second part, we recall, first, the classical results that we will study on this new model, second, the results already obtained for the parametrized Petri net model as we have defined them.\\
 Then, we focus on the parametric Petri net model to establish whether the results related to the coverability problem in the plain Petri net model still hold or if the algorithms may be adapted to this new model.
 
 \acresetall
-
-% vim: set spell spelllang=en :

@@ -1,0 +1,29 @@
+\documentclass{minimal}
+
+% PGF/TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows,decorations,backgrounds,positioning,fit,petri,decorations.pathmorphing,decorations.pathreplacing}
+\tikzset{
+	x=0.16\linewidth,
+	y=0.16\linewidth,
+	>=stealth',
+	bend angle=30,
+	every place/.style={
+		draw=black,
+		minimum size=0.055\linewidth
+	},
+	every transition/.style={
+		fill=black,
+		minimum height=0.055\linewidth,
+		inner xsep=0pt,
+		minimum width=3pt
+	},
+  horizontal/.style={
+		minimum height=3pt,
+		minimum width=0.055\linewidth
+  }
+}
+
+\begin{document}
+\input{res/branch}
+\end{document}

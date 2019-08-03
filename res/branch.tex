@@ -1,0 +1,10 @@
+\begin{tikzpicture}[auto,x=0.12\linewidth,y=0.11\linewidth,decoration={zigzag,post=lineto,post length=3pt}]
+  \node (n0)               {$n_0 : (1,0,0)$} ;
+  \node (n2) [below=of n0] {$n_2 : (0,1,0)$} ;
+  \node (n3) [below=of n2] {$n^\omega_2 = n_3 : (0,2/\omega,0)$} ;
+  \node (n4) [below=of n3] {$n^\omega_3 : (0,\omega,1/\omega)$} ;
+
+  \draw[->] decorate {(n0) -- node {\ $(-1,+1, 0)$} (n2)} ;
+  \draw[->] decorate {(n2) -- node {\ $( 0,+1, 0)$} (n3)} ;
+  \draw[->] decorate {(n3) -- node {\ $( 0,-1,+1)$} (n4)} ;
+\end{tikzpicture}

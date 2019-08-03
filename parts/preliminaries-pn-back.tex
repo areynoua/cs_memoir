@@ -1,0 +1,46 @@
+There exists a simple way to solve the coverability problem for all the examples of \acp{WSTS} above mentioned.
+This algorithm was introduced by Abdulla \lang{et al.} \citep{Abdulla96}.
+It is close of the one introduced earlier in \cite{Finkel90}.
+%Even if we do not see how to use it in the context of \ac{PPN}, we mention it here because it helps to grasp, by comparison with the Karp and Miller algorithm presented in the following section, where does lie the difficulties of the coverability problem.
+
+Relying on the definition~\ref{defi:upclocovprblm} of the coverability problem, given an upward-closed set of markings $\ucs$, the algorithm computes $\pres{\ucs}$ by iterating the $\Pre$ operator.
+Thus we compute a sequence $(\setm_i)_{i \geq 0}$ where $\setm_i$ is the set of markings from where $\ucs$ is reachable in $i$ or less steps.
+
+
+\begin{algorithm}
+  \caption{$\back$}
+  \label{algo:back}
+
+  \begin{algorithmic}
+    \Require $\ucs$ the upward-closed goal set of markings
+    \State $\setm \gets \ucs$
+    \Repeat
+      \State $\setm'\gets \setm$
+      \State $\setm \gets \setm \cup \pre{\setm}$
+    \Until{$\setm' = \setm$}
+    \Ensure $\setm = \pres{\ucs}$
+  \end{algorithmic}
+\end{algorithm}
+
+
+The termination and correction of the algorithm were proved in \cite{Abdulla96}.% Here are the main elements of the proofs.
+
+The termination is ensured by the existence of a fixed point in the sequence of upward-closed set of markings $(\setm_i)_{i \geq 0}$:
+\begin{gather*}
+  \setm_0 = \ucs \\
+  \forall i > 0 : \setm_i = \setm_{i-1} \cup \pre{\setm_{i-1}}
+\end{gather*}
+When this fixed point is reached, we have $\pres{\ucs}$.
+If $\mari \in \pres{\ucs}$, one can conclude positively.
+Otherwise, the result is negative.
+We call this algorithm $\back$.
+
+Although the set handled by the algorithm are infinite, 
+
+\begin{lemm}[\cite{Abdulla96}]
+  Given a monotonic transition system and an upward-closed set $\ucs$ of its states, $\pre{\ucs}$ is upward-closed too.
+\end{lemm}
+
+This approach is elegant and general, but often inefficient in practice.
+It is well-known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \citep{Henzinger98}.
+We now present a forward algorithm, but whose the application is restricted to \ac{PN}.

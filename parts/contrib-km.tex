@@ -1,0 +1,16 @@
+From \cite{David17}, it is easy to solve the \Ecov problem on P-PPN by using the adapted Karp and Miller procedure (\cref{sec:km-ecov-postt-ppn}) on an equivalent PostT-PPN (\cref{sec:p-ppn-to-postt-ppn}).
+Actually, even if it is not explicitly stated in \cite{David17}, it is clear that one can use,
+%with very few modifications,
+the Karp and Miller algorithm adapted for PostT-PPN directly on the P-\ac{PPN}:
+%\todo{Mais j'ai bien l'impression que ce sera moins performant de toute façon.}
+
+%We describe \emph{Karp and Miller algorithm for P-PPNs}.
+Given a marked P-PPN $\defPPN$, one can construct a coverability tree \nameT of \namePPN by applying the Karp and Miller algorithm to the PN $\val[\namePPN]$ with $\Acc$ as the acceleration function, where $\val$ is the $*$-valuation that maps all the parameters of $\parameters$ to $*$.
+\todo{(Acc is defined in ..  and * in ..)}
+
+The correctness and the termination of the algorithm comes directly from the bisimulation relation described in \cref{sec:p-ppn-to-postt-ppn}.
+Indeed, the state space of the built PostT-PPN can be obtained by simply adding $\mar(p_i) = 0$ to every marking $\mar$ of the state space of the P-PPN (in addition to the created initial marking).
+
+%Note that this method is the same as the one presented in \todo{} for the use of Karp and Miller on a PostT-PPN.
+
+\todo{STOP HERE}

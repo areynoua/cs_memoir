@@ -6,17 +6,17 @@ First, when the parameters are restricted to the output arcs, a higher valuation
 Going further, we can state the following theorem:
 \begin{theo}
   \label{theo:post-e-star-val}
-  Given a PostT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\EcovOp(\namePPN, U) = \top \Leftrightarrow \covOp(v_*(\namePPN), U) = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
+  Given a PostT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\EcovOp(\namePPN, U) = \top \Leftrightarrow \cov{v_*(\namePPN)}{U} = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
 \end{theo}
 
 This was stated in \cite{David17} without a formal proof.
-$\covOp(v_*(\namePPN), U) \Rightarrow \EcovOp(\namePPN, U)$ is trivial.
+$\cov{v_*(\namePPN)}{U} \Rightarrow \EcovOp(\namePPN, U)$ is trivial.
 We therefore provide a proof for the other direction.
 
 \todo{notation: v of a parameter and v of a PPN}
 
 \begin{proof}
-  Let $v$ be a *-valuation of $\namePPN$ such that $\covOp(v(\namePPN), U) = \top$.
+  Let $v$ be a *-valuation of $\namePPN$ such that $\cov{v(\namePPN)}{U} = \top$.
   If $v$ is $v_*$, we are done.
 
   If $v$ is not $v_*$, let $\sigma$ be a sequence of transitions that witnesses the property above: with $\mar \in U$, we have $\mari \fire[\val]{\sigma} \mar$.
@@ -29,10 +29,10 @@ Second, on PostT-\acp{PN}, a lower valuation leads to markings that are lower an
 This leads us to this theorem:
 \begin{theo}
   \label{theo:post-u-zero-val}
-  Given a PostT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\UcovOp(\namePPN, U) = \top \Leftrightarrow \covOp(v_0(\namePPN), U) = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
+  Given a PostT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\UcovOp(\namePPN, U) = \top \Leftrightarrow \cov{v_0(\namePPN)}{U} = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
 \end{theo}
 
-\(\UcovOp(\namePPN, U) = \top \Rightarrow \covOp(v_0(\namePPN), U) = \top\) is trivial.
+\(\UcovOp(\namePPN, U) = \top \Rightarrow \cov{v_0(\namePPN)}{U} = \top\}\) is trivial.
 The reasoning to prove the other direction is similar to the proof given for the \autoref{theo:post-star-val}.
 
 \begin{proof}
@@ -54,13 +54,13 @@ On the other hand, the values of the input arcs define not only the number of to
 
 \begin{theo}
   \label{theo:pre-u-star-val}
-  Given a PreT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\UcovOp(\namePPN, U) = \top \Leftrightarrow \covOp(v_*(\namePPN), U) = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
+  Given a PreT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\UcovOp(\namePPN, U) = \top \Leftrightarrow \cov{v_*(\namePPN)}{U} = \top\] where $v_*$ is the *-valuation that maps every parameter to $*$.
 \end{theo}
 
 \begin{proof}
-  $\UcovOp(\namePPN, U) \Rightarrow \covOp(v_*(\namePPN), U)$ is trivial.
+  $\UcovOp(\namePPN, U) \Rightarrow \cov{v_*(\namePPN)}{U}$ is trivial.
 
-  To prove that $\covOp(v_*(\namePPN), U) \Rightarrow \UcovOp(\namePPN, U)$, let $\sigma$ be a sequence of transitions such that $\mari \fire[v_*]{\sigma} \mar_*$ with $\mar_* \in U$.
+  To prove that $\cov{v_*(\namePPN)}{U} \Rightarrow \UcovOp(\namePPN, U)$, let $\sigma$ be a sequence of transitions such that $\mari \fire[v_*]{\sigma} \mar_*$ with $\mar_* \in U$.
   Let $t$ be the first transition of $\sigma$.
   Since $\forall c \in \naturals, c < *$, we see that:
   \begin{itemize}
@@ -76,13 +76,13 @@ Finally, regarding values of input arcs, the smallest values are the best to rea
 
 \begin{theo}
   \label{theo:pre-e-zero-val}
-  Given a PreT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\EcovOp(\namePPN, U) = \top \Leftrightarrow \covOp(v_0(\namePPN), U) = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
+  Given a PreT-\ac{PPN} $\defPPN$ and an upward-closed set $U$ of markings of \namePPN, \[\EcovOp(\namePPN, U) = \top \Leftrightarrow \cov{v_0(\namePPN)}{U} = \top\] where $v_0$ is the valuation that maps every parameter to $0$.
 \end{theo}
 
 \begin{proof}
-  $\covOp(v_0(\namePPN), U) \Rightarrow \EcovOp(\namePPN, U)$ is trivial.
+  $\cov{v_0(\namePPN)}{U} \Rightarrow \EcovOp(\namePPN, U)$ is trivial.
 
-  To prove that $\EcovOp(\namePPN, U) \Rightarrow \covOp(v_0(\namePPN), U)$, let $v$ be a valuation that allows to cover $U$ and $\sigma$ be a sequence of transitions such that $\mari \fire[v]{\sigma} \mar$ with $\mar \in U$.
+  To prove that $\EcovOp(\namePPN, U) \Rightarrow \cov{v_0(\namePPN)}{U}$, let $v$ be a valuation that allows to cover $U$ and $\sigma$ be a sequence of transitions such that $\mari \fire[v]{\sigma} \mar$ with $\mar \in U$.
   Note that:
   \begin{itemize}
     \item all transition of \namePPN enabled in a marking under any valuation are enabled in this marking under the valuation $v_0$, and

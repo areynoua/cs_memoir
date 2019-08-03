@@ -1,17 +1,16 @@
-\label{sec:preliminaries-ppn}
-
 By reduction from the halting problem as well as the counter boundedness problem, \cite{David17} has shown that \Ucov and \Ecov are undecidable on \ac{PPN}.
 This motivates the introduction of natural subclasses of \acp{PPN} where parametric coverability problems are decidable.
 
 Namely,
-PreT-PPNs are \acp{PPN} where parameters are used only in $\inm$,
-PostT-PPNs are \acp{PPN} where parameters are used only in $\outm$,
+PreT-PPNs are \acp{PPN} where parameters are used only as input weight in $\inm$,
+PostT-PPNs are \acp{PPN} where parameters are used only as output weight in $\outm$,
 and P-PPNs are \ac{PPN} where parameters are used only in the initial marking $\mari$.
-\todo{Re-write the following paragraph.}
-These subclasses were extensively studied in \cite{David17} where is given
-an adaptation of the Karp and Miller Algorithm to solve the \Ucov problem on PreT-\acp{PPN}, and another to solve the \Ecov problem on PostT-\acp{PPN}, as well as the complexity of these problems.
-We will present this two algorithms as they contain ideas used in the sequel.
-\todo{Introduce next subsection}
+These subclasses were extensively studied in \cite{David17} where are given
+some links between P-PPN and PostT-PPN,
+an adaptation of the Karp and Miller Algorithm to solve the \Ucov problem on PreT-\acp{PPN},
+and another to solve the \Ecov problem on PostT-\acp{PPN}%.
+%as well as the complexity of these problems.
+We will present these results as they contain ideas used in the sequel.
 
 \subsection{Links between P-PPNs and PostT-PPNs}
 \label{sec:p-ppn-and-postt-ppn}
@@ -20,13 +19,13 @@ Considering the synthesis of valuations for P-PPNs, one idea that comes naturall
 We also have the intuition that this same result can be obtained in a similar way for PostT-PPNs. 
 This leads us to look for links between these two models.
 
-\paragraph{From PostT-PPNs to P-PPNs}
+\paragraph{Simulations on Petri nets}
 \label{sec:postt-ppn-to-p-ppn}
 
 We will show how to construct a P-PPN that simulates a given PostT-PPN, that is, one that has ``the same'' behaviour.
 
 \begin{defi}[Simulation on Petri nets]
-  Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$, a relation $\rela \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{simulation} if
+  Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$, a relation $\rela \subseteq (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{simulation} if $\forall (\mar_1, \mar_2) \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}} : $
   \begin{gather*}
     (\mar_1, \mar_2) \in \rela \\
     \Updownarrow\\
@@ -34,7 +33,6 @@ We will show how to construct a P-PPN that simulates a given PostT-PPN, that is,
     \exists (t_2,\mar'_2), t_2 \in \transitions_2, \mar_2 \fire{t_2} \marp_2, (\mar'_1, \mar'_2) \in \rela.
   \end{gather*}
   If there exists such a relation $\rela$ with $(\mar_{0,1}, \mar_{0,2}) \in \rela$, we say that \namePPN[2] \emph{simulates} \namePPN[1].
-  \todo{Fallait-il vraiment mettre le quantifieur universel à gauche de la double implication ??}
 \end{defi}
 
 Actually, we will divide the set of transitions of our new P-PPN into two separate subsets: usual or observable transitions, and silent transitions.
@@ -43,17 +41,31 @@ The latter form a machinery that is not taken into account for the result of the
   Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$,
   where $T_1 = T_{u1} \cup T_{s1}, T_{u1} \cap T_{s1} = \emptyset$,
   and   $T_2 = T_{u2} \cup T_{s2}, T_{u2} \cap T_{s2} = \emptyset$,
-  a relation $\simeq \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{weak simulation} if
+  a relation $\simeq \subseteq (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}}$ is a \emph{weak simulation} if $\forall (\mar_1, \mar_2) \in (\naturals \cup  \parameters_1)^{\card{P_1}} \times (\naturals \cup  \parameters_2)^{\card{P_2}} : $
   \begin{gather*}
     (\mar_1, \mar_2) \in \simeq \\
     \Updownarrow\\
     \forall (\seqt_1,\mar'_1), \seqt_1 \in \transitions_1^*, \mar_1 \fire{\seqt_1} \mar'_1 \>:\>
     \exists (\seqt_2,\mar'_2), \seqt_2 \in \transitions_2^*, \mar_2 \fire{\seqt_2} \mar'_2, (\mar'_1, \mar'_2) \in \simeq.
   \end{gather*}
-  where $\seqt_i = \transitions_{si}^* + t_{ui} + \transitions_{si}^*,\enspace t_{ui} \in \transitions_{ui}$.% $\seqt_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.
+  where $\seqt_i = \transitions_{si}^* + (t_{ui}) + \transitions_{si}^*,\enspace t_{ui} \in \transitions_{ui}$.% $\seqt_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.
 
   If there exists such a relation $\simeq$ with $(\mar_{0,1}, \mar_{0,2}) \in \simeq$, noted $\mar_{0,1} \simeq \mar_{0,2}$ we say that \namePPN[2] \emph{weakly simulates} \namePPN[1].
 \end{defi}
+
+\begin{defi}[Weak co-simulation]
+  Given two \acp{PPN}, \namePPN[1] and \namePPN[2],
+  they are said weakly co-similar if \namePPN[1] weakly simulates \namePPN[2] and \namePPN[2] weakly simulates \namePPN[1].
+\end{defi}
+
+\begin{defi}[Weak bisimulation]
+  Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$,
+  they are said weakly bisimilar if there exists a weak simulation relation $\sim$ with $\mar_{0,1} \sim \mar_{0,2}$ and $\mar_{0,2} \sim \mar_{0,1}$.
+\end{defi}
+
+\todo{We will see later that to establish that there is a simulation between two networks makes it possible to deduce many results.}
+
+\paragraph{From PostT-PPNs to P-PPNs}
 
 \begin{figure}[htbp]
   \centering
@@ -63,15 +75,13 @@ The latter form a machinery that is not taken into account for the result of the
   \label{fig:posttppn-to-pppn}
 \end{figure}
 
-\todo{We will see later that to establish that there is a simulation between two networks makes it possible to deduce many results.}
-
-We can now construct for any PostT-PPN a P-PPN that simulates it.
+We can now construct for any PostT-PPN a P-PPN that weakly simulates it.
 
 Given a PostT-PPN $\namePPN[1] = \tuple{\places_1, \transitions_1, \parameters, \mar_{0,1}}$, create the new P-PPN $\namePPN[2] = \tuple{\places_2, \transitions_2, \parameters, \mar_{0,2}}$ like this.
 Starting with an identical \ac{PPN}, first add a new place labelled \texttt{lock}, and, to all the transitions that does not have a parametrised output arc, add an input arc from, and an output one to \texttt{lock}.
 Then, for all parametrised transition $t$, replace the parametrised output arcs by the silent subnet depicted in blue on figure~\ref{fig:posttppn-to-pppn}:
-create a place \texttt{firing}$_t$ that will contains the ``lock token'' while simulating the firing of the parametrised transition, and a silent transition \texttt{done}$_t$ to release the lock,
-then for all parameterized output arc to a place $p$, replace it by the places \texttt{tank1}$_{t,p}$, \texttt{tank2}$_{t,p}$ and the silent transitions \texttt{reload}$_{t,p}$, \texttt{fire}$_{t,p}$ as depicted.
+create a place \texttt{firing}$_t$ that will contains the ``lock token'' while simulating the firing of the parametrised transition, and a silent transition \texttt{done}$_t$ to release the lock.
+then for all parametrised output arc to a place $p$, replace it by the places \texttt{tank1}$_{t,p}$, \texttt{tank2}$_{t,p}$ and the silent transitions \texttt{reload}$_{t,p}$, \texttt{fire}$_{t,p}$ as depicted.
 
 Formally,
 \begin{align*}
@@ -120,7 +130,7 @@ Formally,
 \end{align*}
 \todo{This break the formalism introduced at the benining}
 
-This construction comes from \cite{David17}, to which we have added the uniqueness of the \texttt{lock} place for the whole network and its connection with all the transitions, even the non-parametrised ones.
+This construction comes from \cite{David17}, to which we have added the uniqueness of the \texttt{lock} place for the whole Petri net and its connection with all the transitions, even the non-parametrised ones.
 This does not fundamentally change the properties of the newly built network, in that it also provides a simulation, but it reduces the size of its state tree.
 
 \begin{lemm}
@@ -166,7 +176,7 @@ This does not fundamentally change the properties of the newly built network, in
   %      \mar_1(p) &\text{ otherwise.}
   %    \end{cases}
   %\]
-
+  %
   %Now consider $v(\namePPN[2])$ and focus on the parametrised transitions.
   %Each time an arc from $t$ to $p$ parametrised by $a$ ($\matO_{\namePPN[1]}(p)(t) = a$) is involved in a firing in $v(\namePPN[1])$, $v(a)$ tokens are created in $p$.
   %Regarding $v(\namePPN[2])$, the sequence $(t, \mathtt{fire}_{t,p}, \mathtt{done}_t, \mathtt{reload}_{t,p})$, where $\mathtt{fire}_{t,p}$ and $\mathtt{reload}_{t,p}$ are repeated $a$ times, creates $v(a)$ tokens in $p$ and reset the sub-net constructed for the simulation\todo{rewrite with regular notation}. Note that the rest of the network is not affected. Thus, monotonicity ensures that we have a weak simulation.
@@ -197,7 +207,7 @@ Indeed, by unfolding the transition relation on the created subnet for $\outm[\n
 
 Thus, for all reachable marking $\mar_2 \in \Post^*_{v(\namePPN[2])}(\mar_{0,2})$ of \namePPN[2] there exists a reachable marking $\mar_1 \in \Post^*_{v(\namePPN[1])}(\mar_{0,1})$ of \namePPN[1] that ``covers'' it for all the common places: $\forall p \in \places_1, \mar_1(p) \geq \mar_2(p)$.
 Actually, \namePPN[1] also simulates \namePPN[2].
-(\namePPN[1] and \namePPN[2] are said to be \emph{weakly co-similar}.)
+\namePPN[1] and \namePPN[2] are \emph{weakly co-similar}.
 
 \begin{lemm}
   For all valuation $v$ on $\parameters$, $v(\namePPN[1])$ weakly simulates $v(\namePPN[2])$.
@@ -232,6 +242,54 @@ Actually, \namePPN[1] also simulates \namePPN[2].
 
 \paragraph{From P-PPN to PostT-PPN}
 \label{sec:p-ppn-to-postt-ppn}
+
+Symmetrically, from any P-PPN $\namePPN[1]$, one can construct a PostT-PPN $\namePPN[2]$ that weakly simulates it\cite{David17}.
+To do so, you create a silent parametric transition that produce the initial marking.
+To ensure that it is fired first, you add a place from which an input arc goes into the newly created transition, and you put in it the only token of the initial marking of the new $\namePPN[2]$.
+
+\begin{figure}[htbp]
+  \centering
+  \include{res/init-widget}
+  \par
+  \caption{From P-PPN to PostT-PPN}
+  \label{fig:pppn-to-posttppn}
+\end{figure}
+
+Formally, given a P-PPN $\defPPN[1]$, we create a PostP-PPN $\defPPN[2]$ that provides a weak bisimulation, as follows:
+\begin{align*}
+  &\places_2 = \places_1 \cup           \{ p_0 \}
+    \text{ with } p_0 \notin \places_1 \\
+  &\transitions_2 = \transitions_1 \cup \{ t_0 \}
+    \text{ with } t_0 \notin \transitions_1 \text{($t_0$ is  the only silent transition of both the nets)} \\
+  &\inm[\namePPN[2]][p,t] = \begin{cases}
+      \inm[\namePPN[1]][p,t] &\text{ whenever } p \in \places_1 \wedge t \in \transitions_1 \\
+      1 &\text{ whenever } p = p_0 \wedge t = t_0 \\
+      0 &\tothrw
+    \end{cases} \\
+  &\outm[\namePPN[2]][p,t] = \begin{cases}
+      \outm[\namePPN[1]][p,t] &\text{ whenever } p \in \places_1 \wedge t \in \transitions_1 \\
+      \mar_{0,1}(p) &\text{ whenever } p \in \places_1 \wedge t = t_0 \\
+      0 &\tothrw
+    \end{cases} \\
+  &\mar_{0,2}(p) = \begin{cases}
+      1 & \tif p = p_0 \\
+      0 & \tothrw
+    \end{cases}
+\end{align*}
+
+\begin{lemm}
+  For any valuation $\val$, $\val[{\namePPN[1]}]$ and $\val[{\namePPN[2]}]$ are weakly bisimilar.
+ \end{lemm}
+
+\begin{proof}
+  There surely exists a weak bisimulation relation that contains all the pairs:
+  \begin{align*}
+    \{ ( \mar_{0,1}, \mar_{0,2} ) \}
+    \cup
+    \{ (\mar, \mar') \}
+  \end{align*}
+  where $\mar'(p) = \begin{cases}\mar(p) &\tif p \in \places_1\\0&\tothrw\text{ (if $p = p_i$)}\end{cases}$
+\end{proof}
 
 \subsection{Karp and Miller algorithm for \Ecov on PostT-\ac{PPN}}
 \label{sec:km-ecov-postt-ppn}
@@ -270,13 +328,13 @@ $*$ being defined, the propagation of the $*$ still have to be ensured in the ca
 This is done by adapting the acceleration function.
 We give it here before to explain the different cases.
 
-Given a marking to accelerate $\mar$ with the set $S$ of markings as the base of the acceleration,
+Given a marking to accelerate $\mar$ with the set $\setm$ of markings as the base of the acceleration,
 the values of the different places of the accelerated marking are determined as follows:
 %\[
-%  \Acc(\mar, S)(p) =
+%  \Acc(\mar, \setm)(p) =
 %  \begin{cases}
-%    \omega  & \tif \exists \marp \in S : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
-%            & \phantom{\tif \exists \marp \in S : }
+%    \omega  & \tif \exists \marp \in \setm : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
+%            & \phantom{\tif \exists \marp \in \setm : }
 %              \forall p' \in \places, \mar'(p') \neq \omega: \effect{\mpath{\mar'}{\mar}}(p') \geq 0\\
 %        % Cette dernière condition dit qu'un effet négatif n'est pas autorisé dans
 %        % une place marquée de *. En effet dans ce cas il ne suffirait pas de répéter
@@ -284,8 +342,8 @@ the values of the different places of the accelerated marking are determined as 
 %        % Cependant, je pense que pour répondre au E-cov problem on pourrait justement
 %        % autoriser un effet négatif ici. À creuser.
 %    *       & \tothrwand\\
-%            & \text{ }\exists \mar' \in S : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
-%            & \phantom{\text{ }\exists \mar' \in S :}
+%            & \text{ }\exists \mar' \in \setm : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
+%            & \phantom{\text{ }\exists \mar' \in \setm :}
 %              \forall p' \in \places, \mar'(p') \in \naturals: \effect{\mpath{\mar'}{\mar}}(p') \geq 0 \\
 %        % En fait la dernière condition ajoute aussi que si une place est accélérée
 %        % entre le marquage choisi pour cette accélération et le marquage qu'on est en train
@@ -297,10 +355,10 @@ the values of the different places of the accelerated marking are determined as 
 %\]
 % Accélération modifiée
 \[
-  \Acc(\mar, S)(p) =
+  \Acc(\mar, \setm)(p) =
   \begin{cases}
-    \omega  & \tif \exists \marp \in S : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
-            & \phantom{\tif \exists \marp \in S : }
+    \omega  & \tif \exists \marp \in \setm : \marp \prec \mar \tand \marp(p) < \mar(p) \tand\\
+            & \phantom{\tif \exists \marp \in \setm : }
               \forall p' \in \places, \mar(p') \neq \omega: \effect{\mpath{\mar'}{\mar}}(p') \geq 0\\
         % Cette dernière condition dit qu'un effet négatif n'est pas autorisé dans
         % une place marquée de *. En effet dans ce cas il ne suffirait pas de répéter
@@ -308,8 +366,8 @@ the values of the different places of the accelerated marking are determined as 
         % Cependant, je pense que pour répondre au E-cov problem on pourrait justement
         % autoriser un effet négatif ici. À creuser.
     *       & \tothrwand\\
-            & \text{ }\exists \mar' \in S : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
-            & \phantom{\text{ }\exists \mar' \in S :}
+            & \text{ }\exists \mar' \in \setm : \mar' \prec \mar \tand \mar'(p) < \mar(p) \tand\\
+            & \phantom{\text{ }\exists \mar' \in \setm :}
               \forall p' \in \places, \mar(p') \in \naturals: \effect{\mpath{\mar'}{\mar}}(p') \geq 0 \\
         % En fait la dernière condition ajoute aussi que si une place est accélérée
         % entre le marquage choisi pour cette accélération et le marquage qu'on est en train
@@ -321,6 +379,35 @@ the values of the different places of the accelerated marking are determined as 
 \]
 \todo{introduce \textbackslash mpath}
 
+This new acceleration function, $\Acc$, distinguishes three cases:
+\begin{itemize}
+  \item Either there exists $\marp \in \setm$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p'$ such that $\marp(p') \neq \omega$ we have $\effect{\sigma}(p') \geq 0$.\\
+    This case corresponds to the classic acceleration and
+    for all $p$ such that $\marp(p) < \mar(p)$
+    we have:
+    \[
+      \Acc(\mar, \setm)(p) = \omega
+    \]
+\item Or these first conditions does not hold but there is a marking
+  that meets these conditions, except that the effect of the sequence of transitions is negative in some places $p'$ with $\mar(p') = *$,
+  \lang{i.e.},
+  there exists $\marp \in \setm$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\effect{\sigma}(p) \geq 0$.\\
+    This case handle the propagation of the $*$ mentioned above.
+    Indeed, we can choose an arbitrary large valuation to be able to fire this sequence an arbitrary large number of times; however, for a given valuation, this number of repetition is bounded.
+    So, if $\marp(p) < \mar(p)$
+    we have:
+    \[
+      \Acc(\mar, \setm)(p) = *
+    \]
+  For example, given the marked PPN depicted on \cref{fig:postt-ppn-example}, consider the sequence $\mari = (1, 1, 1, 1) \fire{t_1} \mar' = (0, *, 2, 1) \fire{t_2} \mar = (0, *, 3, 1)$.
+    We do have $\mar' \prec \mar$ and $\mar'(p_3) < \mar(p_3)$, but $\effect{\mpath{\mar'}{\mar}}(p_2) < 0$.
+    This shows that this sequence does not witness that $p_3$ is unbounded,
+    however its bound may be made arbitrary large,
+    thus $\Acc(\mar, \{\mari, \mar'\}) = (0, *, *, 1)$.
+  \item Or no one of the previous cases holds.
+    In this case $\Acc(\mar, \setm)(p) = \mar(p)$.
+\end{itemize}
+
 \begin{figure}[htbp]
   \centering
   \include{res/postt-ppn-example}
@@ -329,38 +416,97 @@ the values of the different places of the accelerated marking are determined as 
   \label{fig:postt-ppn-example}
 \end{figure}
 
-This new acceleration function, $\Acc$, distinguishes three cases:
-\begin{itemize}
-  \item Either there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p'$ such that $\marp(p') \neq \omega$ we have $\effect{\sigma}(p') \geq 0$.\\
-    This case corresponds to the classic acceleration and
-    for all $p$ such that $\marp(p) < \mar(p)$
-    we have:
-    \[
-      \Acc(\mar, S)(p) = \omega
-    \]
-\item Or these first conditions does not hold but there is a marking
-  that meets these conditions, except that the effect of the sequence of transitions is negative in some places $p'$ with $\mar(p') = *$,
-  \lang{i.e.},
-  there exists $\marp \in S$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\effect{\sigma}(p) \geq 0$.\\
-    This case handle the propagation of the $*$ mentioned above.
-    Indeed, we can choose an arbitrary large valuation to be able to fire this sequence an arbitrary large number of times; however, for a given valuation, this number of repetition is bounded.
-    So, if $\marp(p) < \mar(p)$
-    we have:
-    \[
-      \Acc(\mar, S)(p) = *
-    \]
-  For example, given the marked PPN depicted on \cref{fig:postt-ppn-example}, consider the sequence $\mari = (1, 1, 1, 1) \fire{t_1} \mar' = (0, *, 2, 1) \fire{t_2} \mar = (0, *, 3, 1)$.
-    We do have $\mar' \prec \mar$ and $\mar'(p_3) < \mar(p_3)$, but $\effect{\mpath{\mar'}{\mar}}(p_2) < 0$.
-    This shows that this sequence does not witness that $p_3$ is unbounded,
-    however its bound may be made arbitrary large,
-    thus $\Acc(\mar, \{\mari, \mar'\}) = (0, *, *, 1)$.
-  \item Or no one of the previous cases holds.
-    In this case $\Acc(\mar, S)(p) = \mar(p)$.
-\end{itemize}
-
 Intuitively, the second case formalise the idea that one can remove some tokens from a place with $*$ tokens without being an issue for the existence of a valuation that allows to cover a given marking.
 
 Keeping in mind that we are looking for the existence of a valuation, as large as it may be, that allows to cover a (set of) marking(s) of the \ac{PPN} \namePPN, one can now perform the Karp and Miller algorithm, with the adapted acceleration function, on the plain \ac{PN} $v(\namePPN)$ where $v$ is the $*$-valuation that maps every parameter to $*$.
+We refer to this adatption of the Karp and Miller algorithm as the \emph{Karp and Miller algorithm for PostT-PPNs}.
+
+The above considerations along with the analyse of the Karp and Miller algorithm provided in \cref{sec:km} should allow the reader to grasp how this procedure works.
+Thus we give here a brief proof of the termination and correctness of the modified procedure.
+
+\begin{theo}
+  \label{theo:km-ecov-postt-ppn-termination}
+  The Karp and Miller algorithm for PostT-PPNs
+  %(the Karp and Miller algorithm used on the $*$-valuation of a PostT-PPN, with $\Acc$ as acceleration function)
+  terminates and produces a finite tree.
+\end{theo}
+
+\begin{proof}
+  %We prove that the frontier can not grow indefinitely.
+  Since the number of transition is finite, the algorithm build a tree whose each node has a finite number of children.
+  Thus, from the \todo{Köning Lemma}, the tree is finite iff it does not contains an infinite branch $\branch$. 
+  Suppose that this branch exists.
+  From \todo{lemma ..}, we can extract an infinite subsequence, respecting the order of the infinite branch, such that the labels from this branch $\defInfSeq[\seq][\mar][0][1]$ are sorted according to $\preceq$.
+  Since the algorithm ensures that they are distincts, we have:
+  \( \elemsInfSeq[\mar][0][1][\prec \mar_i \prec \dotsb \prec \mar_j \prec \dotsb][\prec][\dotsb] \)
+  
+  Since $\mar_i$ and $\mar_j$ are from the same branch and $\mar_i \prec \mar_j$, $\mar_j$ has at least one place marked by $\omega$ or $*$ more than $\mar_i$ does.
+  This reasoning can be repeated on the sequence starting in $\mar_j$.
+  However, as the number of places is finite, we will eventually reach a marking where all places will be marked with an $\omega$, \lang{i.e.}, which can not have a successor in the sequence.
+  This contradicts the hypothesis that an infinite branch exists.
+\end{proof}
+
+\begin{theo}
+  \label{theo:km-ecov-postt-ppn-correctness}
+  Given a marked PostT-PPN \namePPN and a marking $\mar$ of \namePPN,
+    then \qquad (1)
+    there exists a valuation $v$ such that $\mar$ is coverable in \namePPN
+    \qquad iff \qquad (2)
+    there is a node $n$ of the Karp and Miller tree produced by the algorithm for PostT-PPNs
+      such that $\Lab(n)$ cover $\mar$.
+\end{theo}
+
+\begin{proof}
+  We start by proving that (1) $\Rightarrow$ (2).
+  Let $\mar$ be a marking of $\cover{\val[\namePPN]}$ and $\defSeqt{0}{n-1}$ a sequence of transitions that witnesses it:
+  \(\mari \fire{\seqt} \mar', \mar \preceq \mar'\).
+  Let $\bodySeqm{1}{n}$ be the markings : \(\mari \fire{t_0} \mar_1 \fire{t_1} \dots \fire{t_{n-1}} \mar_n = \mar'\).
+  First, for each parametric transition in $\seqt$, replace their parametric effect(s) by $*$ in the sequence of markings.
+
+  Then, apply the following operations:
+  while there exists a pair of markings \((\mar_i, \mar_j), i < j, \mar_i \preceq \mar_j\) in the sequence:
+  \begin{itemize}
+    \item if $\mar_i = \mar_j$, remove all the nodes after $\mar_j$,
+    \item otherwise, if for all place $p'$ such that $\mar_{j-1}(p') \neq \omega$, we have $\effect{\mpath{\mar_i}{\mar_j}}(p') \geq 0$, then, for each place $p$ such that $\mar_i(p) < \mar_j(p)$, replace $\mar_k(p)$ by $\omega$ for all the markings $\mar_k, k \geq j$ from $\mar_j$ (included) to the end of the sequence.
+      %if the effect is positive on the places 
+      %for each place $p$ such that $\mar_i(p) < \mar_j(p)$, replace $\mar_k(p)$ by $\omega$ for all the markings $\mar_k$ from $\mar_j$ (included) to the end of the sequence.
+    \item otherwise, for each place $p$ such that $\mar_i(p) < \mar_j(p)$, replace $\mar_k(p)$ by $*$ for all the markings $\mar_k, k \geq j$ from $\mar_j$ (included) to the end of the sequence.
+      \todo{triple-check}
+  \end{itemize}
+
+  At the end, the sequence obtained is the sequence of labels in some path $\treepath{n}$ from the $n_0$ to $n$ and the final label cover $\mar$.
+
+  To prove the other direction, suppose that there are $\mar$ and $n$ such that $\mar \in \downc{\lab{n}}$.
+  Let $\treepath{n} = \bodySeq[n]{0}{m}$ be the nodes of the branch to $n$.
+  Assume, without loss of generality, that the first $J$ places, and only them, of $\lab{n}$ are marked with $\omega$.
+  Also assume that in $\treepath{n}$, $\omega$'s are introduced in the order $\range{1}{J}$.
+  Then, for each $j \in \range{1}{J}$, there exists a subsequence of transitions
+  %$\seqt[2]_j = \labt{\treepath[n_j]{n^\omega_j}}$
+  $\labt{\treepath[n_j]{n^\omega_j}}$
+  whose the effect is positive in $p_i$ and non negative in $p_{j+1}$ through $p_{\card{\places}}$.
+  The negative effect of those transitions on the places $p_1$ through $p_J$ may be undone as seen in the proof of \cref{theo:km-correctness} to obtain, for all $j \in \range{1}{J}$, an increasing self covering sequence $\seqt[2]_j$.
+  \todo{introduce here the equation from KM?}
+  So we can construct a sequence of the form:
+  \[ \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} + \labt{\treepath[n^\omega_J]{n}} \]
+  with the \( k_j \geq 0 \),
+  and
+  such that \( \mari \fire{\tts{\mar}{n}} \mar'\). %, \mar \preceq \mar' \).
+  With a given valuation $\val$, we have
+  \[
+    \begin{cases}
+      \mar'(p) \geq \mar(p) &\tif \lab{n}(p) =   \omega \\
+      \mar'(p) =    \mar(p) &\tif \lab{n}(p) \in \naturals \\
+      \mar'(p) =    c + c_{p, \param_1} \val[\param_1] + c_{p, \param_2} \val[\param_2] + \dots
+                            &\tif \lab{n}(p) =   *
+    \end{cases}
+  \]
+  The value of the various $c$ are determined by the sequence of transition.
+  It is easy to see that we can choose a valuation to cover any marking $\mar \in \downc{\lab{n}}$.
+  In addition, the value of the markings in the places $p$ such that $\lab{n}(p) = *$ is bounded for a fixed marking.
+  %Let $\labt{\treepath{n}} = \bodySeqt{1}{n}$
+\end{proof}
+
+\todo{This proof is not the one given in David 17}
 
 \subsection{Karp and Miller algorithm for \Ucov on PreT-\ac{PPN}}
 \label{sec:km-ucov-pret-ppn}

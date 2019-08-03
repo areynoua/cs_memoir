@@ -1,0 +1,146 @@
+\begin{defi}[\acl{PN}]
+  A \acf{PN} \namePN is a weighted oriented bipartite graph, whose the two subsets of vertices define a tuple $\tuple{\places, \transitions}$ where:
+  \begin{itemize}
+    \item $\places$ is a finite set of places,
+    \item $\transitions$ is a finite set of transitions.
+  \end{itemize}
+  For each transition $t \in \transitions$ are defined (exactly) these two functions:
+  \begin{itemize}
+    \item $\inw[t] : \places \mapsto \naturals$ associates to each place the weight of the edge to $t$ \emph{(input weight)},
+    \item $\outw[t] : \places \mapsto \naturals$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
+  \end{itemize}
+  It is denoted by $t = \tuple{\inw[t], \outw[t]}$.
+  Because these functions define the edges of the graph, a \ac{PN} is completely defined by the tuple $\tuple{\places, \transitions}$ and so is denoted by $\defNonMarkedPN$.
+\end{defi}
+
+\begin{defi}[marking]
+  Given a set of places $\places$, a marking of $\places$ is a function $\mar : \places \mapsto \naturals$ that associates $\mar(p)$ tokens to each place $p \in \places$.
+\end{defi}
+
+An order on the markings is essential for the analysis of \acp{PN}.
+The order we will define is a well-quasi-order and a partial order.
+
+\begin{defi}[quasi-order]
+  A quasi-order, or preorder, on a set $\set$ is a binary relation $\rela$ that is:
+  \begin{align*}
+    \text{reflexive: }  &&\forall x \in \set,\ & x \rela x \\
+    \text{transitive: } &&\forall (x, y, z) \in \set^3,\ & (x \rela y\land y \rela z)\Rightarrow x \rela z
+  \end{align*}
+\end{defi}
+
+\begin{defi}[well-quasi-order]
+  A \emph{well-founded} quasi-order, or well-quasi-order, on a set $\set$ is a quasi-order $\rela$ on $\set$ such that, for any infinite sequence $\defInfSeq$ of elements from $\set$, there exist indices $i < j$ with $\sit_i \rela \sit_j$. That is, there is no infinite antichain in $\set$ for this relation.
+\end{defi}
+
+\begin{defi}[partial order]
+  A partial order on a set $\set$ is a quasi-order $\rela$ that is
+  \begin{align*}
+    \text{antisymmetric: } &&\forall (x, y) \in \set^2,\ & (x \rela y\land y \rela x)\Rightarrow x = y
+  \end{align*}
+\end{defi}
+
+\begin{defi}[partial order \(\preceq\) on the markings]
+  Given a set of places $\places$, the partial order \(\preceq \subseteq \naturals^{\card{\places}} \times \naturals^{\card{P}}\) is such that for all pair of markings \((\mar_1, \mar_2) \in \naturals^{\card{\places}} \times \naturals^{\card{\places}}\) we have that \(\mar_1 \preceq \mar_2\) if and only if for all place \(p \in \places : \mar_1(p) \leq \mar_2(p)\).
+
+  $\mar_2$ is said to \emph{cover} $\mar_1$.
+\end{defi}
+
+\(\mar \prec \marp\) denotes that \(\mar \preceq \marp \text{ and } \marp \npreceq \mar\).
+
+\begin{lemm}[\cite{Dickson13}]
+  \label{lemm:wqo}
+  $\preceq$ is a well-quasi-order.
+\end{lemm}
+
+In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} model, that is extended thanks to the use of parameters as input and output weights or as number of tokens in some places of the initial marking.
+
+\begin{defi}[\acl{PPN} \citep{David17}]
+  A \acf{PPN} $\defNonMarkedPPN$ is a weighted oriented bipartite graph with a finite set $\parameters$ of parameters. The two subsets of vertices are:
+  \begin{itemize}
+    \item $\places$: a finite set of places,
+    \item $\transitions$: a finite set of transitions,
+  \end{itemize}
+  For each transition $t \in \transitions$ are defined the following functions:
+  \begin{itemize}
+    \item $\inw[t] : P \mapsto \naturals \cup \parameters$ associates to each place the weight of the edge to $t$ \emph{(input weight)},
+    \item $\outw[t] : P \mapsto \naturals \cup \parameters$ associates to each place the weight of the edge from $t$ \emph{(output weight)}.
+  \end{itemize}
+\end{defi}
+
+As for plain \acp{PN}, this is denoted $t = \tuple{\inw[t], \outw[t]}$.
+
+\begin{defi}[parametric marking]
+  Given a set of place $\places$, a parametric marking of $\places$ is a function $\mar : \places \mapsto \naturals \cup \parameters$ that associates $\mar(p)$ tokens to each place $p \in \places$.
+\end{defi}
+
+A marking of a \ac{PN} $\defNonMarkedPN$ is a marking of $\places$.
+A marking of a \ac{PPN} $\defNonMarkedPPN$ is a \emph{parametric} marking of $\places$.
+Note that a (plain) marking \mar is a parametric marking where $\mar(p) \in \naturals$ for all $p \in \places$.
+
+More generally, we adopt the following convention:
+a marking is a function whose the domain is $\places$ and the codomain is a super set of $\naturals$.
+Let \set be a set. An \set-marking $\mar : \places \mapsto \naturals \cup \set$ is a marking over $\naturals \cup \set$.
+With an element $x$, an $x$-marking $\mar : \places \mapsto \naturals \cup \{x\}$ is a marking over $\naturals \cup \{x\}$.
+
+\begin{defi}[initialized (parametric) \ac{PN}]
+  An initialized \ac{PN} $\defPN$ (resp. \ac{PPN} $\defPPN$) is a \ac{PN} (resp. \ac{PPN}) with an initial marking \mari.
+\end{defi}
+
+This is sometimes called a \emph{marked (parametric) \ac{PN}}.
+We will often refer to an initialized (parametric) \ac{PN} loosely as a (parametric) \ac{PN}.
+
+The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\parameters = \{\param[1], \param[2]\}$ and with an initial marking \mari such that $\mari(p_1) = 1$, $\mari(p_2) = \param[1]$ and $\mari(p_3) = 0$.
+The circles represent the places, the rectangles are the transitions, and the dots are the tokens.
+If the number of tokens at a given place is parametric (\lang{i.e.} depends on a parameter of $\parameters$), it is written inside the circle.
+An arrow from a place $p$ and to a transition $t$ denotes that $\inw[t](p) = 1$.
+The absence of an arrow from $p$ to $t$ indicates that $\inw[t](p) = 0$.
+If $\inw[t](p) \notin \{0, 1\}$, a label with the value of $\inw[t](p)$ is added to the arrow.
+Symmetrically, the arrows from the transitions to the places indicate the output weights.
+
+\begin{figure}[htbp]
+  \centering
+  \include{res/parametric-petri-net-example}
+  \par
+  \caption{An initialized \ac{PPN}}
+  \label{fig:parametric-petri-net-example}
+\end{figure}
+
+We usually set an order on the places.
+This allows to view the markings as vectors
+(here, \mari is the column vector $\transpose{(1, \param[1], 0)}$, where $\transpose{\cdot}$ is the transpose operator)
+as well as the $\inw[t]$ and $\outw[t]$ functions ($t \in \transitions$).
+Likewise, we define an order on the transitions.
+Therefore, with $t \in \naturals$, $\inw[t]$ and $\outw[t]$ denote respectively the $\inw$ and $\outw$ functions defined for the $t$\textsuperscript{th} transition
+(here, $\inw[1] = \transpose{(0, 0, 0)}$ and $\outw[1] = \transpose{(\param[2], 0, 0)}$).
+Given a \ac{PPN} $\defNonMarkedPPN$, the backward and forward incidence matrices
+$\inm[\namePPN] \in (\naturals \cup \parameters)^{\card{\places} \times \card{\transitions}}$
+and
+$\outm[\namePPN] \in (\naturals \cup \parameters)^{\card{\places} \times \card{\transitions}}$
+are naturally defined by $\inm[\namePPN][p, t] = \inw[t][p]$
+and $\outm[\namePPN][p, t] = \outw[t][p]$.
+($\namePPN$ is omitted when it is obvious from the context.)
+%In addition, it makes the equivalence between \acp{PN} and \emph{vector addition systems} introduced in \cite{Karp69} more explicit and
+This allows to use linear algebra for the analysis of \acp{PN}.
+
+\begin{figure}[htbp]
+	\[
+		\inm = \bordermatrix[{[]}]{%
+					& t_1 & t_2 & t_3 \cr
+			p_1 & 0   & 1   & 0   \cr
+			p_2 & 0   & 1   & 0   \cr
+			p_3 & 0   & 0   & 1   }
+		\mspace{56mu}
+		\outm = \bordermatrix[{[]}]{%
+					& t_1       & t_2 & t_3 \cr
+      p_1 & \param[2] & 0   & 0   \cr
+			p_2 & 0         & 0   & 1   \cr
+			p_3 & 0         & 1   & 0   }
+	\]
+  \caption{The incidence matrices of the \ac{PPN} from figure \ref{fig:parametric-petri-net-example}}
+  \label{fig:incidence-matrices-example}
+\end{figure}
+
+%\begin{defi}[Vector addition system]
+%  A vector addition system of dimension $n$ is a pair $\langle d, W\rangle$ where $d \in \naturals^n$ is called the \emph{start vector} and $W$ is a finite set of vector $\mathbb{Z}^n$.
+%\end{defi}
+%This corresponds to the definition of an initialized \ac{PN} and \todo{we will see that the semantic corresponds too}.

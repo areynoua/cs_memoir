@@ -1,0 +1,41 @@
+\ac{EEC}, introduced in \cite{Geeraerts07thesis, Geeraerts06}, is an iterative algorithm that allows, among other, to solve the coverability problem for \ac{PN}.
+We present it restricted to this context, but it may be used for a wide range of well-structured transitions systems, which \acp{PN} is part of, because it relies only on the monotonicity, and not on the strong monotonicity, of these models.
+
+The idea is to compute and refine simultaneously an over- and an under-approximation of the covering set of the \ac{PN} until one or the other allows to conclude.
+
+The under-approximation is computed as follows:
+We define $(C_i)_{i \geq 0}$ to be the sequence of finite set of markings holding no more than $i$ tokens in each place (plus \mari):
+\[
+  \forall i \in \naturals : C_i = \{0, ..., i\}^{\card{\places}} \cup \{\mari\}
+\]
+At step $i$, the algorithm computes $\Sous(\namePN, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \namePN restricted to the markings of $C_i$, \lang{i.e.} $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
+The under-approximation sought is the set of markings reachable through $\sousrel$ from \mari and is denoted $\R(\Sous(\namePN, C_i))$.
+
+At step $i$, the algorithm also uses $L_i$ from the sequence $(L_i)_{i \geq 0}$ of finite set of \omarks such that $L_i = \{0, ..., i, \omega \}^{\card{\places}} \cup \{\mari\}$.
+That is, $L_i$ contains all the markings with at most $i$ tokens in any place, or $\omega$ (plus \mari).
+This set is used to construct the graph $\Sur(\namePN, C_i)$ defined as the graph $\langle L_i, \mari, \surrel \rangle$ where $(\mar_1, \mar_2) \in \surrel$ if, and only if:
+\begin{itemize}
+  \item either $\mar_1 \rightarrow \mar_2$,
+  \item either $\mar_1 \rightarrow \marp_2, \marp_2 \notin L_i, \marp_2 \preceq \mar_2, \text{ and } \nexists \marpp_2 \in L_i \text{ such that } \marp_2 \prec \marpp_2 \prec \mar_2$.
+\end{itemize}
+In other words: if $\mar_2 \notin L_i$, it is replaced by the lowest marking of $L_i$ which over-approximate it.
+Note that this is an \omark which exists and is unique. \todo{Indeed...}
+Then the over-approximation is the set of markings of $L_i$ reachable through $\surrel$ from \mari. It is denoted $\R(\Sur(\namePN, L_i))$.
+
+We can say that they are under- and over-approximations thanks to the following lemmata:
+\begin{lemm}[Under-approximation \cite{Ganty09}]
+  For all \ac{PN} $\defPN$, for all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, and for all $i \geq 0: \R(\Sous(\namePN,C_i)) \cap \ucs \neq \emptyset \Rightarrow \posts{\mari} \cap \ucs \neq \emptyset$.
+\end{lemm}
+\begin{lemm}[Over-approximation \cite{Ganty09}]
+  For all \ac{PN} $\defPN$, for all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, and for all $i \geq 0: \downc{\R(\Sur(\namePN,L_i))} \cap \ucs = \emptyset \Rightarrow \posts{\mari} \cap \ucs = \emptyset$.
+\end{lemm}
+
+One can prove that one of the conditions mentioned in the lemmata will eventually happen.
+This ensures the termination of the algorithm.
+
+Indeed, let $\setm$ be the set of markings we want to cover and let $\ucs$ be $\upc{\setm}$.
+If $\ucs$ is reachable, we will eventually get a $C_i$ that contains all the markings of a path from $\mari$ to $\ucs$.
+As this path will be present in $\Sous(\namePN, C_i)$, we will have that $\R(\Sous(\namePN,C_i)) \cap \ucs \neq \emptyset$.\\
+Symmetrically, let $j$ be such that $L_j$ contains the maximal elements of the covering set of \namePN.
+Such a $j$ exists, and we have that $\downc{\R(\Sur(\namePN,L_j))} = \cover{\namePN}$.
+Thus, we know that, for a negative instance of the problem, $\downc{\R(\Sur(\namePN,L_i))} \cap \ucs = \emptyset$ will eventually happen for an $i \leq j$.

@@ -1,0 +1,369 @@
+Although it was not originally designed for this purpose, the Karp and Miller algorithm \cite{Karp69} is a classical algorithm to compute a coverability set of an initialized \ac{PN}.
+More precisely, \emph{it constructs a coverability tree} and uses an acceleration function to systematically detect self-covering sequences, and thus ensures the termination.
+
+\begin{defi}[Coverability tree]
+  Given a \ac{PN} $\defPN$, a coverability tree \nameT of \namePN is a labelled tree $\defT$ where:
+  \begin{itemize}
+    \item $\nodes$ is the set of nodes of the tree.%, is a set of \omark of \namePN such that $\downc{\nodes} = \cover{\namePN}$.
+
+    \item $n_0 \in \nodes$ is the root of the tree, \lang{i.e.} $\nexists n \in \nodes$ such that $(n, n_0) \in \edges$.
+
+    \item $\Lab : \nodes \mapsto (\naturals \cup \{\omega\})^{\card{\places}}$ is a labelling function that associate to each node an \omark of \namePN.
+
+    \item $\edges \subseteq \nodes \times \nodes$, the set of edges, is such that:
+      \begin{itemize}
+        \item with $(n_1, n_2) \in \nodes^2$, if there exists an edge $(n_1, n_2) \in \edges$ then there exists a sequence $\seqt$ of transitions of $\transitions$ such that $\lab{n_1} \fire{\seqt} \lab{n_2}$,
+        \item for all node $n \in \nodes \setminus \{n_0\}$, there exists a path from the root to $n$, that is, there exists a sequence of edges of $\edges$ of the form $((n_0, n_1), (n_1, n_2), \dots, (n_{i}, n))$, $i \geq 1$, and
+        \item there are no cycles, that is, there are no sequences of edges of $\edges$ of the form $((n_1, n_2), (n_2, n_3), \dots, (n_i, n_1))$.
+      \end{itemize}
+  \end{itemize}
+  and such that $\downc{\setComp{\lab{n}}{n \in \nodes}} = \cover{\namePN}$.
+\end{defi}
+
+In addition, we will often use the following notations.
+\begin{itemize}
+  \item We denote by $\treepath{n}$ the path in the tree from the root to $n$, that is the sequence of nodes from $n_0$ to $n$.
+    $\treepath{n}$ is called \emph{the branch to $n$} and the nodes of $\treepath{n}$ are the \emph{ancestors} of $n$.
+		The \emph{depth} of $n$ is its number of ancestors minus one ($|\treepath{n}| - 1$).
+
+    With $m \in \treepath{n}$, $\treepath[m]{n}$ is the sequence of nodes from $m$ to $n$.
+    If $m \notin \treepath{n}$, $\treepath[m]{n}$ is the empty sequence.
+  %$\treepath{n}$ is the sequence of nodes from the path, $\treepathe{n}$ is the sequence of edges.
+  \item $\forall n \in \nodes \setminus \{n_0\}$, $\parent{n}$ is the direct ancestor, or \emph{parent}, of $n$ in $\nameT$, that is, the last but one node in $\treepath{n}$.
+  \item \removed{given a sequence of nodes, for any node $n$ of the sequence but the last one, $\child{n}$ is the next node in the sequence.}
+\end{itemize}
+
+The algorithm (see~\Cref{algo:km}) constructs the tree $\nameT$ as follows:
+The root $n_0$ of the tree is labelled with \mari.
+A frontier $\front$ is defined to be the set of unprocessed nodes of the tree and is initialised to $\{n_0\}$.
+Then, while $\front$ is non-empty, a node $n$ is chosen from $\front$ to be processed:
+(1) it is removed from $\front$, and (2) if there is no node $n'$ in $\treepath{n}$ such that $\lab{n} = \lab{n'}$, then for all \omark $\mar \in \post{\lab{n}}$, (2.1) a node labelled with $\kmacc{\mar, \treepath{n}}$ is added to the frontier and (2.2) to the tree as a child of $n$.
+
+\begin{algorithm}
+  \caption{The Karp and Miller algorithm}
+  \label{algo:km}
+
+  \begin{algorithmic}
+    \State $n_0 \gets $ new Node, $\lab{n_0} \gets \mar_0$
+    \State $\front \gets \{n_0\}$
+    \While{$\front \neq \emptyset$}
+      \State $n \gets$ pop$(\front)$ \Comment{(1)}
+      \If{$\nexists n' \in \treepath{n} \text{ s.t. } \lab{n} = \lab{n'}$} \Comment{(2)}
+        \ForAll{$\mar \in  \post{\lab{n}}$}
+          \State $n'' \gets $ new Node, $\lab{n''} \gets \kmacc{\mar, \treepath{n}}$
+          \State push$(\front, n'')$ \Comment{(2.1)}
+          \State push$($children$(n_0), n'')$ \Comment{(2.2)}
+        \EndFor
+      \EndIf
+    \EndWhile
+  \end{algorithmic}
+\end{algorithm}
+
+
+We attach to the Karp and Miller tree $\nameT$ the mapping $\Labt : \nodes \setminus \{n_0\} \mapsto \transitions$ that gives for all the nodes of the tree (but the root) the transition used to create it at step (2) of the Karp and Miller algorithm.\\
+By abuse of notation, we will note
+$\labt{(n_1, n_2, ..., n_m)}$
+%with $n_i, i \in \{1, ..., m\}$ some nodes of $\nameT$
+with $n_i \in \nodes$
+the sequence
+% TODO: remove this false line break
+\\
+$(\labt{n_2}, ..., \labt{n_m})$.
+
+To keep $\nodes$ finite, the Karp and Miller algorithm exploits the strong monotonicity of \acp{PN} to introduce \omarks through an \emph{acceleration function} $\KMAcc$.
+This function takes a marking \mar to accelerate with a set of markings $\setm$ as a base for the acceleration and returns a marking such that:
+\[
+  \KMAcc(\mar,\setm)(p) =
+  \begin{cases}
+    \omega  &\text{if } \exists \mar' \in \setm : \mar' \prec \mar \text{ and } \mar'(p) < \mar(p) \\
+    \mar(p) &\text{otherwise}
+  \end{cases}
+\]
+
+The acceleration function is said to accelerate a marking if the first case holds for one or more places.
+These places are said \emph{accelerated}.
+
+The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
+
+To prove that the Karp and Miller Tree $\nameT$ is a coverability tree of \namePN, we show:
+\begin{enumerate}
+  \item that one can construct a sequence from \mari to any marking \mar “covered by the tree”, given a node $n$ such that $\mar \in \downc{\lab{n}}$, and
+  \item that any marking of $\cover{\namePN}$ is “covered by at least one node of the tree”.
+\end{enumerate}
+
+Finally, we prove that $\nameT$ is finite and that the algorithm terminates.
+
+Although very different in form, the proofs are based on those stated in \cite{Karp69}.
+We take this opportunity to give the reader a firm understanding of how the algorithm works.
+For a shorter proof, you can refer to \cite{Karp69}.
+
+\begin{lemm}
+  \label{theo:km-correctness}
+  Given an initialized \ac{PN} $\defPN$ and a node $n$ of its Karp and Miller tree $\defT$,
+  for any marking $\mar \in \downc{\lab{n}}$ there exists a sequence of transitions $\seqt \in \transitions^*$ and a marking $\mar'$ such that $\mari \fire{\seqt} \mar'$ and $\mar \preceq \mar'$.
+\end{lemm}
+
+\begin{proof}
+  We show that there exists a function $\Tts : \naturals^{\card{\places}} \times \nodes \mapsto \transitions^* : \mar, n \rightarrow \seqt$ that, given a marking $\mar$ and a node $n$ such that $\mar \in \downc{\lab{n}}$, gives such a sequence $\seqt$.
+
+  Before we look at $\Tts$, here is one key observation on the Karp and Miller tree:
+  since the Karp and Miller algorithm never remove $\omega$s, we have
+  $\forall n \in \nodes \setminus \{n_0\}$, $\op{\lab{\parent{n}}} \subseteq \op{\lab{n}}$,
+  \lang{i.e.} all the \oplaces on a marking stay marked with an $\omega$ in all its descendants.
+
+  The idea of the construction of $\tts{\mar}{n}$ is that for any \oplace $p_i$ of $\lab{n}$, one can extract from $\treepath{n}$ a self-covering sequence $\iscs{i}$ strictly increasing in $p_i$:
+  $\effect{\iscs{i}}(p_i) > 0$ and $\effect{\iscs{i}}(p) \geq 0$ for all $p \in \places$.
+  If $\lab{n}$ does not contain any \oplace, then the sequence given by $\labt{\treepath{n}}$ is an actual execution of the system (since no acceleration have occurred on the branch) and we define $\tts{\mar}{n}$ to be $\labt{\treepath{n}}$.
+  Further down in the branch we may encounter the first node with some \oplaces.
+  These $\omega$s reveal the presence of increasing self-covering sequences that we can repeat to cover the desired marking.
+  If new $\omega$s appear later, the  increasing self-covering sequence is not obvious, since it may be that the effect of the sequence implicitly detected by the acceleration is negative for some places already accelerated before.
+  However, this negative effect on this place may be counterbalanced by the repetition of the sequence that allowed this previous acceleration.
+  We now detail the different cases.
+  %We now show it in greater details.
+
+  %Without loss of generality, we assume that $\mari$ does not map any place to $\omega$, and thus $\tts{\mar}{n_0} = ()$.
+  Since $\mari$ does not have any \oplace, $\tts{\mar}{n_0} = ()$.
+
+  %We now recursively show that $\tts{\mar}{n}$ exists for all such $(\mar, n)$ pair where $n \neq n_0$.
+  We voluntary adopt a very prolific style here, in order to allow an easy and in-depth understanding of how the algorithm work.
+
+  So assume $\mar$ and $n$ given and $\mar \in \downc{\lab{n}}$.
+  When we deal with a given node, we'll need a specific order on the places, so we adopt the following conventions:
+  \begin{itemize}
+    \item with $p_i \in \op{\lab{n}}$,
+      \begin{itemize}
+        \item $n^\omega_i$ denotes the first node of $\treepath{n}$ such that $\lab{n_i}(p_i) = \omega$, and
+        \item $n_i$ denotes the node used by $\KMAcc$ to accelerate $p_i$ in $\lab{n^\omega_i}$, \lang{i.e.}, \todo{the last} node of $\treepath{n^\omega_i}$ such that $\lab{n_i} \prec \lab{n^\omega_i} \text{ and } \lab{n_i}(p_i) \neq \omega$.
+      \end{itemize}
+    \item with $i$ and $j \in \{1, …, \card{\places}\}$, we have:
+      \begin{itemize}
+        \item $i < j$ whenever $p_i \in \op{\lab{n}} \wedge p_j \notin \op{\lab{n}}$:
+          the \oplaces are before the \noplaces,
+        \item $i < j$ whenever $p_i$ and $p_j \in \op{\lab{n}}$ and $\treepath{n^\omega_i}$ is a prefix of $\treepath{n^\omega_j}$:
+          the places accelerated first come first,
+        \item $i < j$ whenever $p_i$ and $p_j \in \op{\lab{n}}$, $n^\omega_i = n^\omega_j$ and $\treepath{n_i}$ is a prefix of $\treepath{n_j}$:
+          the places accelerated thanks to nodes nearer of the root come first,
+        \item otherwise, the order between $i$ and $j$ may be fixed arbitrarily.
+      \end{itemize}
+    \item $\ab{n} = \{1, ..., I\}$ is the possibly empty set of the indices of the places that were accelerated ``before'' $n$: $i \in \ab{n}$ iff $p_i \in \op{\lab{\parent{n}}}$,
+    \item $\na{n} = \{I+1, ..., J\}$ is the possibly empty set of the indices of the places accelerated ``at'' $n$: $j \in \na{n}$ iff $p_j \in \op{\lab{n}}$ and $p_j \notin \ab{n}$.%$p_j \notin \op{\lab{\parent{n}}}$.
+  \end{itemize}
+
+  In the rest of the proof, we will consistenlty use $I$ and $J$ as the largest indices of $\ab{n}$ and $\na{n}$.
+
+  Thus, with $n$ clear from the context this ordering fixed, $n^\omega_1$ corresponds to the first node of $\treepath{n}$ where an acceleration occured.
+
+  \todo{example}
+
+  Moreover, $\forall i \in \ab{n} \cup \na{n}$, we will denote by $\iscs{i}$ the self-covering sequence increasing in $p_i$ extracted from $\treepath{n}$.
+  Actually, the work is twofold: when dealing with a node $n$ we have to determine $\iscs{j}$ for all $j \in \na{n}$, and how many times at least should we repeat $\iscs{i}$ for all $i \in \ab{n} \cup \na{n}$, \lang{i.e}, we are looking for a sequence of the form:
+  \[ \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} + \labt{\treepath[n^\omega_J]{n}} \]
+
+  Recall that
+  $\forall n \in \nodes \setminus \{n_0\}$, $\op{\lab{\parent{n}}} \subseteq \op{\lab{n}}$,
+  (all the \oplaces on a marking stay marked with an $\omega$ in all its descendants).
+  We use this property to realise an induction on the nodes of the branch.
+  However, we do not state it explicitly for the sake of clarity.
+
+  First consider that $\ab{n} = \emptyset$.
+  If $\na{n} = \emptyset$, there was no acceleration on $\treepath{n}$ and by construction of $\nameT$, $\mari \fire{\labt{\treepath{n}}} \lab{n}$.
+  So we define $\tts{\mar}{n}$ to be $\labt{\treepath{n}}$ whenever $\ab{n} = \emptyset$ and $\na{n} = \emptyset$.\\
+  This is a special case of the one where $\na{n}$ may be not empty.
+  In that case, $\mar''$ given by $\mari \fire{\labt{\treepath{n}}} \mar''$ agrees with $\lab{n}$ in its \noplaces.
+  To reach $\mar'$ that covers \mar in all its places, we explicitly repeat the increasing self-covering sequences implicitly detected by the acceleration function.
+  By construction of $\nameT$ we know that $\ab{n} = \emptyset$ (thus~$I = 0$), and, for all $j \in \na{n} = \{I+1 = 1, ..., J\}$, $\lab{n_j} \prec \mar''$.
+  Therefore:
+  \begin{align*}
+    &\makebox[0pt][l]{\,\(\labt{\treepath[n_j]{n^\omega_j}}\text{ is enabled in }\mar''\text{ (by strong monotonicity), }\)} \\
+    &\text{For all the places, the effect is non-negative:}\\
+    &\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p) \geq 0 &&\text{ for all }j \in \na{n}\text{ and }p \in \places \text{, and} \\
+    &\text{For all the accelerated places, the effect is positive:}\\
+    &\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p_j) > 0  &&\text{ for all }j \in \na{n} \text{.}
+  \end{align*}
+  (Note that $n^\omega_j = n$.)
+  Thus, for all such $j$, $\iscs{j} = \labt{\treepath[n_j]{n^\omega_j}}$ is the increasing self-covering sequence we were looking for.
+  Moreover, % whenever $\ab{n} = \emptyset$,
+  %$\seqt_j = \labt{\treepath[n_j]{n}}$ for all $j \in \na{n}$
+  %and
+  there exists some naturals $k_j$ such that we can define $\tts{\mar}{n}$ to be:
+  \[ \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} \quad\text{ if }\ab{n} = \emptyset \]
+  Actually, one can easily compute such $k_j$ to obtain the shortest sequence of this form.
+  With $\seqt_j = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + … + k_j \cdot \iscs{j}$, we have:
+  \[
+    k_j =
+    \begin{cases}
+      \left\lceil
+        \frac{\mar(p_j) - \mari(p_j) - \effect{\labt{\treepath{n_1}}}(p_j)}
+             {\effect{\iscs{j}}}
+      \right\rceil
+      &\text{ if } j = 1\\
+      \\
+      \max\left(0,
+        \left\lceil
+          \frac{\mar(p_j) - \mari(p_j) - \effect{\seqt_{j-1}}(p_j)}
+              {\effect{\iscs{j}}}
+        \right\rceil
+      \right)
+      &\text{ if } j \in \{2, ..., J\}
+    \end{cases}
+  \]
+
+  The chosen order ensures that with $j_1 \leq j_2$ we have $\card{\iscs{j_1}} \geq \card{\iscs{j_2}}$ and so any other order would give a sequence longer or as long as the one computed here.
+
+  Now consider the case where $\ab{n} \neq \emptyset$.
+  %By definition, a node in this case have at least one ancestor lying in the base case.
+  Once again, let us focus first on the simpler case where $\na{n} = \emptyset$.
+  Here one can easily compute the $\preceq$-lowest marking $\mar''$ of $\downc{\lab{\parent{n}}}$ such that $\mar'' \fire{\labt{n}} \mar'$ (with $\mar \preceq \mar'$)
+  and that agrees with $\lab{\parent{n}}$ for its \noplaces. It is given by:
+  \[
+    \mar''(p) = \begin{cases}
+      \lab{\parent{n}}(p)
+        &\text{ if } p \notin \op{\lab{\parent{n}}} \\
+      \max(\mar(p) - \effect{\labt{n}}(p), \inw[\labt{n}][p])
+        &\text{ otherwise}
+    \end{cases}
+  \]
+
+  Indeed, %(1)
+  $\labt{n}$ is enabled in $\mar''$:
+  for the \noplaces $p$ of $\lab{\parent{n}}$, the Karp and Miller algorithm ensures that $I_{\labt{n}}(p) \leq \mar''(p)$;
+  and for the \oplaces $p$ of $\lab{\parent{n}}$, the chosen value is at least $I_{\labt{n}}(p)$.\\
+  Moreover, %(2)
+  $\mar \preceq \mar'$:
+  for the \noplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) = \lab{n}(p) \geq \mar(p)$ by choice of $n$ and \mar;
+  and for the \oplaces $p$ of $\lab{\parent{n}}$, we have $\mar'(p) = \mar''(p) + \effect{\labt{n}}(p) \geq \mar(p)$ by construction of $\mar''$.\\
+  Thus, we define
+  $\tts{n}{\mar}$ to be $\tts{\parent{n}}{\mar''} + (\labt{n})$
+  whenever
+  $\na{n} = \emptyset \wedge \ab{n} \neq \emptyset$.
+  Note that $\tts{\parent{n}}{\mar''}$ may effectively be computed since we are implicitly defining $\tts$ as an induction on the nodes of the branch.
+
+  In the general case, $\na{n}$ may be not empty.
+  There a difficulty arises from the fact that $\labt{\treepath[n_j]{n^\omega_j}}, j \in \na{n}$ may not be a self-covering sequence since its effect may be negative for some places $p_i$ (with $i \in \ab{n}$).
+  This difficulty is solved by integrating enough repetitions of $\iscs{i}$ along with $\labt{\treepath[n_j]{n^\omega_j}}$ in $\iscs{j}$ to counterbalance it.
+
+  \todo{example}
+
+  Here are two ways to show that it can be done.
+  First, it may be easier to convince oneself of this by noting that, for all such $i$, there is a marking $\mar''$ such that $\tts{\mar''}{n^\omega_i}$ has enough tokens in $p_i$ to undo the negative effect of $\labt{\treepath[n_j]{n^\omega_j}}$ in this place. But the calculation of $\mar''$ is technical.\\
+   However, the computation of an actual self-covering sequence increasing in $p_j$, to use instead of $\treepath[n_j]{ n^\omega_j}$, is easy.
+   %With only one $i$, it is given by:
+   % \todo{à corriger}
+   %\[
+   % \iscs{j} = \labt{\treepath[n_j]{n_i} + l_{j,i} \cdot \treepath[n_i]{n^\omega_i} + \treepath[n^\omega_i]{n^\omega_j}}
+   % \text{ with } l_{j,i} =
+   % \left\lceil \frac{-\effect{\labt{\treepath[n_j]{n^\omega_j}}}(p_i)}
+   %                  { \effect{\labt{\treepath[n_i]{n^\omega_i}}}(p_i)} \right\rceil \text{.}
+   %\]
+
+   %In the case where there are several different $i$'s, the sequence can be obtained by considering the $i$'s one by one.
+   Starting from $\treepath[n_j]{n^\omega_j}$, for each $i \in \ab{n}$, we compute a path that undo a potential negative effect in $p_i$.
+   Then, the sequence we are looking for is $\iscs{j} = \labt{\seqt_{j,I}}$ given by: $\forall i \in \{0\} \cup \ab{n} = \{0, ..., I\}$
+  \[
+    \seqt_{j,i} =
+    \begin{cases}
+      \seqt_{j,0} = \treepath[n_j]{n^\omega_j}
+        &\text{ if } i = 0 \\
+      \seqt_{j,i} = \seqt_{j,i-1}
+        &\text{ if } i > 0 \text{ and } \effect{\labt{\seqt_{j,i-1}}}(p_i) \geq 0 \\
+      \seqt_{j,i} = \slice[\seqt_{j,i-1}]{}{u} + l_{j,i} \cdot \iscs{i} + \slice[\seqt_{j,i-1}]{v}{}
+        &\text{ otherwise}
+    \end{cases}
+  \]
+  where $u = \elem{\iscs{i}}{1}$ is the first element of $\iscs{i}$ and $v = \elem{\iscs{i}}{\card{\iscs{i}}}$ is its last element,
+  and
+  \[
+    l_{j,i} = 
+    \left\lceil \frac{-\effect{\labt{\seqt_{j,i-1}}}(p_i)}
+                     { \effect{\labt{\iscs{i}}}(p_i)} \right\rceil \text{.}
+  \]
+  \todo{example}
+
+  This provides us with a mean to compute an actual increasing self-covering sequence for every accelerated place $p_j, j \in \na{n}$.
+
+  Thus, as before we define $\Tts$ to be
+  \[ \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} \]
+  %with $m = n_i : \min_{i \in \range{1}{J}}(\card{\treepath{n_i}})$ is the first node of the branch used in a increasing self-covering sequence $\iscs{}$.
+  Here however, since $j_1 < j_2$ does not implies $\card{\iscs{j_1}} \geq \card{\iscs{j_2}}$ anymore, another order may lead to shorter sequences.
+
+
+
+  To sum up, given a \ac{PN}, its Karp and Miller tree, a node $n$ from it and a marking $\mar \in \downc{n}$, we have
+  \[
+    \mari \fire{\tts{\mar}{n}} \mar', \mar \preceq \mar'
+  \]
+  with
+  \[
+    \tts{\mar}{n} = \labt{\treepath{n_1}} + k_1 \cdot \iscs{1} + \dots + k_J \cdot \iscs{J} + \labt{\treepath[n^\omega_J]{n}}
+  \]
+  where each increasing self-covering sequences $\iscs{j}$ is computed in the context of the first node of the branch where it is accelerated: $n^\omega_j$;
+  where the $k_j$ are computed in the context of the last node where an acceleration occurred $n^\omega_J$, considering a marking $\mar''$ such that
+  \( \mar'' \fire{\labt{\treepath[n^\omega_J]{n}}} \mar' \).
+\end{proof}
+
+\begin{lemm}
+  Given an initialized \ac{PN} $\defPN$ and any of its coverable marking $\mar \in \cover{\namePN}$,
+  there exists a node $n$ of its Karp and Miller tree $\defT$, such that $\mar \preceq \lab{n}$.
+\end{lemm}
+
+\begin{proof}
+  Let \mar be a marking of $\cover{\namePN}$ and $\defSeqt{0}{n-1}$ a sequence of transitions that witnesses it: \(\mari \fire{\seqt} \mar', \mar \preceq \mar'\).
+  Let $\bodySeqm{1}{n}$ be the markings : \(\mari \fire{t_0} \mar_1 \fire{t_1} \dots \fire{t_{n-1}} \mar_n = \mar'\).
+
+  Then, apply the following operations on this sequence of markings:
+  while there exists a pair of markings \((\mar_i, \mar_j), i < j, \mar_i \preceq \mar_j\) in the sequence:
+  \begin{itemize}
+    \item if $\mar_i = \mar_j$, remove all the nodes after $\mar_j$,
+    \item otherwise, for each place $p$ such that $\mar_i(p) < \mar_j(p)$, replace $\mar_k(p)$ by $\omega$ for all the markings $\mar_k, k \geq j$ from $\mar_j$ (included) to the end of the sequence.
+  \end{itemize}
+
+  At the end, the sequence obtained is the sequence of labels in some path $\treepath{n}$ from the $n_0$ to $n$ and the final label cover $\mar$.
+\end{proof}
+
+\begin{lemm}
+  \label{theo:km-tree-finiteness}
+  For any \ac{PN}, its Karp and Miller tree is finite.
+\end{lemm}
+
+Based on the Kőnig's Infinity lemma, we will prove that, to be infinite, a tree needs either an infinite branch or a node with infinitely many children.
+From there we will proof the finiteness of the Karp and Miller tree.
+
+\begin{lemm}[Kőnig's Infinity lemma \cite{konig1927schlussweise} applied to trees]
+	\label{theo:konig}
+	Let $\nameT$ be a tree of infinite depth where the number of nodes at each depth is finite.
+	Then $\nameT$ contains an infinite branch.
+\end{lemm}
+
+\begin{lemm}
+  \label{theo:false-konig}
+  Every infinite tree has a node with infinitely many children or contains an infinite branch.
+\end{lemm}
+
+\begin{proof}%[\proofname\ of \Cref{theo:false-konig}]
+  Let $\nameT$ be an infinite tree where every node has a finite number of children.
+  For every $c \in naturals$, let $\set_c$ be the set of nodes at depth $c$.
+	Induction on $c$ shows that the sets $\set_c$ are finite.
+	Thus, by \Cref{theo:konig}, $\nameT$ contains an infinite branch.
+\end{proof}
+
+\begin{proof}[\proofname\ of \Cref{theo:km-tree-finiteness}]
+  Suppose that the Karp and Miller tree is infinite
+  and recall that, by definition, the set of transitions of a PN is finite.
+	Then, by contruction, every node of the Karp and Miller tree has a finite number of children.
+  Thus, the tree has an inifinite branch.
+  This contradicts \Cref{lemm:wqo}.
+\end{proof}
+
+\todo{example and explicits why it contradicts lemma 1}
+ 
+The Karp and Miller tree has a lot of convenient properties that allow, among other, to answer the coverability problem as well as the simultaneous place unboundedness problem.
+
+\begin{defi}[Simultaneous place unboundedness]
+  Let $\defPN$ be a marked \ac{PN}.
+  Given a set of place $\setp \subseteq \places$, \namePN is said $\setp$-simultaneous unbounded if and only if for any $c \in \naturals$ there exists \mar such that $\mari \fire* \mar$ and $\forall p \in \setp : \mar(p) \geq c$.
+\end{defi}
+
+Furthermore, the Karp and Miller algorithm can easily be adapted to some parametric problems \cite{David17}, as we will show in \autoref{sec:known-results-on-ppn}.
+
+However, this tree, although finite, is often much larger than the minimal coverability set, and cannot be constructed in reasonable time.
+As a consequence, many improvements were proposed, as well as other algorithms with different approaches.

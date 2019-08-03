@@ -1,0 +1,17 @@
+\todo{sources and examples}
+
+Today \acp{PN} are used in a wide range of areas.
+They are commonly used either to design a safe system, or to verify an existing one.
+These uses require that the system is complete.
+That is, for the design of a model, it must be entirely designed to be analysable.
+On the other hand, when checking an existing system, if a desired property does not hold, the correction must be done by hand.
+
+With the introduction of parameters some variables unknown at the design stage can be integrated into the model without having to be set arbitrarily. Moreover, if during the verification a desired property turns out not to hold, it is possible to check if the change of parameters alone can solve the problem, or if the Petri net structure must be changed too. Going further, the use of parameters in the model can allow to determine ``the safest values'' for a system, or to synthesize the values that allow to respect a given strategy.
+
+We can therefore say that parameters can simplify the \emph{design} of a system. Indeed, since it is possible to keep unknown values, modelling can be done step by step, with the possibility to check the model at each step.
+In addition, the design can be partially automated by parameter synthesis.
+This approach gives a new interest in this model in fields as varied as chemistry, construction processes, financial loans...
+\cite{David17} contains good illustrative examples.
+
+There are also many advantages of using parameters when it comes to \emph{verification}.
+For example, they allow to verify some properties simultaneously on many systems that differs only by parameters values.

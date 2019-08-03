@@ -1,0 +1,116 @@
+Given a \ac{PN} $\defNonMarkedPN$ and a marking \mar on \namePN, a transition $t \in \transitions$ is said \emph{enabled} by \mar if $\forall p \in \places : \mar(p) \geq \inw[t][p]$.
+An enabled transition can be \emph{fired} to produce a new marking \marp such that $\forall p \in \places : \marp(p) = \mar(p) - \inw[t][p] + \outw[t][p]$.
+This is denoted by $\mar \fire{t} \marp$.
+
+Here are some additional notations:
+\begin{itemize}
+  \item $\mar \fire{} \marp$ denotes that there exists $t \in \transitions$ such that $\mar \fire{t} \marp$.
+  \item $\mar \fire{\seqt} \marp$ where $\seqt$ is a sequence of transitions $\defSeqt{1}{n-1}, t_i \in \transitions, i \in \range{1}{n-1}$ denotes that there exists a sequence of markings $\bodySeqm{1}{n}$ such that : $\mar = \mar_1 \fire{t_1} \cdots \fire{t_{n-1}} \mar_n = \marp$.
+  \item $\mar \fire{*} \marp$ denotes that there exists a sequence of transition $\seqt$ such that $\mar \fire{\seqt} \marp$.
+    Note that the $\fire{*}$ relation is the reflexive and transitive closure of the relation $\fire{}$.
+\end{itemize}
+
+It is important to note that the effect of a transition is to add or remove a constant number of tokens at each place and does not depend on the marking from which it is fired.
+A \ac{PN} transition is said to have a \emph{constant effect}.
+Thus, the effect of a transition in a \ac{PN} is a function $\effect{t}$ that maps each place $p$ to $- \inw[t][p] + \outw[t][p]$.
+This definition is extended to any sequence of transitions $\seqt$ as $\effect{\seqt}[p] = \sum_{t \in \seqt} -\inw[t][p] + \outw[t][p]$.
+
+The following well-known results will be useful in the sequel.
+
+\begin{lemm}[Strong monotonicity of PN]
+  \label{lemm:strong-monotonicity-of-pn}
+  The \ac{PN} model is \emph{strongly monotonic with regard to $\preceq$}.
+  That is, for all \ac{PN} $\defPN$, for all transition $t \in \transitions$ and for all markings $\mar_1, \mar_2, \mar_3$ of \namePN such that $\mar_1 \preceq \mar_2$ and $\mar_1 \fire{t} \mar_3$, there exists a unique marking $\mar_4$ of \namePN such that $\mar_2 \fire{t} \mar_4$ and $\mar_3 \preceq \mar_4$.
+\end{lemm}
+
+\begin{proof}
+  $t$ is enabled in $\mar_1$.
+	Thus, for all $p \in \places : \inw[t][p] \leq \mar_1(p)$.
+	Since $\mar_1 \preceq \mar_2$, we have for all place $p \in \places$ : $\inw[t][p] \leq \mar_1(p) \leq \mar_2(p)$.
+	Thus $t$ is enabled in $\mar_2$.
+	Since the effect of transitions is constant, $\mar_1 \preceq \mar_2 \Rightarrow \mar_3 \preceq \mar_4$.
+\end{proof}
+
+\begin{lemm}[Strict strong monotonicity of PN]
+  The \ac{PN} model has \emph{strict strong monotonicity with regard to $\preceq$}.
+	That is, for all \ac{PN} $\defPN$, for all transition $t \in \transitions$ and for all markings $\mar_1, \mar_2, \mar_3$ of \namePN such that $\mar_1 \prec \mar_2$ and $\mar_1 \fire{t} \mar_3$, there exists a marking $\mar_4$ of \namePN such that $\mar_2 \fire{t} \mar_4$ and $\mar_3 \prec \mar_4$.
+\end{lemm}
+
+The proof is very similar to the one of the \cref{lemm:strong-monotonicity-of-pn}.
+
+We give a general definition of the \emph{monotonicity} property in transitions systems in \cref{defi:monotonicity}.
+
+\begin{defi}
+  Given an \ac{PN} $\defNonMarkedPN$ and a marking \mar of \namePN:
+  \begin{itemize}
+    \item $\post{\mar} = \setComp{\mar'}{\mar \fire{} \mar'}$ is the set of one-step successors of \mar,
+    \item $\pre{\mar} = \setComp{\mar'}{\mar' \fire{} \mar}$ is the set of one-step predecessors of \mar,
+    \item $\posts{\mar} = \setComp{\marp}{\mar \fire{*} \marp}$ is the set of successors of \mar, in any number of step.
+      With $\mari$ the initial marking of \namePN, $\posts{\mari}$ is the \emph{reachability set} of \namePN.%, denoted \reach{\nameNP}.
+    \item $\pres{\mar} = \setComp{\marp}{\marp \fire{*} \mar}$ is the set of predecessors of \mar, in any number of step.
+  \end{itemize}
+\end{defi}
+
+These operators are naturally extended to sets of markings as the union of the sets obtained by applying the operator on each marking of the sets.
+That is, with $\markings$ a set of markings of \namePN,
+$\post{\markings} = \setComp{\marp}{\exists \mar \in \markings : \mar \fire{} \marp}$.
+
+For example, regarding the \ac{PPN} shown on figure \ref{fig:parametric-petri-net-example},
+$\post{\vect{0,1,0}} = \{\vect{b, 1, 0}\}$
+and
+$\posts{\vect{0,1,0}} = \setComp{\vect{i, 1, 0}}{i \in \naturals} \cup \setComp{\vect{i, 0, 1}}{i \in \naturals}$.
+
+All of this applies to \ac{PPN} through valuations of the parameters:
+\begin{defi}[Instantiation of \acp{PPN}]
+  Let $\defPPN$ be a \ac{PPN} and $\val : \parameters \mapsto \naturals$ be a \emph{$\naturals$-valuation}, or simply valuation, on $\parameters$.
+  Then $\val[\namePPN]$ is defined as the \ac{PN} obtained by replacing each parameter $\param \in \parameters$ by $\val[\param]$.
+  Thus, we have $\val[\namePPN] = \tuple{\places, \transitions, \mari'}$ such that:
+  \begin{itemize}
+    \item $\inm[\val(\namePPN)][p, t] =
+      \begin{cases}
+        \phantom{\val(}\inm[\namePPN][p, t]  & \text{if } \inm[\namePPN][p, t] \in \naturals \\
+                 \val( \inm[\namePPN][p, t]) & \text{if } \inm[\namePPN][p, t] \in \parameters
+      \end{cases}$
+    \item $\outm[\val(\namePPN)][p, t] =
+      \begin{cases}
+        \phantom{\val(}\outm[\namePPN][p, t]  & \text{if } \outm[\namePPN][p, t] \in \naturals \\
+                 \val( \outm[\namePPN][p, t]) & \text{if } \outm[\namePPN][p, t] \in \parameters
+      \end{cases}$
+    \item $\mari'(p) =
+      \begin{cases}
+        \phantom{\val(}\mari(p)  & \text{if } \mari(p) \in \naturals \\
+                 \val( \mari(p)) & \text{if } \mari(p) \in \parameters
+      \end{cases}$
+  \end{itemize}
+\end{defi}
+
+Given $\namePPN$ a \ac{PPN} and a valuation $\val$, one can therefore instantiate a \ac{PN} $\val[\namePPN]$ from $\namePPN$ and apply the semantic described above.
+When the \ac{PPN} under consideration is clear from the context, $\inm[\val]$ is used to denote $\inm[\val(\namePPN)]$ and $\outm[\val]$ to denote $\outm[\val(\namePPN)]$.
+We write $\fire[\val]{t}$,
+         $\fire[\val]{}$,
+         $\fire[\val]{\sigma}$,
+         $\fire[\val]{*}$,
+         $\Post_v$,
+         $\Pre_v$,
+         $\Post^*_v$
+     and $\Pre^*_v$
+to denote $\fire{t}$,
+          $\fire{}$,
+          $\fire{\sigma}$,
+          $\fire{*}$,
+          $\Post$,
+          $\Pre$,
+          $\Post^*$
+      and $\Pre^*$
+on the plain \ac{PN} $\val(\namePPN)$.
+
+This makes it possible to formally represent a system and interactions between its components.
+
+Moreover, when working on set of valuations, it is often convenient to set an order on the parameters and to see the valuations as vectors.
+Thus, for example with $\parameters = \{a, b\}$, we can consider the parameters in lexicographical order: $\parameters = (a, b)$.
+Then the valuation $\val$ such that $\val(a) = 1$ and $\val(b) = 2$ may be seen as the vector $\val = (1,2)$.
+Many definitions given for the markings are valid for any finite dimensional vector (that we call \emph{tuples}) whose the domain is a totally ordered countable set%
+\footnote{A \emph{countable set} is a set that is finite or has the same size as $\naturals$.}.
+So, by analogy, we may use $\preceq$, $\Min$, $\Max$… on valuations.
+
+We will now define some properties that the model may have and that are usually of interest to show that the modelled system meets some requirements.

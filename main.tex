@@ -10,6 +10,8 @@
 \usepackage{mathrsfs} % script (\mathscr)
 \usepackage{mathtools} % overbracket
 \usepackage{fouridx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
 
 \input{res/bordermatrix.tex}
 
@@ -159,8 +161,10 @@
 \newcommand{\namePN}[1][] {\ensuremath{\mathcal{N}_{#1}}\xspace}
 \newcommand{\namePPN}[1][]{\ensuremath{\mathcal{S}_{{#1}}}\xspace}
 % bodies
-\newcommand{\bodyPN}[1][] {\tuple{\places_{#1}, \transitions_{#1}, \mar_{0,#1}}}
-\newcommand{\bodyPPN}[1][]{\tuple{\places_{#1}, \transitions_{#1}, \parameters_{#1}, \mar_{0,#1}}}
+\newcommand{\bodyPN}[1][] {\tuple{\places_{#1}, \transitions_{#1}, \mar_{0
+  \ifthenelse{\equal{\detokenize{#1}}{}}{}{,#1}}}}
+\newcommand{\bodyPPN}[1][]{\tuple{\places_{#1}, \transitions_{#1}, \parameters_{#1}, \mar_{0
+  \ifthenelse{\equal{\detokenize{#1}}{}}{}{,#1}}}}
 \newcommand{\bodyNonMarkedPN}[1][] {\tuple{\places_{#1}, \transitions_{#1}}}
 \newcommand{\bodyNonMarkedPPN}[1][]{\tuple{\places_{#1}, \transitions_{#1}, \parameters_{#1}}}
 % defs
@@ -216,10 +220,12 @@
 \newcommand{\markings}{\mathcal{M}}
 \newcommand{\setm}{\markings}
 \newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
 \newcommand{\parameters}{\mathbb{P}}
 \newcommand{\range}[2]{\{#1, \dots, #2\}}
-\newcommand{\ucs}{\mathcal{U}} %upward closed set
+\newcommand{\ucs}{\mathcal{U}} %upward-closed set
 \newcommand{\setp}{\mathcal{Q}} %set of places
+\newcommand{\setv}{\mathcal{V}} %set of valuations
 
 \newcommand{\front}{F}
 
@@ -232,23 +238,27 @@
 \newcommand{\iscs}[1]{\seqt[2]_{#1}} % increasing self-covering sequence
 
 \NewDocumentCommand{\defSeq}{ O{\seq} O{\sit} m m }{#1 = \bodySeq[#2]{#3}{#4}}
-\NewDocumentCommand{\defInfSeq}{ O{\seq} O{\sit} O{1} O{2} }{#1 = \bodyInfSeq[#2][#3][#4]}
+\NewDocumentCommand{\defInfSeq}{ O{\seq} O{\sit} O{1} O{2} O{} }{#1 = \bodyInfSeq[#2][#3][#4][#5]}
 \NewDocumentCommand{\defSeqt}{ O{\seqt} m m }{#1 = \bodySeqt{#2}{#3}}
+\NewDocumentCommand{\defInfSeqt}{ O{\seqt} O{t} O{1} O{2} O{} }{#1 = \bodyInfSeq[#2][#3][#4][#5]}
 
 \newcommand{\bodySeqt}[2]{\bodySeq[\transition]{#1}{#2}}
 \newcommand{\bodySeqm}[2]{\bodySeq[\mar]{#1}{#2}}
 
 \NewDocumentCommand{\bodySeq}{ O{\sit} m m }{(\elemsSeq[#1]{#2}{#3})}
-\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{1} O{2} }{(\elemsInfSeq[#1][#2][#3])}
+\NewDocumentCommand{\bodyInfSeq}{ O{\sit} O{1} O{2} O{} }{(\elemsInfSeq[#1][#2][#3][#4])}
 
 \NewDocumentCommand{\elemsSeq}{ O{\sit} m m }{#1_{#2}, \dots, #1_{#3}}
-\NewDocumentCommand{\elemsInfSeq}{ O{\sit} O{1} O{2} }{#1_{#2}, #1_{#3}, \dots}
+\NewDocumentCommand{\elemsInfSeq}{ O{\sit} O{1} O{2} O{} O{,} O{\expandafter\dots}}{#1_{#2}#5 #1_{#3}#5 #6{#4}}
 
 \newcommand{\mpath}[2]{#1 \leadsto #2}
 
 % seq functions
 \newcommand{\concat}{+}
-\newcommand{\slice}[3][\seq]{\fourIdx{#2}{}{#3}{}{#1}}
+\newcommand{\oldslice}[3][\seq]{\fourIdx{#2}{}{#3}{}{#1}}
+\newcommand{\olddslice}[3][\seq]{#2 \overset{#1}{\leadsto} #3}
+\newcommand{\chooseslice}[3][\seq]{\text{\todo{Choose a notation}} \oldslice[#1]{#2}{#3} = \olddslice[#1]{#2}{#3}} 
+\newcommand{\slice}[3][\seq]{{#1}[{#2}:{#3}]}
 \newcommand{\elem}[2]{#1^{(#2)}}
 
 % units
@@ -289,7 +299,10 @@
 \DeclareMathOperator{\Pre}{Pre}
 \DeclareMathOperator{\Tts}{\varsigma}
 \DeclareMathOperator{\Upc}{\uparrow^\preceq}
+\DeclareMathOperator{\Cov}{cov}
+\DeclareMathOperator{\Vcov}{v-cov}
 \newcommand{\Treepath}{\mathscr{T}}
+\newcommand{\branch}{\mathscr{T}}
 
 % functions
 \newcommand{\card}[1]{\left|#1\right|}
@@ -309,7 +322,8 @@
 \newcommand{\treepath}[2][]{\slice[\Treepath]{#1}{#2}}
 \newcommand{\upc}[1]{\Upc(#1)}
 \newcommand{\val}[1][]{v\ifthenelse{\equal{\detokenize{#1}}{}}{}{(#1)}}
-
+\newcommand{\cov}[2]{\Cov(#1,#2)}
+\newcommand{\vcov}[2]{\Vcov(#1,#2)}
 
 
 
@@ -358,10 +372,10 @@
 \DeclareMathOperator{\Flatten}{Flatten}
 \DeclareMathOperator{\Postb}{P\overbar{ost}}
 \DeclareMathOperator{\R}{\mathcal{R}}
-\DeclareMathOperator{\Sous}{Sous}
+\DeclareMathOperator{\Sous}{Under}
 \DeclareMathOperator{\Sur}{Sur}
 \DeclareMathOperator{\back}{Back}
-\DeclareMathOperator{\covOp}{cov}
+\DeclareMathOperator{\vback}{vBack}
 \DeclareMathOperator{\EcovOp}{\mathscr{E}cov}
 \DeclareMathOperator{\UcovOp}{\mathscr{U}cov}
 
@@ -443,40 +457,137 @@
 \setcounter{page}{1}
 
 \chapter{Introduction}
+\label{sec:introduction}
 \input{parts/introduction}
-\section{Definitions}
-\input{parts/definitions}
-\section{Motivations}
-\input{parts/motivations}
 
-%\chapter{Situation}
-\section{Previous works on parametrization of \acp{PN}}
+%
+\section{Context}
+\label{sec:context}
+
+%%
+\subsection{Previous Works on Parametrization of \acp{PN}}
+\label{sec:previous-works-on-parametrization-of-pn}
 \input{parts/state-of-the-art}
-\section{Overview of similar models}
+
+%%
+\subsection{Overview of Similar Models}
+\label{sec:overview-of-similar-models}
 \input{parts/similar-models}
 
-\chapter{Preliminary results}
-\input{parts/preliminaries}
-\section{Known results for coverability on plain \acp{PN}}
-\input{parts/preliminaries-pn}
-\section{Known results on \acp{PPN}}
+%
+\section{Motivations}
+\label{sec:motivations}
+
+%%
+\subsection{Interests of \acp{PPN}}
+\label{sec:interests-of-ppn}
+\input{parts/interests-of-ppn}
+
+%%
+\subsection{Interest of the coverability problem in \acp{PPN}}
+\label{sec:interest-of-the-coverability-problem-in-ppn}
+\input{parts/interests-of-cov-in-ppn}
+
+\acresetall
+
+\chapter{The Coverability Problem}
+\label{sec:the-coverability-problem}
+
+%
+\section{The \ac{PN} model}
+\label{sec:the-pn-model}
+\input{parts/definitions-pn}
+
+%
+\section{Operational semantic of \acp{PN}}
+\label{sec:operational-semantic-of-pn}
+\input{parts/definitions-operational-semantic}
+
+%
+\section{Behavioural properties of \acp{PN}}
+\label{sec:behavioural-properties-of-pn}
+\input{parts/definitions-behavioural-properties}
+
+%
+\section{Sequence notations and terminology}
+\label{sec:sequence-notations-and-terminology}
+\input{parts/seq-notations}
+
+\chapter{Known Results on the Coverability Problem}
+\label{sec:known-results-on-the-coverability-problem}
+\input{parts/preliminaries-intro}
+
+%
+\section{Prerequisites}
+\label{sec:prerequisites}
+\input{parts/preliminaries-pn-intro}
+
+%
+\section{Known Results on Plain \acp{PN}}
+\label{sec:known-results-on-plain-pn}
+%%
+\subsection{A general backward algorithm $\back$}
+\label{sec:a-general-backward-algorithm-back}
+\label{sec:backward-algorithm}
+\input{parts/preliminaries-pn-back}
+
+%%
+\subsection{The Karp and Miller algorithm}
+\label{sec:the-karp-and-miller-algorithm}
+\label{sec:km}
+\input{parts/preliminaries-pn-km}
+
+%%
+\subsection{Geeraerts method}
+\label{geeraerts-method}
+\label{sec:eff}
+\input{parts/preliminaries-pn-eff}
+
+%%
+\subsection{The \ac{EEC} algorithm}
+\label{the-ecc-algorithm}
+\label{sec:eec}
+\input{parts/preliminaries-pn-ecc}
+
+\removed{A backward algorithm \citep{Finkel90, Abdulla96}}
+
+%
+\section{Known Results on \acp{PPN}}
+\label{sec:known-results-on-ppn}
 \input{parts/preliminaries-ppn}
 
 \chapter{Contributions}
+\label{sec:contributions}
 \input{parts/contributions}
+
 \section{Parametric coverability problems and specific valuations}
+\label{sec:parametric-coverability-problems-and-specific-valuations}
 \input{parts/contrib-valuations}
+
 \section{Adapting the Karp and Miller procedure for \Ecov on P-\ac{PPN}}
+\label{sec:adapting-the-karp-and-miller-procedure-for-ecov-on-p-ppn}
 \input{parts/contrib-km}
+
 \section{Adapting the general backward algorithm}
+\label{sec:adapting-the-general-backward-algorithm}
 \input{parts/contrib-back}
+
 \section{Adapting \ac{EEC}}% for PreT-\acp{PPN}}
+\label{sec:adapting-eec}
 \input{parts/eec-pret-ppn}
+
 \section{Adapting Geeraerts method to PostT-\acp{PPN}}
+\label{sec:adapting-geeraerts-method-to-postt-ppn}
 \input{parts/contrib-eff}
+
+
+\section{The synthesis problem}
+\label{sec:the-synthesis-problem}
+\input{parts/synthesis}
 
 \vspace*{0.5cm}
 \acresetall
+
 \chapter*{Conclusions}
 
 In the first chapter we defined the context of our study: \ac{PN} and \ac{PPN} and the coverability problems on them.
@@ -494,5 +605,3 @@ The last chapter give the direction of our study and the result we would like to
 \bibliography{info} %use bibtex to generate the bibliography
 
 \end{document}
-
-% vim: set spell spelllang=en :

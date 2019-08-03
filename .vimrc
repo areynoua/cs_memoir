@@ -19,6 +19,8 @@
 :inoremap ITE \begin{itemize}o\end{itemize}O\item<space>
 :inoremap ENU \begin{enumerate}o\end{enumerate}O\item<space>
 :inoremap THEO \begin{theo}o\end{theo}O\label{}itheo:
+:inoremap DEFI \begin{defi}o\end{defi}O\label{}idefi:
+:inoremap LEMM \begin{lemm}[]o\end{lemm}O\label{}itheo:
 :inoremap -<space><space> \item<space>
 
 :let @s='v%c{}Px%lxh%l'
@@ -27,9 +29,10 @@
 :let @d='c{}P`<v`>ll'
 :let @v='c[]P`<v`>ll'
 :let @o='c()P`<v`>ll'
+:let @n='f{v%x`<xdF\`>'
 :let @f='il%hxI\setComplx:s/ \?\\mid \?/}{/^d0k$J'
 :let @v='/\\vect\>de@p'
-let @g='/\\\(kmacc\|na\|ab\|effect\|labt\?\|maxp\|maxs\|upc\|downc\|minp\|op\|cover\|pres\?\|posts\?\|tts\)(lveguel@s'
+:let @g='/\\\(kmacc\|na\|ab\|effect\|labt\?\|maxp\|maxs\|upc\|downc\|minp\|op\|cover\|pres\?\|posts\?\|tts\)(lveguel@s'
 :let @h='/\\\(inm\|matIS\|matOS\|inw\[t\]\|outw\[t\]\)(lgu el@c'
 
 :set spell spelllang=en_gb
