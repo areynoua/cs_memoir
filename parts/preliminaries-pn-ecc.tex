@@ -22,7 +22,7 @@ In other words: if $\mar_2 \notin L_i$, it is replaced by the lowest marking of 
 Note that this is an \omark which exists and is unique. \todo{Indeed...}
 Then the over-approximation is the set of markings of $L_i$ reachable through $\surrel$ from \mari. It is denoted $\R(\Sur(\namePN, L_i))$.
 
-We can say that they are under- and over-approximations thanks to the following lemmata:
+We can say that they are under- and over-approximations thanks to the following lemmas:
 \begin{lemm}[Under-approximation \cite{Ganty09}]
   For all \ac{PN} $\defPN$, for all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, and for all $i \geq 0: \R(\Sous(\namePN,C_i)) \cap \ucs \neq \emptyset \Rightarrow \posts{\mari} \cap \ucs \neq \emptyset$.
 \end{lemm}
@@ -30,7 +30,7 @@ We can say that they are under- and over-approximations thanks to the following 
   For all \ac{PN} $\defPN$, for all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, and for all $i \geq 0: \downc{\R(\Sur(\namePN,L_i))} \cap \ucs = \emptyset \Rightarrow \posts{\mari} \cap \ucs = \emptyset$.
 \end{lemm}
 
-One can prove that one of the conditions mentioned in the lemmata will eventually happen.
+One can prove that one of the conditions mentioned in the lemmas will eventually happen.
 This ensures the termination of the algorithm.
 
 Indeed, let $\setm$ be the set of markings we want to cover and let $\ucs$ be $\upc{\setm}$.
