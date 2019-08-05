@@ -85,9 +85,6 @@ then for all parametrised output arc to a place $p$, replace it by the places \t
 
 Formally,
 \begin{align*}
-  \places_2 &= \places_1 \cup \{ \mathtt{lock} \}
-    \cup \setComp{\mathtt{firing}_t}{\exists p \in \places_1 \text{ s.t. } \outm[\namePPN[1]][p,t] \in \parameters} \\
-    &\qquad\cup \setComp{\mathtt{tank1}_{t,p}, \mathtt{tank2}_{t,p}}{\outm[\namePPN[1]][p,t] \in \parameters} \\
   \places_2 &= \bigcup \begin{cases}
       \places_1 \\
       \{ \mathtt{lock} \} \\
