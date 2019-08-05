@@ -36,9 +36,9 @@ It is an over-approximation of the reachability set that is precise enough to so
   \caption{Reachability and covering sets}
 \end{figure}
 
-The \cref{fig:two-net} shows a marked \ac{PN} with two places.
+\Cref{fig:two-net} shows a marked \ac{PN} with two places.
 One can therefore represents the markings as points on a plane.
-The \cref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
+\Cref{fig:two-reach} shows the reachable markings in the form of an accessibility graph.
 In~\ref{fig:two-cover} we see the covering set.
 
 %% Unbounded places informal and self-covering sequence formal
@@ -227,14 +227,17 @@ It is worth noticing that, in the context of \acp{PN}, the coverability problem 
   Given a \ac{PN} \namePN and an upward-closed set $\ucs = \upc{\setm}$ of markings of \namePN, determine whether $\posts{\mari} \cap \ucs \neq \emptyset$.
 \end{defi}
 
+\label{text:upward-closed-set-representation}
 An upward-closed set is always infinite.
 It can be effectively represented through its unique set of minimal elements whose it is the upward-closure:
 \begin{lemm}
+  \label{theo:upward-closed-set-representation}
   For all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, its set of minimal element $\minp{\ucs} = \{\mar \in \ucs \mid \nexists \mar' \in \ucs : \mar' \prec \mar\}$ is such that $\upc{\minp{\ucs}} = \ucs$.
 \end{lemm}
 
 The following lemma ensure that this set is finite:
 \begin{lemm}[Dickson's lemma]
+  \label{theo:dickson}
   For all $c \in \naturals$, every set of $c$-tuples of natural numbers have finitely many minimal elements.
 \end{lemm}
 This result may easily be extended to $c$-tuples of values from any ordered countable set.
