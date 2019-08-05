@@ -36,3 +36,5 @@
 :let @h='/\\\(inm\|matIS\|matOS\|inw\[t\]\|outw\[t\]\)(lgu el@c'
 
 :set spell spelllang=en_gb
+:syntax spell toplevel
+:let g:tex_comment_nospell= 1
