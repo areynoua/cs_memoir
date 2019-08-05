@@ -64,13 +64,14 @@ The termination and the correctness follow from the termination and the correctn
 \paragraph{Effectiveness}
 The $\Vcov$ set may be infinite.
 However,
-by using the vector representation of valuations, we obtain an upward-closed set that can be represented by its minimal elements.
+%by using the vector representation of valuations,
+by \Cref{theo:pre-upc} we obtain an upward-closed set that can be represented by its minimal elements (\Cref{theo:upward-closed-set-representation}).
 %$\downc{\val_\omega(\mar_0)}$ is downward-closed and
 
 Indeed,
 $\pres{\ucs}$ are the markings that allow to cover $\ucs$.
 %From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
-Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too \todo{need a proof?}.
+Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too (\Cref{theo:pre-upc}) \todo{need a proof?}.
 Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
 Then,
 \begin{align*}
@@ -83,7 +84,7 @@ Then,
     (\mar_k(p_1) \leq \mar_0(p_1) \wedge \mar_k(p_2) \leq \mar_0(p_2) \wedge \dots)
 \end{align*}
 
-From this expression, we can remove the conjunctions that can not be true for any valuation, that is, those related to a minimal marking $\mar \in \minp{\pres{\ucs}}$ with
+From this expression, we can remove the conjunctions that can not be true for any valuation, that is, those related to a minimal marking that can not be covered by $\mar_0$ due to a non-parametric place: $\mar \in \minp{\pres{\ucs}}$ with
 \(
   \exists p \in \places : \mar_0(p) \notin \parameters \text{ and } \mar(p) > \mar_0(p)
 \).
@@ -95,45 +96,45 @@ for each conjunction, each contained proposition is either a tautology (whenever
 
 \todo{thanks to the cosimulation relation described on section .. one can use this method to compute .. on a PostTPPN}
 
-\paragraph{Effectivness}
-The $\Vcov$ set may be infinite.
-However,
-by using the vector representation of valuations, we obtain an upward-closed set that can be represented by its minimal elements.
-%$\downc{\val_\omega(\mar_0)}$ is downward-closed and
-
-Indeed,
-$\pres{\ucs}$ are the markings that allow to cover $\ucs$.
-%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
-Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too \todo{need a proof?}.
-Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
-That is,
-\begin{align*}
-  \mar \in \pres{\ucs} \Leftrightarrow \ &
-    \mar_1 \preceq \mar \vee \dots \vee \mar_k \preceq \mar \\
-  \Leftrightarrow \ &
-    (\mar_1(p_1) \leq \mar(p_1) \wedge \mar_1(p_2) \leq \mar(p_2) \wedge \dots) \\
-  &\vee
-    (\mar_2(p_1) \leq \mar(p_1) \wedge \mar_2(p_2) \leq \mar(p_2) \wedge \dots) \\
-  &\vee \dots
-\end{align*}
-$\forall \param \in \parameters$,
-let $\mar_0^{-1}(\param)$ be the set places $p$ such that $\mar_0(p) = \param$.
-Without loss of generality, consider that the parameters $\parameters = \{\param_1, \dots, \param_i\}$ in $\mar_0$ are used in, and only in, the $j$ first places.
-Then,
-\begin{align*}
-  \val[\mar_0] \in \pres{\ucs} \Leftrightarrow \ &
-    \mar_1 \preceq \val[\mar_0] \vee \dots \vee \mar_k \preceq \val[\mar_0] \\
-  \Leftrightarrow \ &
-    (\mar_1(p_1) \leq \val[\mar_0](p_1) \wedge \mar_1(p_2) \leq \val[\mar_0](p_2) \wedge \dots) \\
-  &\vee
-    (\mar_2(p_1) \leq \val[\mar_0](p_1) \wedge \mar_2(p_2) \leq \val[\mar_0](p_2) \wedge \dots) \\
-  &\vee \dots
-\end{align*}
-
-
-
-Since parameters are used on the initial marking only,
-we are looking for the valuations such that 
-
-
-\cref{lemm:wqo}
+%%\paragraph{Effectivness}
+%The $\Vcov$ set may be infinite.
+%However,
+%by using the vector representation of valuations, we obtain an upward-closed set that can be represented by its minimal elements.
+%%$\downc{\val_\omega(\mar_0)}$ is downward-closed and
+%
+%Indeed,
+%$\pres{\ucs}$ are the markings that allow to cover $\ucs$.
+%%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
+%Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too \todo{need a proof?}.
+%Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
+%That is,
+%\begin{align*}
+%  \mar \in \pres{\ucs} \Leftrightarrow \ &
+%    \mar_1 \preceq \mar \vee \dots \vee \mar_k \preceq \mar \\
+%  \Leftrightarrow \ &
+%    (\mar_1(p_1) \leq \mar(p_1) \wedge \mar_1(p_2) \leq \mar(p_2) \wedge \dots) \\
+%  &\vee
+%    (\mar_2(p_1) \leq \mar(p_1) \wedge \mar_2(p_2) \leq \mar(p_2) \wedge \dots) \\
+%  &\vee \dots
+%\end{align*}
+%$\forall \param \in \parameters$,
+%let $\mar_0^{-1}(\param)$ be the set places $p$ such that $\mar_0(p) = \param$.
+%Without loss of generality, consider that the parameters $\parameters = \{\param_1, \dots, \param_i\}$ in $\mar_0$ are used in, and only in, the $j$ first places.
+%Then,
+%\begin{align*}
+%  \val[\mar_0] \in \pres{\ucs} \Leftrightarrow \ &
+%    \mar_1 \preceq \val[\mar_0] \vee \dots \vee \mar_k \preceq \val[\mar_0] \\
+%  \Leftrightarrow \ &
+%    (\mar_1(p_1) \leq \val[\mar_0](p_1) \wedge \mar_1(p_2) \leq \val[\mar_0](p_2) \wedge \dots) \\
+%  &\vee
+%    (\mar_2(p_1) \leq \val[\mar_0](p_1) \wedge \mar_2(p_2) \leq \val[\mar_0](p_2) \wedge \dots) \\
+%  &\vee \dots
+%\end{align*}
+%
+%
+%
+%Since parameters are used on the initial marking only,
+%we are looking for the valuations such that 
+%
+%
+%\cref{lemm:wqo}
