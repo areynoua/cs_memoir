@@ -23,24 +23,30 @@ Thus we compute a sequence $(\setm_i)_{i \geq 0}$ where $\setm_i$ is the set of 
 \end{algorithm}
 
 
+Although the sets handled by the algorithm are infinite, it is known that the algorithm is effective.
+Indeed, all the sets are upward-closed (\Cref{theo:pre-upc}) and can be manipulated through their minimal elements (see \Cref{theo:upward-closed-set-representation,theo:dickson}, and \cite{Ganty09, valk1985residue}).
+
+\begin{lemm}[\cite{Abdulla96}]
+  \label{theo:pre-upc}
+  Given a \ac{PN} and an upward-closed set $\ucs$ of markings of \ac{PN}, $\pre{\ucs}$ is upward-closed too.
+\end{lemm}
+
 The termination and correction of the algorithm were proved in \cite{Abdulla96}.% Here are the main elements of the proofs.
+
 
 The termination is ensured by the existence of a fixed point in the sequence of upward-closed set of markings $(\setm_i)_{i \geq 0}$:
 \begin{gather*}
   \setm_0 = \ucs \\
   \forall i > 0 : \setm_i = \setm_{i-1} \cup \pre{\setm_{i-1}}
 \end{gather*}
-When this fixed point is reached, we have $\pres{\ucs}$.
+From this fixpoint $\setm_j$, we have $\setm_k = \setm_j$ for all $k \geq j$.
+Thus, $\setm_j = \pres{\ucs}$, \lang{i.e.} when the fixed point is reached, we have $\pres{\ucs}$.
+This ensures the correction.
+
 If $\mari \in \pres{\ucs}$, one can conclude positively.
 Otherwise, the result is negative.
 We call this algorithm $\back$.
 
-Although the set handled by the algorithm are infinite, 
-
-\begin{lemm}[\cite{Abdulla96}]
-  Given a monotonic transition system and an upward-closed set $\ucs$ of its states, $\pre{\ucs}$ is upward-closed too.
-\end{lemm}
-
 This approach is elegant and general, but often inefficient in practice.
 It is well-known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \citep{Henzinger98}.
-We now present a forward algorithm, but whose the application is restricted to \ac{PN}.
+We now present a forward algorithm, but whose the application is restricted to \acp{PN}.
