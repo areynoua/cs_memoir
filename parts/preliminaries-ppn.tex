@@ -83,7 +83,14 @@ Given a PostT-PPN $\namePPN[1] = \tuple{\places_1, \transitions_1, \parameters, 
 Starting with an identical \ac{PPN}, first add a new place labelled \texttt{lock}, and, to all the transitions that does not have a parametrised output arc, add an input arc from, and an output one to \texttt{lock}.
 Then, for all parametrised transition $t$, replace the parametrised output arcs by the silent subnet depicted in blue on figure~\ref{fig:posttppn-to-pppn}:
 create a place \texttt{firing}$_t$ that will contains the ``lock token'' while simulating the firing of the parametrised transition, and a silent transition \texttt{done}$_t$ to release the lock.
-then for all parametrised output arc to a place $p$, replace it by the places \texttt{tank1}$_{t,p}$, \texttt{tank2}$_{t,p}$ and the silent transitions \texttt{reload}$_{t,p}$, \texttt{fire}$_{t,p}$ as depicted.
+Then for all parametrised output arc to a place $p$, replace it by the places \texttt{tank1}$_{t,p}$, \texttt{tank2}$_{t,p}$ and the silent transitions \texttt{reload}$_{t,p}$, \texttt{fire}$_{t,p}$ as depicted.
+
+\begin{technical-note}
+Note that we had introduce transitions as defined by their input output functions (\cref{defi:pn}).
+However, we would like to say that a transition of the newly constructed PN is part of the transition of the original PN.
+In the following, we loosen the equality relation to follow the intuitive idea that, when a PN is constructed from another, transitions from the original PN that were not removed in the construction process exist in the new one too.
+This holds for the places too.
+\end{technical-note}
 
 Formally,
 \begin{align*}
