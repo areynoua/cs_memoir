@@ -66,6 +66,7 @@ The latter form a machinery that is not taken into account for the result of the
 \todo{We will see later that to establish that there is a simulation between two networks makes it possible to deduce many results.}
 
 \paragraph{From PostT-PPNs to P-PPNs}
+\label{sec:from-postt-ppn-to-p-ppn}
 
 \begin{figure}[htbp]
   \centering
@@ -125,13 +126,13 @@ Formally,
       0                         &\text{ otherwise }
     \end{cases}
 \end{align*}
-\todo{This break the formalism introduced at the benining}
 
 This construction comes from \cite{David17}, to which we have added the uniqueness of the \texttt{lock} place for the whole Petri net and its connection with all the transitions, even the non-parametrised ones.
 This does not fundamentally change the properties of the newly built network, in that it also provides a simulation, but it reduces the size of its state tree.
 
 \begin{lemm}
-  For all valuations $v$ on $\parameters$, $v(\namePPN[2])$ weakly simulates $v(\namePPN[1])$.
+  \label{theo:simulation-p-ppn-postt-ppn}
+  For all valuation $v$ on $\parameters$, $v(\namePPN[2])$ weakly simulates $v(\namePPN[1])$.
 \end{lemm}
 
 \begin{proof}
@@ -207,6 +208,7 @@ Actually, \namePPN[1] also simulates \namePPN[2].
 \namePPN[1] and \namePPN[2] are \emph{weakly co-similar}.
 
 \begin{lemm}
+  \label{theo:simulation-postt-ppn-p-ppn}
   For all valuation $v$ on $\parameters$, $v(\namePPN[1])$ weakly simulates $v(\namePPN[2])$.
 \end{lemm}
 
