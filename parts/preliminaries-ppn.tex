@@ -2,8 +2,8 @@ By reduction from the halting problem as well as the counter boundedness problem
 This motivates the introduction of natural subclasses of \acp{PPN} where parametric coverability problems are decidable.
 
 Namely,
-PreT-PPNs are \acp{PPN} where parameters are used only as input weight in $\inm$,
-PostT-PPNs are \acp{PPN} where parameters are used only as output weight in $\outm$,
+PreT-PPNs are \acp{PPN} where parameters are used only as input weight, \ie in $\inm$;
+PostT-PPNs are \acp{PPN} where parameters are used only as output weight, \ie in $\outm$,
 and P-PPNs are \ac{PPN} where parameters are used only in the initial marking $\mari$.
 These subclasses were extensively studied in \cite{David17} where are given
 some links between P-PPN and PostT-PPN,
@@ -16,7 +16,8 @@ We will present these results as they contain ideas used in the sequel.
 \label{sec:p-ppn-and-postt-ppn}
 
 Considering the synthesis of valuations for P-PPNs, one idea that comes naturally is to apply $\back$ from a marking to be covered.
-We also have the intuition that this same result can be obtained in a similar way for PostT-PPNs. 
+We also have the intuition that this same result can be obtained in a similar way for PostT-PPNs.
+\todo{see..}
 This leads us to look for links between these two models.
 
 \paragraph{Simulations on Petri nets}
@@ -48,7 +49,7 @@ The latter form a machinery that is not taken into account for the result of the
     \forall (\seqt_1,\mar'_1), \seqt_1 \in \transitions_1^*, \mar_1 \fire{\seqt_1} \mar'_1 \>:\>
     \exists (\seqt_2,\mar'_2), \seqt_2 \in \transitions_2^*, \mar_2 \fire{\seqt_2} \mar'_2, (\mar'_1, \mar'_2) \in \simeq.
   \end{gather*}
-  where $\seqt_i = \transitions_{si}^* + (t_{ui}) + \transitions_{si}^*,\enspace t_{ui} \in \transitions_{ui}$.% $\seqt_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.
+  where $\seqt_i = \transitions_{si}^* + (t_{ui}) + \transitions_{si}^*,\enspace t_{ui} \in \transitions_{ui}$, $i \in \{1, 2\}$.% $\seqt_i$ is a sequence of zero or more transition from $T_{si}$ followed by a transition of $T_{ui}$ followed by zero or more transition of $T_{si}$.
 
   If there exists such a relation $\simeq$ with $(\mar_{0,1}, \mar_{0,2}) \in \simeq$, noted $\mar_{0,1} \simeq \mar_{0,2}$ we say that \namePPN[2] \emph{weakly simulates} \namePPN[1].
 \end{defi}
@@ -96,7 +97,9 @@ Formally,
       \transitions_1 \\
       \setComp{\mathtt{done}_t}{\exists p \in \places_1 \text{ s.t. } \outm[\namePPN[1]][p,t] \in \parameters} \\
       \setComp{\mathtt{fire}_{t,p}, \mathtt{reload}_{t,p}}{\outm[\namePPN[1]][p,t] \in \parameters}
-    \end{cases}\\
+    \end{cases}
+\end{align*}
+\begin{align*}
   \inm[\namePPN[2]][p,t] &= \begin{cases}
       \inm[\namePPN[1]][p,t] &\text{ whenever } p \in \places_1 \wedge t \in \transitions_1 \\
       1 &\text{ whenever } p = \mathtt{lock}
@@ -118,7 +121,9 @@ Formally,
         &\quad\text{ or } p = \mathtt{tank1}_{t',p'} \wedge t = \mathtt{reload}_{t',p'} \\
         &\quad\text{ or } p = \mathtt{tank2}_{t',p'} \wedge t = \mathtt{fire}_{t',p'} \\
       0 &\text{ otherwise }
-    \end{cases}\\
+    \end{cases}
+\end{align*}
+\begin{align*}
   \mar_{0,2}(p) &= \begin{cases}
       \mar_{0,1}(p)             &\text{ if } p \in \places_1 \\
       1                         &\text{ if } p = \mathtt{lock} \\
@@ -238,6 +243,14 @@ Actually, \namePPN[1] also simulates \namePPN[2].
   %Thus, by monotonicity and thanks to the lock, we know that once $\mathtt{done}_t$ has been fired, all the transitions enabled in $\mar'_{1,2}$ in \namePPN[2] are enabled in $\mar_{1,1}$ in \namePPN[1], except for some \texttt{reload} ones whose the effect is restricted to the \texttt{tank} places.
   %This can therefore be repeated and provides us with the desired weak-simulation.
 \end{proof}
+
+From the two previous \namecrefs{theo:simulation-p-ppn-postt-ppn} provide us, by definition, with the following result:
+\begin{lemm}
+  \label{theo:cosimulation-p-ppn-postt-ppn}
+  \label{theo:cosimulation-postt-ppn-p-ppn}
+  For any valuation $\val$, $\val[{\namePPN[1]}]$ and $\val[{\namePPN[2]}]$ are weakly co-similar.
+\end{lemm}
+
 
 \paragraph{From P-PPN to PostT-PPN}
 \label{sec:p-ppn-to-postt-ppn}
