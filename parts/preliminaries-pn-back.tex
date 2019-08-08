@@ -40,7 +40,7 @@ The termination is ensured by the existence of a fixed point in the sequence of 
   \forall i > 0 : \setm_i = \setm_{i-1} \cup \pre{\setm_{i-1}}
 \end{gather*}
 From this fixpoint $\setm_j$, we have $\setm_k = \setm_j$ for all $k \geq j$.
-Thus, $\setm_j = \pres{\ucs}$, \lang{i.e.} when the fixed point is reached, we have $\pres{\ucs}$.
+Thus, $\setm_j = \pres{\ucs}$, \ie when the fixed point is reached, we have $\pres{\ucs}$.
 This ensures the correction.
 
 If $\mari \in \pres{\ucs}$, one can conclude positively.
@@ -48,5 +48,5 @@ Otherwise, the result is negative.
 We call this algorithm $\back$.
 
 This approach is elegant and general, but often inefficient in practice.
-It is well-known that a forward exploration of the state of space (\lang{i.e.}, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \citep{Henzinger98}.
+It is well-known that a forward exploration of the state of space (\ie, in this context, using $\Post$ instead of $\Pre$) is usually more efficient \citep{Henzinger98}.
 We now present a forward algorithm, but whose the application is restricted to \acp{PN}.

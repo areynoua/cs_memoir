@@ -6,7 +6,7 @@ More precisely, \emph{it constructs a coverability tree} and uses an acceleratio
   \begin{itemize}
     \item $\nodes$ is the set of nodes of the tree.%, is a set of \omark of \namePN such that $\downc{\nodes} = \cover{\namePN}$.
 
-    \item $n_0 \in \nodes$ is the root of the tree, \lang{i.e.} $\nexists n \in \nodes$ such that $(n, n_0) \in \edges$.
+    \item $n_0 \in \nodes$ is the root of the tree, \ie $\nexists n \in \nodes$ such that $(n, n_0) \in \edges$.
 
     \item $\Lab : \nodes \mapsto (\naturals \cup \{\omega\})^{\card{\places}}$ is a labelling function that associate to each node an \omark of \namePN.
 
@@ -109,7 +109,7 @@ For a shorter proof, refer to \cite{Karp69}.
   Before we look at $\Tts$, here is one key observation on the Karp and Miller tree:
   since the Karp and Miller algorithm never remove $\omega$s, we have
   $\forall n \in \nodes \setminus \{n_0\}$, $\op{\lab{\parent{n}}} \subseteq \op{\lab{n}}$,
-  \lang{i.e.} all the \oplaces on a marking stay marked with an $\omega$ in all its descendants.
+  \ie all the \oplaces on a marking stay marked with an $\omega$ in all its descendants.
 
   The idea of the construction of $\tts{\mar}{n}$ is that for any \oplace $p_i$ of $\lab{n}$, one can extract from $\treepath{n}$ a self-covering sequence $\iscs{i}$ strictly increasing in $p_i$:
   $\effect{\iscs{i}}(p_i) > 0$ and $\effect{\iscs{i}}(p) \geq 0$ for all $p \in \places$.
@@ -133,7 +133,7 @@ For a shorter proof, refer to \cite{Karp69}.
     \item with $p_i \in \op{\lab{n}}$,
       \begin{itemize}
         \item $n^\omega_i$ denotes the first node of $\treepath{n}$ such that $\lab{n_i}(p_i) = \omega$, and
-        \item $n_i$ denotes the node used by $\KMAcc$ to accelerate $p_i$ in $\lab{n^\omega_i}$, \lang{i.e.}, \todo{the last} node of $\treepath{n^\omega_i}$ such that $\lab{n_i} \prec \lab{n^\omega_i} \text{ and } \lab{n_i}(p_i) \neq \omega$.
+        \item $n_i$ denotes the node used by $\KMAcc$ to accelerate $p_i$ in $\lab{n^\omega_i}$, \ie, \todo{the last} node of $\treepath{n^\omega_i}$ such that $\lab{n_i} \prec \lab{n^\omega_i} \text{ and } \lab{n_i}(p_i) \neq \omega$.
       \end{itemize}
     \item with $i$ and $j \in \{1, …, \card{\places}\}$, we have:
       \begin{itemize}

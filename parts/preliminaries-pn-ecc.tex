@@ -8,7 +8,7 @@ We define $(C_i)_{i \geq 0}$ to be the sequence of finite set of markings holdin
 \[
   \forall i \in \naturals : C_i = \{0, ..., i\}^{\card{\places}} \cup \{\mari\}
 \]
-At step $i$, the algorithm computes $\Sous(\namePN, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \namePN restricted to the markings of $C_i$, \lang{i.e.} $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
+At step $i$, the algorithm computes $\Sous(\namePN, C_i)$ defined as the graph $\langle C_i, \mari, \sousrel \rangle$ which is the transition system induced by the \ac{PN} \namePN restricted to the markings of $C_i$, \ie $(\mar_1, \mar_2) \in \sousrel$ if, and only if, $\mar_1 \rightarrow \mar_2$.
 The under-approximation sought is the set of markings reachable through $\sousrel$ from \mari and is denoted $\R(\Sous(\namePN, C_i))$.
 
 At step $i$, the algorithm also uses $L_i$ from the sequence $(L_i)_{i \geq 0}$ of finite set of \omarks such that $L_i = \{0, ..., i, \omega \}^{\card{\places}} \cup \{\mari\}$.

@@ -135,7 +135,7 @@ This does not fundamentally change the properties of the newly built network, in
 \end{lemm}
 
 \begin{proof}
-  Let $\simeq$ be the weak simulation relation that witnesses it, \lang{i.e.} $\mar_{0,1} \simeq \mar_{0,2}$.
+  Let $\simeq$ be the weak simulation relation that witnesses it, \ie $\mar_{0,1} \simeq \mar_{0,2}$.
   This relation surely exists: we recursively show that it contains all the pairs $(\mar_1, \mar_2)$ such that
   \begin{align*}
     \mar_1 &\in \posts[\val]{\mar_{0,1}}\\
@@ -222,7 +222,7 @@ Actually, \namePPN[1] also simulates \namePPN[2].
   we add into the relation the pair $(\mar'_2, \mar'_1)$ where
   \begin{itemize}
     \item $\mar'_1$ is given by $\mar_1 \fire[{\val(\namePPN[1])}]{t} \mar'_1$ if $t \in \transitions_1$,
-    \item $\mar'_1$ is $\mar_1$ otherwise, \lang{i.e.} if the $t$ is silent.
+    \item $\mar'_1$ is $\mar_1$ otherwise, \ie if the $t$ is silent.
   \end{itemize}
 
   Indeed, if $t \in \transitions_1$, strong monotonicity of \ac{PN} ensures that the induction hypothesis holds for $(\mar'_2, \mar'_1)$.
@@ -387,7 +387,7 @@ This new acceleration function, $\Acc$, distinguishes three cases:
     \]
 \item Or these first conditions does not hold but there is a marking
   that meets these conditions, except that the effect of the sequence of transitions is negative in some places $p'$ with $\mar(p') = *$,
-  \lang{i.e.},
+  \ie,
   there exists $\marp \in \setm$ such that $\marp \fire{\sigma} \mar$, $\marp \prec \mar$, and for all place $p$ such that $\marp(p) \notin \{\omega, *\}$ we have $\effect{\sigma}(p) \geq 0$.\\
     This case handle the propagation of the $*$ mentioned above.
     Indeed, we can choose an arbitrary large valuation to be able to fire this sequence an arbitrary large number of times; however, for a given valuation, this number of repetition is bounded.
@@ -439,7 +439,7 @@ Thus we give here a brief proof of the termination and correctness of the modifi
   
   Since $\mar_i$ and $\mar_j$ are from the same branch and $\mar_i \prec \mar_j$, $\mar_j$ has at least one place marked by $\omega$ or $*$ more than $\mar_i$ does.
   This reasoning can be repeated on the sequence starting in $\mar_j$.
-  However, as the number of places is finite, we will eventually reach a marking where all places will be marked with an $\omega$, \lang{i.e.}, which can not have a successor in the sequence.
+  However, as the number of places is finite, we will eventually reach a marking where all places will be marked with an $\omega$, \ie, which can not have a successor in the sequence.
   This contradicts the hypothesis that an infinite branch exists.
 \end{proof}
 

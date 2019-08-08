@@ -52,7 +52,7 @@ These two results lead to the following lemma:
   and for all $l \geq k : \downc{\Flatten(V_l)} = \cover{\namePN}$.
 \end{lemm}
 
-Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \lang{i.e.} to the lowest $l$ such that $\downc{\Flatten(V_l)} = \downc{\Flatten(V_{l-1})}$ and to return $\downc{\Flatten(V_l)}$.
+Thus, the algorithm idea is to compute $\CovSeq$ until it stabilizes, \ie to the lowest $l$ such that $\downc{\Flatten(V_l)} = \downc{\Flatten(V_{l-1})}$ and to return $\downc{\Flatten(V_l)}$.
 
 To perform it efficiently, one can use a well-chosen order $\sqsubseteq$ on the pair of markings.
 This order intents to sort the pairs of markings according to the distance in between, and is used to keep only ``the more distant'' pairs.
