@@ -88,6 +88,7 @@
 \acrodef{PPN}{parametric Petri net}
 \acrodef{EEC}{Expand, Enlarge and Check}
 \acrodef{WSTS}{well-structured transition system}
+\acrodef{UML}{Unified Modelling Language}
 
 % Lists
 %\usepackage{enumitem}
@@ -131,6 +132,7 @@
 
 \newcommand{\lang}[1]{{\em{}#1}}
 \newcommand{\ie}{\lang{i.e.}\xspace}
+\newcommand{\etc}{, \lang{etc.}\xspace}
 \newenvironment{technical-note}{}{}
 
 \newcommand{\Ecov}{$\mathscr{E}$-cov\xspace}
@@ -387,12 +389,14 @@
 \newcommand{\dtodo}[1]{[TODO: {\color{red} #1}]\message{TODO: #1}}
 \newcommand{\dremoved}[1]{[REMOVED: {\color{gray} #1}]}
 \newcommand{\dnote}[1]{{\em\color{gray} #1}}
-\newcommand{\drev}[1]{[TO BE REVIEWED: {\color{green} #1}]}
+\newcommand{\drev}[1]{[TO BE REVIEWED: {\color{brown} #1}]}
+\newcommand{\dmov}[1]{[TO BE MOVED: {\color{brown} #1}]}
 % final
 \newcommand{\ftodo}[1]{\message{TODO: #1}}
 \newcommand{\fremoved}[1]{}%\message{REMOVED: #1}}
 \newcommand{\fnote}[1]{{\em\color{gray} #1}}
 \newcommand{\frev}[1]{\message{TO BE REVIEWED: #1}}
+\newcommand{\fmov}[1]{#1}
 
 \input{options}
 
@@ -470,9 +474,15 @@
 \label{sec:context}
 
 %%
+\subsection{Some uses of \acp{PN}}
+\todo{or: ``Partial overview of PNs''?}
+\label{sec:some-uses-of-pn}
+\input{parts/state-of-the-art-pn}
+
+%%
 \subsection{Previous Works on Parametrization of \acp{PN}}
 \label{sec:previous-works-on-parametrization-of-pn}
-\input{parts/state-of-the-art}
+\input{parts/state-of-the-art-ppn}
 
 %%
 \subsection{Overview of Similar Models}

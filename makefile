@@ -7,7 +7,7 @@ main.pdf main-draft.pdf: main.tex $(wildcard parts/*.tex) $(wildcard res/*.tex) 
 	$(eval TARGET := $(basename $@))
 	@echo -e "\n\n\n------------ COMPILE $(TARGET) ------------\n\n"
 	@mkdir -p /tmp/memo/ ; touch $(TARGET).aux ; cat $(TARGET).aux > /tmp/memo/aux.old
-	@if [[ "$@" == *draft* ]] ; then sed -i -e '5,8s/^%*/%/' -e '1,4s/^%*//' options.tex ; else sed -i -e '1,4s/^%*/%/' -e '5,8s/^%*//' options.tex ; fi
+	@if [[ "$@" == *draft* ]] ; then sed -i -e '6,10s/^%*/%/' -e '1,5s/^%*//' options.tex ; else sed -i -e '1,5s/^%*/%/' -e '6,10s/^%*//' options.tex ; fi
 	xelatex -halt-on-error -jobname="$(TARGET)" main.tex | ./texout.py ; [ $${PIPESTATUS[0]} -eq 0 ] || ( rm -f $(TARGET).pdf && cp /tmp/memo/aux.old $(TARGET).aux && false )
 	#xelatex -halt-on-error -jobname="$(TARGET)" main.tex || ( rm -f $(TARGET).pdf && cp /tmp/memo/aux.old $(TARGET).aux && false )
 	@if grep 'There were undefined citations.' $(TARGET).log ; then echo "------ UPDATE bbl -----" ; bibtex $(TARGET).aux ; fi
@@ -61,7 +61,7 @@ test:
 #	@echo -e '\n\n\n------------- FINAL ------------------------------------------------------------\n\n\n'
 #	mkdir -p /tmp/memo/ ; touch main.aux ; touch main.bbl
 #	cat main.aux main.bbl > /tmp/memo/aux.old
-#	sed -i -e '1,4s/^/%/' -e '5,8s/^%*//' options.tex
+#	sed -i -e '1,5s/^/%/' -e '6,10s/^%*//' options.tex
 #	xelatex -halt-on-error main.tex | ./texout.py ; [ $${PIPESTATUS[0]} -eq 0 ] || ( make clean && false )
 #	cat main.aux main.bbl > /tmp/memo/aux.new
 #	if ! diff /tmp/memo/aux.old /tmp/memo/aux.new ; then $(MAKE) -f $(THIS_FILE) main.aux main.bbl ; fi
