@@ -11,9 +11,11 @@ This is called the \emph{synthesis problem}.
   $\cov{\val[\namePPN]}{\ucs} = \top \Leftrightarrow \val \in \vcov{\namePPN}{\ucs}$.
 \end{defi}
 
-\subsection{$\vback$ to solve the coverability synthesis problem on P-PPNs}
+\subsection{$\vback$ to solve the coverability synthesis problem}
 
-We present a simple algorithm based on $\back$ to compute $\Vcov$ for all P-PPNs \namePPN and goal sets of markings.
+\subsubsection{$\vback$ on P-PPNs}
+
+We present a simple algorithm based on $\back$ to compute $\Vcov$ for all P-PPN \namePPN and goal sets of markings.
 %It is close to the algorithm introduced in \cite{David17} for the ``direct computation of the coverability synthesis set for PreT-PPNs''.
 
 Given a P-PPN $\defPPN$ and a goal upward-closed set of markings $\ucs$,
@@ -70,7 +72,7 @@ by \Cref{theo:pre-upc} we obtain an upward-closed set that can be represented by
 
 Indeed,
 $\pres{\ucs}$ are the markings that allow to cover $\ucs$.
-%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
+%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of
 Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too (\Cref{theo:pre-upc}) \todo{need a proof?}.
 Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
 Then,
@@ -94,8 +96,6 @@ for each conjunction, each contained proposition is either a tautology (whenever
 
 \todo{thanks to the bisimulation relation described on section .. one can use this method to compute vcov on a PreTPPN}.
 
-\todo{thanks to the cosimulation relation described on section .. one can use this method to compute .. on a PostTPPN}
-
 %%\paragraph{Effectivness}
 %The $\Vcov$ set may be infinite.
 %However,
@@ -104,7 +104,7 @@ for each conjunction, each contained proposition is either a tautology (whenever
 %
 %Indeed,
 %$\pres{\ucs}$ are the markings that allow to cover $\ucs$.
-%%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of 
+%%From this set, those which agree with $\mar_0$ on its non-parametric places form an over-approximation of
 %Since $\ucs$ is upward-closed, by monotonicity, $\pres{\ucs}$ is upward-closed too \todo{need a proof?}.
 %Let $\minp{\pres{\ucs}} = \{\mar_1, \dots, \mar_k\}$.
 %That is,
@@ -134,7 +134,89 @@ for each conjunction, each contained proposition is either a tautology (whenever
 %
 %
 %Since parameters are used on the initial marking only,
-%we are looking for the valuations such that 
+%we are looking for the valuations such that
 %
 %
 %\cref{lemm:wqo}
+
+\subsubsection{$\vback$ on Post-PPNs}
+
+Given a PostT-PPN $\defPPN[1]$,
+one can construct a weakly co-similar P-PPN $\defPPN[2]$ as described in \Cref{sec:postt-ppn-to-p-ppn} and computes $\vback$ on it.
+Technically, since the \namePPN[2] has more places than \namePPN[1], the domain of the markings is not the same for the two PNs.
+The ``silent'' places added into \namePPN[2] are like an internal machinery and do not have a meaning for the studied system: we do not have requirements on its.
+Thus we use as goal set for \namePPN[2] the upward-closed set that contains all the markings on $\places_2$ that match a marking in $\ucs$ on their common places:
+$
+  \ucse = \setComp
+            {\mar}
+            {\exists \mar' \in \ucs
+            : \forall p \in \places_1
+            : \mar(p) = \mar'(p)}
+$.
+Note that this set can be effectively computed:
+\begin{align*}
+  \mar' \in \minp{\ucs}
+  \Leftrightarrow
+  \mar \in \minp{\ucse} \\
+  \text{with }
+  \mar(p) = \begin{cases}
+    \mar'(p)  &\tif p \in \places_1 \\
+    0         &\tothrw
+  \end{cases}
+\end{align*}
+
+Moreover, we define an equivalence relation
+$\equiv \subseteq \naturals^{\card{\places_1}} \times \naturals^{\card{\places_2}}$
+such that
+$
+  \mar_1 \equiv \mar_2
+  \Leftrightarrow
+  \forall p \in \places_1 \cap \places_2 : \mar_1(p) = \mar_2(p)
+$ and we denote by $\rela_\equiv$ the relation on two sets of markings where $\equiv$ replace the usual component wise equality $=$ used in the relation $\rela$.
+For example, $\setm_1 \subseteq_\equiv \setm_2$ denotes that the for all marking $\mar_1$ in $\setm_1$ there is a marking  $\mar_2$ in $\setm_2$ such that $\mar_1 \equiv \mar_2$.
+In particular $\ucs =_\equiv \ucse$.
+
+Surely, the co-similarity ensures that
+$\vcov{\namePPN[1]}{\ucs} = \vcov{\namePPN[2]}{\ucse}$
+and this result (namely: co-similarity preserves coverability) may be applicable to any \ac{WSTS}.
+\todo{Ça m'ennuie de travailler dessus puisque ça a déjà sûrement été fait... mais je n'ai pas trouvé où}
+
+%Here we establish $\vcov{\namePPN[1]}{\ucs} = \vcov{\namePPN[2]}{\ucs}$, from which the correctness of the procedure follows,
+%\todo{bon bref faut formuler qu'on fait ça mais seulement dans notre cas précis: avec la construction donnée}
+
+We provide a proof restricted to our specific case.
+
+\begin{proof}[\proofname\ of correctness of $\vback$ on PostT-PPN]
+  To prove that this method is correct is to prove that $\vcov{\namePPN[1]}{\ucs} = \vcov{\namePPN[2]}{\ucse}$,
+  where $\namePPN[1]$ is the studied PostT-PPN and $\namePPN[2]$ is the P-PPN constructed like described in \Cref{sec:postt-ppn-to-p-ppn}.
+
+  First we show that $\vcov{\namePPN[1]}{\ucs} \subseteq \vcov{\namePPN[2]}{\ucse}$.
+  Since
+  for any valuation $\val$,
+  $\val[{\namePPN[2]}]$ simulates $\val[{\namePPN[1]}]$,
+  we know that
+  for any sequence of transitions $\seqt[1]$
+  leading to a marking $\mar_1$ in any $\val[{\namePPN[1]}]$
+  :
+  $\mar_{0,1} \fire[{\val[{\namePPN[1]}]}]{\seqt[1]} \mar_1$,
+  there exists a sequence $\seqt[2]$
+  such that
+  $\mar_{0,2} \fire[{\val[{\namePPN[2]}]}]{\seqt[2]} \mar_2$
+  with $\mar_1 \simeq \mar_2$.
+  It follows that $\vcov{\namePPN[1]}{\ucs} \subseteq \vcov{\namePPN[2]}{\set}$ for a set $\set$ isomorphic to $\ucs$.
+  Moreover, looking at the simulation relation used in the proof of \Cref{theo:simulation-p-ppn-postt-ppn}, we observe that the markings involved in the simulation relation are identical on the places of \namePPN[1].
+  This implies $\set =_\equiv \ucs$
+  and $\vcov{\namePPN[1]}{\ucs} \subseteq \vcov{\namePPN[2]}{\ucse}$.
+
+  Secondly, $\vcov{\namePPN[2]}{\ucs} \subseteq \vcov{\namePPN[1]}{\ucse}$.
+  Indeed,
+  we may follow a similar reasoning and observe that
+  the simulation relation used in proof of \Cref{theo:simulation-postt-ppn-p-ppn} ensures
+  $\mar_2 \simeq \mar_1 \implies \forall p \in \places_1 : \mar_1(p) \geq \mar_2(p)$.
+\end{proof}
+
+%Here we show how the co-similarity \Cref{theo:cosimulation-p-ppn-postt-ppn} allows to conclude to the correctness of the method by deducing
+%$\vcov{\namePPN[2]}{\ucs} \subseteq \vcov{\namePPN[1]}{\ucs}$ from \Cref{theo:simulation-p-ppn-postt-ppn} and
+%$\vcov{\namePPN[1]}{\ucs} \subseteq \vcov{\namePPN[2]}{\ucs}$ from        \Cref{theo:simulation-postt-ppn-p-ppn}.
+%
+%The weak simulation relation between \namePPN[2] and \namePPN[1]
