@@ -1,16 +1,16 @@
 \todo{sources and examples}
 
-As it provides evidence of safety properties on the studied systems, coverability problem is of primary interest in system design and verification. Therefore, for the reasons given in the previous section, it is worth being able to solve it efficiently on \acp{PPN}.
+As it provides evidence of safety properties on the studied systems, coverability problem is of primary interest in system design and verification. Therefore, for the reasons given in the previous \namecref{sec:interests-of-ppn}, it is worth being able to solve it efficiently on \acp{PPN}.
 
 To give a more concrete intuition on the interest, consider a system that execute a \emph{task} for others systems.
 At each instant (whatever an instant is), the system may receive requests to perform the task from many other systems. We say that each request creates a \emph{job}.
 We would like to have a system that is not too expensive to implement, but also capable of completing the tasks quickly enough.
 To this end, we make our system capable of performing $a$ jobs at the same time, keeping $a$ as low as possible to reduce costs.
 This system may be modelled as shown on the figure~\ref{fig:parametric-petri-net-example} with $\mari = (0, \param[1], 0)$ as initial marking.
-$p_1$ represents the job queue and $p_3$ the execution unit.\\
-We can now formally verify that, whatever the parameter values, the execution unit will not receive more than $a$ jobs to carry out at the same time, that is an instance of the \Ecov for the marking $(0, 0, \param[1]+1)$.
-Indeed, it is easy to see that $\Post^*((0, \param[1], 0)) = \setComp{(i, j, k)}{i, j \text{ and } k \in \naturals, j + k = \param[1]}$.
+$p_1$ represents the job queue and $p_3$ the execution unit.
 \todo{maybe remove part on `$a$ as low as possible'}
 
-Before recalling the known results on \ac{PPN} and plain \ac{PN} that will be useful for our study, let us give a brief overview of some work already done on \acp{PPN}.
-% vim: syn spell toplevel :
+\mov{We can now formally verify that, whatever the parameter values, the execution unit will not receive more than $a$ jobs to carry out at the same time, that is an instance of the \Ecov for the marking $(0, 0, \param[1]+1)$.
+Indeed, it is easy to see that $\Post^*((0, \param[1], 0)) = \setComp{(i, j, k)}{i, j \text{ and } k \in \naturals, j + k = \param[1]}$.
+
+Before recalling the known results on \ac{PPN} and plain \ac{PN} that will be useful for our study, let us give a brief overview of some work already done on \acp{PPN}.}

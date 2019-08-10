@@ -1,6 +1,4 @@
-\todo{sources and examples}
-
-\acp{PN} are used in a wide range of areas.
+We have seen in \Cref{sec:some-uses-of-pn} that \acp{PN} are used in a wide range of areas.
 They are commonly used either to design safe systems or to verify existing ones.
 These uses require that the modelling of the system be complete.
 That is, for the design of a model, it must be entirely designed to be analysable.
@@ -13,8 +11,9 @@ Going further, the use of parameters in the model can be used to determine the `
 We can therefore say that parameters can simplify the \emph{design} of a system. Indeed, since it is possible to keep unknown values, modelling can be done step by step, with the possibility to check the model at each step.
 In addition, the design can be partially automated by parameter synthesis.
 This approach gives a new interest in this model in fields as varied as chemistry, construction processes, financial loans\etc
-\cite{David17} contains good illustrative examples.
+\cite{David17} contains an illustrative example about a production line where \acp{PPN} allow to easily express the constraints and the optimisation objective.
 
 There are also many advantages of using parameters when it comes to \emph{verification}.
 For example, it allows to verify some properties simultaneously on many systems that differs only by parameters values.
-% vim: syn spell toplevel :
+See for example the ``Financial Loan'' example from \cite{David17}.
+Here the personal loan contract is modelled as an abstract \ac{PPN} and each signature of an actual contract is a concrete \ac{PN} obtained by defining the values of the \ac{PPN}'s parameters.
