@@ -225,8 +225,8 @@ Actually, \namePPN[1] also simulates \namePPN[2].
 \end{lemm}
 
 \begin{proof}
-  We inductively create the weak simulation by keeping the following invariant:
-  \( \mar_2 \simeq \mar_1 \Rightarrow \forall p \in \places_1, \mar_2(p) \geq \mar_1(p) \).
+  We inductively create the weak simulation by keeping the following invariant \todo{to *keep* an invariant?}:
+  \( \mar_2 \simeq \mar_1 \Rightarrow \forall p \in \places_1, \mar_2(p) \leq \mar_1(p) \).
   Note that this property ensures that any visible transition enabled in $\mar_2$ is enabled in $\mar_1$.
   
   This holds for $(\mar_{0,2}, \mar_{0,1})$.
@@ -236,7 +236,7 @@ Actually, \namePPN[1] also simulates \namePPN[2].
   we add into the relation the pair $(\mar'_2, \mar'_1)$ where
   \begin{itemize}
     \item $\mar'_1$ is given by $\mar_1 \fire[{\val(\namePPN[1])}]{t} \mar'_1$ if $t \in \transitions_1$,
-    \item $\mar'_1$ is $\mar_1$ otherwise, \ie if the $t$ is silent.
+    \item $\mar'_1$ is $\mar_1$ otherwise, \ie we ignore $t$ if the it is silent.
   \end{itemize}
 
   Indeed, if $t \in \transitions_1$, strong monotonicity of \ac{PN} ensures that the induction hypothesis holds for $(\mar'_2, \mar'_1)$.
