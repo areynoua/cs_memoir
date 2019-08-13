@@ -4,7 +4,7 @@ To introduce these results, we need some additional definitions.
 They will be given for plain \acp{PN}, but most of them are naturally extended to \acp{PPN}.
 
 %% Covering set informal
-Given an initialized \ac{PN} \namePN, the \emph{covering set} of \namePN is the set of markings covered by at least one reachable marking of \namePN.
+Given an initialized \ac{PN} \namePN, the \emph{covering set} of \namePN is the set of the markings covered by at least one reachable marking of \namePN.
 It is an over-approximation of the reachability set that is precise enough to solve the coverability problem, and is, therefore, interesting for our study.
 
 %% Covering set formal
@@ -56,7 +56,7 @@ In a plain \ac{PN}, this is due to the existence of an increasing self-covering 
 
 \begin{lemm}
 	\label{theo:self-cov-non-termination}
-	The existence of a self-covering sequence is a necessary and sufficient condition for the \emph{non-termination} of a PN (\ie there exists an infinite sequence of transitions $\seqt$ enabled in $\mar_0$).
+	The existence of a self-covering sequence is a necessary and sufficient condition for the \emph{non-termination} of a PN (\ie there exists an infinite transition sequence $\seqt$ enabled in $\mar_0$).
 \end{lemm}
 
 \begin{proof}
@@ -87,19 +87,19 @@ Therefore, any infinite sequence is self-covering, and the existence of such a s
   This condition is sufficient:
   Let $\setp \subseteq \places$ be the set of places $\setp = \setComp{p \in \places}{ \mar_i(p) < \mar_j(p)}$.
   $\setp \neq \emptyset$ since $\mar_i \prec \mar_j$.\\
-  With a reasoning similar to the one above, we see that having such a sequence ensures that one can reach a marking $\mar'_j$ given by $\mar_j \fire{\seqt} \mar'_j$ such that $\mar_j \prec \mar'_j$.
-  Because of the constant effect of transitions, we know that $\forall p \in \setp : \mar_j(p) < \mar'_j(p)$.
+  With a reasoning similar to the one above, we see that the strict strong monotonicity of \acp{PN} ensures that, with such a sequence, the \ac{PN} can reach a marking $\mar'_j$ given by $\mar_j \fire{\seqt} \mar'_j$ and such that $\mar_j \prec \mar'_j$.
+  Because of the constant transition effect , we know that $\forall p \in \setp : \mar_j(p) < \mar'_j(p)$.
   The unboundedness of the places in $\setp$ follows.
 
   It is also necessary:
-  Since the effect of a transition is bounded ($\forall p \in \places : \forall t \in \transitions : \effect{t}[p] \in \integers$), a place $\pi$ may be unbounded only if there exists a particular sequence of transition $\defInfSeqt$ that is:
+  Since the effect of a transition is bounded ($\forall p \in \places : \forall t \in \transitions : \effect{t}[p] \in \integers$), a place $p'$ may be unbounded only if there exists a particular sequence of transition $\defInfSeqt$ that is:
   \begin{itemize} 
     \item enabled in $\mar_0$,
     \item infinite,
-    \item and, with $\bodyInfSeq[\mar]$ the markings given by $\mar_0 \fire{t_1} \mar_1 \fire{t_2} \mar_2 \fire{t_3} \dots$, ($\seqt$ is) such that one can extract from $\bodyInfSeq[\mar]$ a infinite subsequence $\bodyInfSeq[\mar']$ that is strictly increasing on $\pi$ : for any pair $(k, l) \in \naturals^2, k < l \Rightarrow \mar_i(\pi) < \mar_j(\pi)$.
+    \item and, with $\bodyInfSeq[\mar]$ the markings given by $\mar_0 \fire{t_1} \mar_1 \fire{t_2} \mar_2 \fire{t_3} \dots$, ($\seqt$ is) such that one can extract from $\bodyInfSeq[\mar]$ a infinite subsequence $\bodyInfSeq[\mar']$ that is strictly increasing in $p'$ : for any pair $(k, l) \in \naturals^2, k < l \Rightarrow \mar_i(p') < \mar_j(p')$.
   \end{itemize}
   Since $\preceq$ is a well-quasi-order on the markings, there is a pair $(i, j) \in \naturals^2$ such that $i < j$ and $\mar'_i \preceq \mar'_j$.
-  Furthermore, since $\mar'_i(\pi) < \mar'_j(\pi)$, we have $\mar'_i \prec \mar'_j$.
+  Furthermore, since $\mar'_i(p') < \mar'_j(p')$, we have $\mar'_i \prec \mar'_j$.
 \end{proof}
 
 %% omark informal
@@ -107,7 +107,7 @@ An \omark is a way to represent a set of markings which have the same number of 
 
 %% omark formal
 \begin{defi}[\omark]
-  We define $\omega$ to be such that:
+  We define \emph{$\omega$} to be such that:
   $\omega \notin \naturals$
   and for any constant $c \in \naturals$:
   \begin{itemize}
@@ -126,20 +126,20 @@ Note that an \omark \mar is a parametric \omark where $\mar(p) \in \naturals \cu
 Similarly, a parametric marking \mar is a parametric \omark where $\mar(p) \neq \omega$ for all places $p \in \places$.
 As for parametric markings, we often refer to a parametric \omark simply as \omark.
 
-Given an \omark \mar, $\op{\mar} \subseteq \places$ is the set of place $p$ such that $\mar(p) = \omega$, sometimes referred as \emph{\oplaces of \mar}. $\places \setminus \op{\mar}$ is the set of \emph{\noplaces of \mar}.
+Given an \omark \mar, $\op{\mar} \subseteq \places$ is the set of places $p$ such that $\mar(p) = \omega$, sometimes referred as \emph{\oplaces of \mar}. $\places \setminus \op{\mar}$ is the set of \emph{\noplaces of \mar}.
 
 %% Coverability set informal
 \acp{PN} with unbounded places have an infinite reachability set.
 So the covering set is also infinite.
 \emph{Coverability sets} are useful to give a finite representation of the covering set thanks to \omarks.
 %%
-In order to define them formally, we need to know about the maximal markings and the upward- and downward-closure of a set of markings.
+In order to define them formally, we need to know about the maximal markings and the upward- and downward-closure of a marking set.
 
 %% Max markings informal
 The maximal markings of a set are those which are not covered by any other marking of the set.
 %% Max markings formal
 \begin{defi}[Maximal markings]
-  Given a set of markings $\setm$, the set of maximal elements of $\setm$ is
+  Given a marking set  $\setm$, the set of maximal elements of $\setm$ is
   $\maxp{\setm} = \setComp{ \mar \in \setm}{\nexists \mar' \in \setm \text{ s.t. } \mar \prec \mar' }$.
 \end{defi}
 
@@ -173,12 +173,12 @@ Thus, by definition, for any $\defPN$, the covering set $\cover{\namePN} = \down
 
 %% Coverability set formal
 \begin{defi}[Coverability set \citep{Finkel87,Finkel90}]
-  Given an initialized \ac{PN} $\defPN$, a \emph{coverability set} $\setm$ of \namePN is a set of markings such that $\downc{\setm} = \cover{\namePN}$.
+  Given an initialized \ac{PN} $\defPN$, a \emph{coverability set} $\setm$ of \namePN is a marking set  such that $\downc{\setm} = \cover{\namePN}$.
 \end{defi}
 
 %% Usefulness of coverability sets and omarks
 Notice that, since $\downc{\mar}$ exists and is unique for all \omark \mar, an \omark may always stand for one and only one downward-closed set.
-Symmetrically, it is known that any downward-closed set may be represented by a finite set of \omarks \cite{Abdulla96,Geeraerts06}.
+Symmetrically, it is known that any downward-closed set may be represented by a finite set of \omarks \cite{Abdulla96,Geeraerts06}. Indeed,
 
 \begin{lemm}
   \label{theo:repr-downc-sets}
@@ -202,7 +202,7 @@ Having an \omark \mar in a coverability set of $\namePN$ denotes that for all ma
 \end{proof}
 
 %% Max markings and minimal coverability set informal.
-Moreover, the set of maximal reachable \omarks of \namePN exists, is finite and forms a minimal coverability set:
+Moreover, the set of maximal reachable \omarks of \namePN exists, is finite, and forms a minimal coverability set:
 
 %% Max markings and minimal coverability set formal.
 
@@ -212,16 +212,19 @@ Moreover, the set of maximal reachable \omarks of \namePN exists, is finite and 
 \forall \setm \text{ such that } \downc{\setm} = \downc{\posts{\mari}}\text{, we have } \card{\setm} \geq \card{\maxp{\posts{\mari}}}
 \end{gather*}
 
-Actually, given a well-quasi-ordered domain, for any set $\set$ of tuples on this domain, the set of maximal markings (wrt. $\preceq$) of $\set$ exists, is finite and is such that $\downc{\maxp{\set}} = \downc{\set}$.
-%Moreover, for any set of markings $\setm$ over a finite set of places $\places$, the set of maximal markings of $\setm$ exists, is finite and is such that $\downc{\maxp{\setm}} = \downc{\setm}$.
+Actually, this is a specific application of the following lemma:
 
-\todo{Lemme: For any downward-closed set M of markings, the downward-closure of the set of maximal markings of M is M}
+\begin{lemm}
+  \label{theo:finite-max-set}
+  Given a set $\set$ with a well-quasi-order $\preceq$,
+  for any subset $\sset$ of $\set$,
+  the maximal elements of $\sset$ (wrt. $\preceq$) form a finite set such that $\downc{\maxp{\sset}} = \downc{\sset}$.
+\end{lemm}
 
-\todo{Proof: the existence of a finite set of maximal elements}
-It is straightforward to extend the proof to any downward-closed set.
+\todo{proof (finite and such that...)}
 
 %% coverability problem 2 formal
-It is worth noticing that, in the context of \acp{PN}, the coverability problem for a set of markings $\setm$ may be defined as follows:
+It is worth noticing that, in the context of \acp{PN}, the coverability problem for a marking set  $\setm$ may be defined as follows:
 \begin{defi}[Coverability problem]
   \label{defi:upclocovprblm}
   Given a \ac{PN} \namePN and an upward-closed set $\ucs = \upc{\setm}$ of markings of \namePN, determine whether $\posts{\mari} \cap \ucs \neq \emptyset$.
@@ -232,7 +235,7 @@ An upward-closed set is always infinite.
 It can be effectively represented through its unique set of minimal elements whose it is the upward-closure:
 \begin{lemm}
   \label{theo:upward-closed-set-representation}
-  For all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, its set of minimal element $\minp{\ucs} = \{\mar \in \ucs \mid \nexists \mar' \in \ucs : \mar' \prec \mar\}$ is such that $\upc{\minp{\ucs}} = \ucs$.
+  For all upward-closed set $\ucs \subseteq \naturals^{\card{\places}}$, its set of minimal elements $\minp{\ucs} = \{\mar \in \ucs \mid \nexists \mar' \in \ucs : \mar' \prec \mar\}$ is such that $\upc{\minp{\ucs}} = \ucs$.
 \end{lemm}
 
 The following lemma ensure that this set is finite:
