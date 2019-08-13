@@ -43,3 +43,10 @@ The universal coverability problem (\Ucov) ask if \mar is coverable for all valu
 \end{defi}
 
 For the sake of simplicity, we will denote that the instance of the coverability problem on the \ac{PN} \namePN for the set $\setm$ of markings of \namePN is positive by: $\cov{\namePN}{ \setm} = \top$, and is negative by $\cov{\namePN}{ \setm} = \bot$. The same apply to \Ecov and \Ucov through the operators $\EcovOp$ and $\UcovOp$ respectively.
+
+\label{label:mutex-example-analyse}
+Recall the example of \Cref{label:mutex-example}.
+We can now formally verify that, whatever the parameter values, the execution unit will not receive more than $a$ jobs to carry out at the same time, that is an instance of the \Ecov for the marking $(0, 0, \param[1]+1)$.
+Indeed, it is easy to see that $\Post^*((0, \param[1], 0)) = \setComp{(i, j, k)}{i, j \text{ and } k \in \naturals, j + k = \param[1]}$.
+
+\mov{Before recalling the known results on \ac{PPN} and plain \ac{PN} that will be useful for our study, let us give a brief overview of some work already done on \acp{PPN}.}
