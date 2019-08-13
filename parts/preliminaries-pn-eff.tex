@@ -1,10 +1,12 @@
+\todo{Remove this section}
+
 This is usually called ``an efficient computation method of the coverability set of \acp{PN}''.
 It was proposed in \cite{Geeraerts07thesis, Geeraerts07} as another approach to the computation of the coverability set.
 It is not based on the Karp and Miller algorithm and is not an alternative to it in the sense that it does not allow to answer the same set of questions than the Karp and Miller tree answers.
 However, this technique solves the coverability problem more efficiently in practice.
 
 As in the Karp and Miller algorithm, an acceleration function exploits the strong monotonicity of \acp{PN} to allow termination.
-But here, the acceleration of a marking is performed with only one marking as the base (instead of a set of marking).
+But here, the acceleration of a marking is performed with only one marking as the base (instead of a whole set of markings).
 
 To choose the base to use, the algorithm works on pair of \omarks.
 These pairs allow to record a relationship between the markings.
@@ -27,7 +29,7 @@ Given a pair of \omarks $(\mar_1, \mar_2)$, we define:
     $\Accelb(\mar_1, \mar_2)$ is not defined whenever $\mar_1 \nprec \mar_2$,
 \end{itemize}
 
-With $R$ a set of pair of markings, we define:
+With $R$ a set of pairs of markings, we define:
 \begin{itemize}
   \item $\Postb(R) = \bigcup_{(\mar_1, \mar_2) \in R} \Postb((\mar_1, \mar_2))$
   \item $\Accelb(R) = \bigcup_{(\mar_1, \mar_2) \in R}^{\mar_1 \prec \mar_2} \Accelb((\mar_1, \mar_2))$
@@ -77,7 +79,7 @@ Given two pairs $(\mar_1, \mar_2)$ and $(\marp_1, \marp_2)$ of \omarks over a se
   \end{cases}
 \]
 
-For a set of pair of \omarks $R$, $\maxs{R} = \{ r \in R \mid \nexists r' \in R, r \sqsubseteq r'\}$ is the set of highest \omark of $R$ with respect to $\sqsubseteq$.
+For a set of pairs of \omarks $R$, $\maxs{R} = \{ r \in R \mid \nexists r' \in R, r \sqsubseteq r'\}$ is the set of highest \omarks of $R$ with respect to $\sqsubseteq$.
 
 This order has properties \citep{Geeraerts07} that allows to keep the sets of markings of $\CovSeq$ small.
 Thus, one can compute $\cover{\namePN}$ of a \ac{PN} $\defPN$ by computing the sequence $(V_i)_{i \geq 0}$ defined below until $\downc{\Flatten(V_i)} = \downc{\Flatten(V_{i-1})}$.

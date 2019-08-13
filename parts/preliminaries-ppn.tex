@@ -2,13 +2,13 @@ By reduction from the halting problem as well as the counter boundedness problem
 This motivates the introduction of natural subclasses of \acp{PPN} where parametric coverability problems are decidable.
 
 Namely,
-PreT-PPNs are \acp{PPN} where parameters are used only as input weight, \ie in $\inm$;
-PostT-PPNs are \acp{PPN} where parameters are used only as output weight, \ie in $\outm$,
-and P-PPNs are \ac{PPN} where parameters are used only in the initial marking $\mari$.
+PreT-PPNs are \acp{PPN} where parameters are used only as input weight, \ie~in~$\inm$;
+PostT-PPNs are \acp{PPN} where parameters are used only as output weight, \ie~in~$\outm$;
+and P-PPNs are \ac{PPN} where parameters are used only in the initial marking~$\mari$.
 These subclasses were extensively studied in \cite{David17} where are given
 some links between P-PPN and PostT-PPN,
 an adaptation of the Karp and Miller Algorithm to solve the \Ucov problem on PreT-\acp{PPN},
-and another to solve the \Ecov problem on PostT-\acp{PPN}%.
+and another to solve the \Ecov problem on PostT-\acp{PPN}.
 %as well as the complexity of these problems.
 We will present these results as they contain ideas used in the sequel.
 
@@ -17,7 +17,6 @@ We will present these results as they contain ideas used in the sequel.
 
 Considering the synthesis of valuations for P-PPNs, one idea that comes naturally is to apply $\back$ from a marking to be covered.
 We also have the intuition that this same result can be obtained in a similar way for PostT-PPNs.
-\todo{see..}
 This leads us to look for links between these two models.
 
 \paragraph{Simulations on Petri nets}
@@ -63,6 +62,8 @@ The latter form a machinery that is not taken into account for the result of the
   Given two \acp{PPN}, $\defPPN[1]$ and $\defPPN[2]$,
   they are said weakly bisimilar if there exists a weak simulation relation $\sim$ with $\mar_{0,1} \sim \mar_{0,2}$ and $\mar_{0,2} \sim \mar_{0,1}$.
 \end{defi}
+
+In \Cref{sec:vback-on-postt-ppns}, we use some established simulation to adapt the results on a system to another.
 
 \todo{We will see later that to establish that there is a simulation between two networks makes it possible to deduce many results.}
 
