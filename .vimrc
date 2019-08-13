@@ -22,10 +22,10 @@
 :inoremap DEFI \begin{defi}o\end{defi}O\label{}idefi:
 :inoremap LEMM \begin{lemm}[]o\end{lemm}O\label{}itheo:
 :inoremap -<space><space> \item<space>
-:inoremap PNs<space> \acp{PN}
-:inoremap PPNs<space> \acp{PPN}
-:inoremap PN<space> \ac{PN}
-:inoremap PPN<space> \ac{PPN}
+:inoremap PNs<space> \acp{PN}<space>
+:inoremap PPNs<space> \acp{PPN}<space>
+:inoremap PN<space> \ac{PN}<space>
+:inoremap PPN<space> \ac{PPN}<space>
 
 :let @s='v%c{}Px%lxh%l'
 :let @c='v%c[]Px%lxh%l'
