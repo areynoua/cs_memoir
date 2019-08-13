@@ -30,7 +30,7 @@ In addition, we will often use the following notations.
     If $m \notin \treepath{n}$, $\treepath[m]{n}$ is the empty sequence.
   %$\treepath{n}$ is the sequence of nodes from the path, $\treepathe{n}$ is the sequence of edges.
   \item $\forall n \in \nodes \setminus \{n_0\}$, $\parent{n}$ is the direct ancestor, or \emph{parent}, of $n$ in $\nameT$, that is, the last but one node in $\treepath{n}$.
-  \item \removed{given a sequence of nodes, for any node $n$ of the sequence but the last one, $\child{n}$ is the next node in the sequence.}
+  %\item \removed{given a sequence of nodes, for any node $n$ of the sequence but the last one, $\child{n}$ is the next node in the sequence.}
 \end{itemize}
 
 The algorithm (see~\Cref{algo:km}) constructs the tree $\nameT$ as follows:
@@ -83,7 +83,7 @@ This function takes a marking \mar to accelerate with a set of markings $\setm$ 
 The acceleration function is said to accelerate a marking if the first case holds for one or more places.
 These places are said \emph{accelerated}.
 
-The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and was proved by Karp and Miller in their work \cite{Karp69}.
+The correctness and the termination of the algorithm lies on the strong monotonicity of \acp{PN}, and were proved by Karp and Miller in their work \cite{Karp69}.
 
 To prove that the Karp and Miller Tree $\nameT$ is a coverability tree of \namePN, we show:
 \begin{enumerate}
@@ -133,7 +133,8 @@ For a shorter proof, refer to \cite{Karp69}.
     \item with $p_i \in \op{\lab{n}}$,
       \begin{itemize}
         \item $n^\omega_i$ denotes the first node of $\treepath{n}$ such that $\lab{n_i}(p_i) = \omega$, and
-        \item $n_i$ denotes the node used by $\KMAcc$ to accelerate $p_i$ in $\lab{n^\omega_i}$, \ie, \todo{the last} node of $\treepath{n^\omega_i}$ such that $\lab{n_i} \prec \lab{n^\omega_i} \text{ and } \lab{n_i}(p_i) \neq \omega$.
+        \item $n_i$ denotes the node used by $\KMAcc$ to accelerate $p_i$ in $\lab{n^\omega_i}$, \ie, the node of $\treepath{n^\omega_i}$ such that $\lab{n_i} \prec \lab{n^\omega_i} \text{ and } \lab{n_i}(p_i) \neq \omega$.
+          If there are many such nodes, $n_i$ is the last one in $\treepath{n^\omega_i}$.
       \end{itemize}
     \item with $i$ and $j \in \{1, …, \card{\places}\}$, we have:
       \begin{itemize}
@@ -360,7 +361,7 @@ The Karp and Miller tree has a lot of convenient properties that allow, among ot
 
 \begin{defi}[Simultaneous place unboundedness]
   Let $\defPN$ be a marked \ac{PN}.
-  Given a set of place $\setp \subseteq \places$, \namePN is said $\setp$-simultaneous unbounded if and only if for any $c \in \naturals$ there exists \mar such that $\mari \fire* \mar$ and $\forall p \in \setp : \mar(p) \geq c$.
+  Given a set of places $\setp \subseteq \places$, \namePN is said $\setp$-simultaneous unbounded if and only if for any $c \in \naturals$ there exists \mar such that $\mari \fire* \mar$ and $\forall p \in \setp : \mar(p) \geq c$.
 \end{defi}
 
 Furthermore, the Karp and Miller algorithm can easily be adapted to some parametric problems \cite{David17}, as we will show in \autoref{sec:known-results-on-ppn}.
