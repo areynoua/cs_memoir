@@ -9,16 +9,6 @@ All are \acp{WSTS} (but there exists other famous infinite-states systems, like 
 \acp{WSTS} are outside of the range of this work, but we will sometimes refer to them to distinguish between techniques specific to the \ac{PN} model, or usable in a wider range of contexts.
 
 For now, let us just say that \acp{PN} are \acp{WSTS} with stronger requirements on the transition relation.
-Namely, \acp{WSTS} are transition systems whose the set of states is well-quasi-ordered and whose transition relations is monotonic with respect to the well-quasi-ordering.
+Namely, \acp{WSTS} are transition systems whose the set of states is well-quasi-ordered (\cref{defi:well-quasi-order}) and whose transition relations is monotonic (\cref{defi:monotonicity}) with respect to the well-quasi-ordering.
 All this will be defined in \Cref{sec:the-pn-model}.
 
-\mov{In a few words, \acp{WSTS} are transition systems whose set of states are well-quasi-ordered and whose transition relations is monotonic with respect to the well-quasi-ordering.
-
-The monotonicity property differs from the strong monotonicity defined above for \acp{PN} by the fact that the second state may be found after many steps.
-Formally:
-\begin{defi}[Monotonicity]
-  \label{defi:monotonicity}
-  A transition system is said \emph{monotonic} whenever its transition relation is monotonic.
-
-  A transition relation $\fire{} \subseteq (\set \times \set)$ over a $\leq$-well-quasi-ordered set $\set$ is monotonic if, and only if, for all $\sit_1$, $\sit_2$, and $\sit_3$ from $\set$ such that $\sit_1 \leq \sit_2$ and $\sit_1 \rightarrow \sit_3$ there exists $\sit_4 \in \set$ such that $\sit_2 \fire{*} \sit_4$.
-\end{defi}}
