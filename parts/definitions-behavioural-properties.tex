@@ -6,14 +6,7 @@ This is the \emph{reachability problem}.
   Given an initialized \ac{PN} $\defPN$ and a marking \mar of \namePN, \mar is said reachable if $\mari \fire{*} \mar$.
 \end{defi}
 
-\begin{defi}[Place boundedness]
-  \label{defi:place-boundedness}
-  Given a marked PN $\defPN$,
-  a place $p \in \places$ such that $\exists c \in \naturals : \nexists \mar \in \posts{\mar_0}, \mar(p) > c$ is said to be bounded.
-  That is, if there exists an upper bound on the number of tokens in the place $p$ in the set of the reachable markings.
-\end{defi}
-
-However, the verification of safety properties are more often reduced to a \emph{coverability problem}, that is essentially asking if an initialized \ac{PN} can reach or exceed a given marking.
+However, the verification of safety properties is more often reduced to a \emph{coverability problem}, that is essentially asking if an initialized \ac{PN} can reach or exceed a given marking.
 
 \begin{restatable}[Coverability]{defi}{coverability}
   Given an initialized \ac{PN} $\defPN$ and a marking \mar of \namePN, \mar is said coverable if there exists a marking \marp such that $\mar \preceq \marp$ and $\mari \fire{*} \marp$.
@@ -25,6 +18,15 @@ However, the verification of safety properties are more often reduced to a \emph
   Given an initialized \ac{PN} $\defPN$ and a set $\markings$ of markings of \namePN, determine whether $\exists \mar \in \markings \text{ and } \marp \in \posts{\mari} \text{ such that } \mar \preceq \marp$.
 
   The coverability problem for a marking \mar is the coverability problem for the singleton $\{\mar\}$.
+\end{defi}
+
+Another property worth to be studied, and linked to the coverability problem, is whether a place is bounded.
+
+\begin{defi}[Place boundedness]
+  \label{defi:place-boundedness}
+  Given a marked PN $\defPN$,
+  a place $p \in \places$ such that $\exists c \in \naturals : \nexists \mar \in \posts{\mar_0}, \mar(p) > c$ is said to be bounded.
+  That is, if there exists an upper bound on the number of tokens in the place $p$ in the set of the reachable markings.
 \end{defi}
 
 The behaviour of a \ac{PPN} is defined by the behaviours of all the \acp{PN} that can be obtained by a valuation of its parameters.
