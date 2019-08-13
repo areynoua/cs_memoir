@@ -1,3 +1,5 @@
+%\paragraph{Plain \ac{PN}}
+
 \begin{defi}[\acl{PN}]
   \label{defi:pn}
   A \acf{PN} \namePN is a weighted oriented bipartite graph, whose the two subsets of vertices define a tuple $\tuple{\places, \transitions}$ where:
@@ -16,6 +18,8 @@
 
 \begin{defi}[marking]
   Given a set of places $\places$, a marking of $\places$ is a function $\mar : \places \mapsto \naturals$ that associates $\mar(p)$ tokens to each place $p \in \places$.
+
+  A marking of a \ac{PN} $\defNonMarkedPN$ is a marking of $\places$.
 \end{defi}
 
 An order on the markings is essential for the analysis of \acp{PN}.
@@ -30,6 +34,7 @@ The order we will define is a well-quasi-order and a partial order.
 \end{defi}
 
 \begin{defi}[well-quasi-order]
+  \label{defi:well-quasi-order}
   A \emph{well-founded} quasi-order, or well-quasi-order, on a set $\set$ is a quasi-order $\rela$ on $\set$ such that, for any infinite sequence $\defInfSeq$ of elements from $\set$, there exist indices $i < j$ with $\sit_i \rela \sit_j$. That is, there is no infinite antichain in $\set$ for this relation.
 \end{defi}
 
@@ -53,6 +58,10 @@ The order we will define is a well-quasi-order and a partial order.
   $\preceq$ is a well-quasi-order.
 \end{lemm}
 
+\todo{proof(?)}
+
+%\paragraph{Parametric \ac{PN}}
+
 In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} model, that is extended thanks to the use of parameters as input and output weights or as number of tokens in some places of the initial marking.
 
 \begin{defi}[\acl{PPN} \citep{David17}]
@@ -71,11 +80,11 @@ In this work we will focus on an extension of the \ac{PN} model, the \ac{PPN} mo
 As for plain \acp{PN}, this is denoted $t = \tuple{\inw[t], \outw[t]}$.
 
 \begin{defi}[parametric marking]
-  Given a set of place $\places$, a parametric marking of $\places$ is a function $\mar : \places \mapsto \naturals \cup \parameters$ that associates $\mar(p)$ tokens to each place $p \in \places$.
+  Given a set of places $\places$, a parametric marking of $\places$ is a function $\mar : \places \mapsto \naturals \cup \parameters$ that associates $\mar(p)$ tokens to each place $p \in \places$.
 \end{defi}
 
-A marking of a \ac{PN} $\defNonMarkedPN$ is a marking of $\places$.
-A marking of a \ac{PPN} $\defNonMarkedPPN$ is a \emph{parametric} marking of $\places$.
+As a marking of a \ac{PN} $\defNonMarkedPN$ is a marking of $\places$,
+a marking of a \ac{PPN} $\defNonMarkedPPN$ is a \emph{parametric} marking of $\places$.
 Note that a (plain) marking \mar is a parametric marking where $\mar(p) \in \naturals$ for all $p \in \places$.
 
 More generally, we adopt the following convention:
@@ -93,9 +102,9 @@ We will often refer to an initialized (parametric) \ac{PN} loosely as a (paramet
 The figure~\ref{fig:parametric-petri-net-example} shows an example of \ac{PPN} whose $\parameters = \{\param[1], \param[2]\}$ and with an initial marking \mari such that $\mari(p_1) = 1$, $\mari(p_2) = \param[1]$ and $\mari(p_3) = 0$.
 The circles represent the places, the rectangles are the transitions, and the dots are the tokens.
 If the number of tokens at a given place is parametric (\ie depends on a parameter of $\parameters$), it is written inside the circle.
-An arrow from a place $p$ and to a transition $t$ denotes that $\inw[t](p) = 1$.
+An arrow from a place $p$ to a transition $t$ denotes that $\inw[t](p) = 1$.
 The absence of an arrow from $p$ to $t$ indicates that $\inw[t](p) = 0$.
-If $\inw[t](p) \notin \{0, 1\}$, a label with the value of $\inw[t](p)$ is added to the arrow.
+If $\inw[t](p) > 1$, a label with the value of $\inw[t](p)$ is added to the arrow.
 Symmetrically, the arrows from the transitions to the places indicate the output weights.
 
 \begin{figure}[htbp]
@@ -142,6 +151,6 @@ This allows to use linear algebra for the analysis of \acp{PN}.
 \end{figure}
 
 %\begin{defi}[Vector addition system]
-%  A vector addition system of dimension $n$ is a pair $\langle d, W\rangle$ where $d \in \naturals^n$ is called the \emph{start vector} and $W$ is a finite set of vector $\mathbb{Z}^n$.
+%  A vector addition system of dimension $n$ is a pair $\langle d, W\rangle$ where $d \in \naturals^n$ is called the \emph{start vector} and $W$ is a finite set of vectors $\mathbb{Z}^n$.
 %\end{defi}
 %This corresponds to the definition of an initialized \ac{PN} and \todo{we will see that the semantic corresponds too}.
